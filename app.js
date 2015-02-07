@@ -85,7 +85,9 @@ function motorOff() {
         if (err) throw err;
         console.log('Written to pin (off): ' + motorEnable);
     });
-    closePins();
+    setTimeout(function() {
+        closePins();
+    }, delay);
 }
 
 function forward() {
