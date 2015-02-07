@@ -15,7 +15,7 @@ var delay = 5000;
 
 http.createServer(function(request, response) {
 
-    /*var serialport = require("serialport");
+    var serialport = require("serialport");
     var SerialPort = serialport.SerialPort; // localize object constructor
 
     var sp = new SerialPort("/dev/ttyAMA0", {
@@ -32,11 +32,7 @@ http.createServer(function(request, response) {
             console.log('encoded hex data: ' + encoded_hex);
             console.log('encoded int data: ' + encoded_int);
         });
-        //sp.write("ls\n", function(err, results) {
-        //    console.log('err ' + err);
-        //    console.log('results ' + results);
-        //});
-    });*/
+    });
 
     gpio.setup(motorForward, gpio.DIR_OUT, forward);
     gpio.setup(motorReverse, gpio.DIR_OUT, reverse);
