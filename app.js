@@ -16,6 +16,27 @@ var motorRunTime = 5000;
 
 var delay = 5000;
 
+var motor = {
+    on: function(){
+        gpio.write(motorEnable, true, function(err) {
+            if (err) throw err;
+            console.log('Written to pin (on): ' + motorEnable);
+        });
+        setTimeout(function() {
+            motorOff();
+        }, delay);
+    },
+    off : function(){
+        gpio.write(motorEnable, false, function(err) {
+            if (err) throw err;
+            console.log('Written to pin (off): ' + motorEnable);
+        });
+        setTimeout(function() {
+            closePins();
+        }, delay);
+    }
+};
+
 var serialport = require("serialport");
 var SerialPort = serialport.SerialPort; // localize object constructor
 
@@ -81,26 +102,6 @@ function motorOn() {
     }, delay);
 }
 
-var motor = {
-    on: function(){
-        gpio.write(motorEnable, true, function(err) {
-            if (err) throw err;
-            console.log('Written to pin (on): ' + motorEnable);
-        });
-        setTimeout(function() {
-            motorOff();
-        }, delay);
-    },
-    off : function(){
-        gpio.write(motorEnable, false, function(err) {
-            if (err) throw err;
-            console.log('Written to pin (off): ' + motorEnable);
-        });
-        setTimeout(function() {
-            closePins();
-        }, delay);
-    }
-};
 function motorOff() {
     gpio.write(motorEnable, false, function(err) {
         if (err) throw err;
