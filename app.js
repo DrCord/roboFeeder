@@ -7,43 +7,46 @@ port = process.argv[2] || 8888;
 
 // require rpi-gpio so we can use gpio
 var gpio = require('rpi-gpio');
+//setup serialport
+var serialport = require("serialport");
+var SerialPort = serialport.SerialPort; // localize object constructor
 
 var delay = 5000;
 
 //setup pins vars and motor functions
-var motor = {
+var Motor = {
     reversePin: 16,
     forwardPin: 18,
     enablePin: 22,
     runTime: 5000,
     on: function(){
-        gpio.write(motor.enablePin, true, function(err) {
+        gpio.write(Motor.enablePin, true, function(err) {
             if (err) throw err;
-            console.log('Written to pin (on): ' + motor.enablePin);
+            console.log('Written to pin (on): ' + Motor.enablePin);
         });
         setTimeout(function() {
-            motor.off();
-        }, motor.runTime);
+            Motor.off();
+        }, Motor.runTime);
     },
     off: function(){
-        gpio.write(motor.enablePin, false, function(err) {
+        gpio.write(Motor.enablePin, false, function(err) {
             if (err) throw err;
-            console.log('Written to pin (off): ' + motor.enablePin);
+            console.log('Written to pin (off): ' + Motor.enablePin);
         });
         setTimeout(function() {
             closePins();
-        }, motor.runTime);
+        }, Motor.runTime);
     },
     forward: function(){
-        gpio.write(motor.forwardPin, true, function(err) {
+        gpio.write(Motor.forwardPin, true, function(err) {
             if (err) throw err;
-            console.log('Written to pin: ' + motor.forwardPin);
+            console.log('Written to pin: ' + Motor.forwardPin);
         });
     },
     reverse: function(){
-        gpio.write(motor.reversePin, false, function(err) {
+        gpio.write(Motor.reversePin, false, function(err) {
             if (err) throw err;
-            console.log('Written to pin: ' + motor.reversePin);
+            console.log('Written to pin: ' + Motor.reversePin);
         });
     }
 };
@@ -55,28 +58,33 @@ function closePins() {
     });
 }
 
-var serialport = require("serialport");
-var SerialPort = serialport.SerialPort; // localize object constructor
-
-var sp = new SerialPort("/dev/ttyAMA0", {
-    baudrate: 9600,
-    parser: serialport.parsers.raw
-});
-sp.on("open", function () {
-    console.log('open');
-    sp.on('data', function(data) {
+var Serial = {
+    sp:
+        new SerialPort("/dev/ttyAMA0", {
+            baudrate: 9600,
+            parser: serialport.parsers.raw
+        })
+    ,
+    receiveData: function(data){
         var buff = new Buffer(data, 'utf8');
         var encoded_hex = buff.toString('hex');
         var encoded_int = parseInt(encoded_hex, 16);
         //console.log('data received: ' + data);
         console.log('encoded hex data: ' + encoded_hex);
         console.log('encoded int data: ' + encoded_int);
+    }
+};
+
+Serial.sp.on("open", function() {
+    console.log('open');
+    Serial.sp.on('data', function(data) {
+        Serial.receiveData(data);
     });
 });
 
-gpio.setup(motor.forwardPin, gpio.DIR_OUT, motor.forward);
-gpio.setup(motor.reversePin, gpio.DIR_OUT, motor.reverse);
-gpio.setup(motor.enablePin, gpio.DIR_OUT, motor.on);
+gpio.setup(Motor.forwardPin, gpio.DIR_OUT, Motor.forward);
+gpio.setup(Motor.reversePin, gpio.DIR_OUT, Motor.reverse);
+gpio.setup(Motor.enablePin, gpio.DIR_OUT, Motor.on);
 
 http.createServer(function(request, response) {
 
