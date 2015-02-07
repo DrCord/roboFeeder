@@ -7,35 +7,53 @@ port = process.argv[2] || 8888;
 
 // require rpi-gpio so we can use gpio
 var gpio = require('rpi-gpio');
-//setup pins for motor
-var motorReverse = 16;
-var motorForward = 18;
-var motorEnable = 22;
-//setup motor run time
-var motorRunTime = 5000;
 
 var delay = 5000;
 
+//setup pins vars and motor functions
 var motor = {
+    reversePin: 16,
+    forwardPin: 18,
+    enablePin: 22,
+    runTime: 5000,
     on: function(){
-        gpio.write(motorEnable, true, function(err) {
+        gpio.write(motor.enablePin, true, function(err) {
             if (err) throw err;
-            console.log('Written to pin (on): ' + motorEnable);
+            console.log('Written to pin (on): ' + motor.enablePin);
         });
         setTimeout(function() {
-            motorOff();
-        }, delay);
+            motor.off();
+        }, motor.runTime);
     },
-    off : function(){
-        gpio.write(motorEnable, false, function(err) {
+    off: function(){
+        gpio.write(motor.enablePin, false, function(err) {
             if (err) throw err;
-            console.log('Written to pin (off): ' + motorEnable);
+            console.log('Written to pin (off): ' + motor.enablePin);
         });
         setTimeout(function() {
             closePins();
-        }, delay);
+        }, motor.runTime);
+    },
+    forward: function(){
+        gpio.write(motor.forwardPin, true, function(err) {
+            if (err) throw err;
+            console.log('Written to pin: ' + motor.forwardPin);
+        });
+    },
+    reverse: function(){
+        gpio.write(motor.reversePin, false, function(err) {
+            if (err) throw err;
+            console.log('Written to pin: ' + motor.reversePin);
+        });
     }
 };
+
+function closePins() {
+    gpio.destroy(function() {
+        console.log('All pins unexported');
+        return process.exit(0);
+    });
+}
 
 var serialport = require("serialport");
 var SerialPort = serialport.SerialPort; // localize object constructor
@@ -56,9 +74,9 @@ sp.on("open", function () {
     });
 });
 
-gpio.setup(motorForward, gpio.DIR_OUT, forward);
-gpio.setup(motorReverse, gpio.DIR_OUT, reverse);
-gpio.setup(motorEnable, gpio.DIR_OUT, motor.on);
+gpio.setup(motor.forwardPin, gpio.DIR_OUT, motor.forward);
+gpio.setup(motor.reversePin, gpio.DIR_OUT, motor.reverse);
+gpio.setup(motor.enablePin, gpio.DIR_OUT, motor.on);
 
 http.createServer(function(request, response) {
 
@@ -91,52 +109,3 @@ http.createServer(function(request, response) {
 }).listen(parseInt(port, 10));
 
 console.log("Static file server running at\n  => http://localhost:" + port + "/\nCTRL + C to $shutdown");
-
-function motorOn() {
-    gpio.write(motorEnable, true, function(err) {
-        if (err) throw err;
-        console.log('Written to pin (on): ' + motorEnable);
-    });
-    setTimeout(function() {
-        motorOff();
-    }, delay);
-}
-
-function motorOff() {
-    gpio.write(motorEnable, false, function(err) {
-        if (err) throw err;
-        console.log('Written to pin (off): ' + motorEnable);
-    });
-    setTimeout(function() {
-        closePins();
-    }, delay);
-}
-
-function forward() {
-    gpio.write(motorForward, true, function(err) {
-        if (err) throw err;
-        console.log('Written to pin: ' + motorForward);
-    });
-    //gpio.write(motorReverse, false, function(err) {
-    //    if (err) throw err;
-    //    console.log('Written to pin ' + motorReverse);
-    //});
-}
-
-function reverse() {
-    //gpio.write(motorForward, false, function(err) {
-    //    if (err) throw err;
-    //    console.log('Written to pin: ' + motorForward);
-    //});
-    gpio.write(motorReverse, false, function(err) {
-        if (err) throw err;
-        console.log('Written to pin: ' + motorReverse);
-    });
-}
-
-function closePins() {
-    gpio.destroy(function() {
-        console.log('All pins unexported');
-        return process.exit(0);
-    });
-}
