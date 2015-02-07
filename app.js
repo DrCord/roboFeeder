@@ -42,7 +42,52 @@ http.createServer(function(request, response) {
     gpio.setup(motorReverse, gpio.DIR_OUT, reverse);
     gpio.setup(motorEnable, gpio.DIR_OUT, motorOn);
 
+    function motorOn() {
+        gpio.write(motorEnable, true, function(err) {
+            if (err) throw err;
+            console.log('Written to pin (on): ' + motorEnable);
+        });
+        setTimeout(function() {
+            motorOff();
+        }, delay);
+    }
 
+    function motorOff() {
+        gpio.write(motorEnable, false, function(err) {
+            if (err) throw err;
+            console.log('Written to pin (off): ' + motorEnable);
+        });
+        closePins();
+    }
+
+    function forward() {
+        gpio.write(motorForward, true, function(err) {
+            if (err) throw err;
+            console.log('Written to pin: ' + motorForward);
+        });
+        //gpio.write(motorReverse, false, function(err) {
+        //    if (err) throw err;
+        //    console.log('Written to pin ' + motorReverse);
+        //});
+    }
+
+    function reverse() {
+        //gpio.write(motorForward, false, function(err) {
+        //    if (err) throw err;
+        //    console.log('Written to pin: ' + motorForward);
+        //});
+        gpio.write(motorReverse, false, function(err) {
+            if (err) throw err;
+            console.log('Written to pin: ' + motorReverse);
+        });
+    }
+
+    function closePins() {
+        gpio.destroy(function() {
+            console.log('All pins unexported');
+            return process.exit(0);
+        });
+    }
 
     var uri = url.parse(request.url).pathname
         , filename = path.join(process.cwd(), uri);
@@ -73,50 +118,3 @@ http.createServer(function(request, response) {
 }).listen(parseInt(port, 10));
 
 console.log("Static file server running at\n  => http://localhost:" + port + "/\nCTRL + C to $shutdown");
-
-function motorOn() {
-    gpio.write(motorEnable, true, function(err) {
-        if (err) throw err;
-        console.log('Written to pin (on): ' + motorEnable);
-    });
-    setTimeout(function() {
-        motorOff();
-    }, delay);
-}
-
-function motorOff() {
-    gpio.write(motorEnable, false, function(err) {
-        if (err) throw err;
-        console.log('Written to pin (off): ' + motorEnable);
-    });
-    closePins();
-}
-
-function forward() {
-    gpio.write(motorForward, true, function(err) {
-        if (err) throw err;
-        console.log('Written to pin: ' + motorForward);
-    });
-    //gpio.write(motorReverse, false, function(err) {
-    //    if (err) throw err;
-    //    console.log('Written to pin ' + motorReverse);
-    //});
-}
-
-function reverse() {
-    //gpio.write(motorForward, false, function(err) {
-    //    if (err) throw err;
-    //    console.log('Written to pin: ' + motorForward);
-    //});
-    gpio.write(motorReverse, false, function(err) {
-        if (err) throw err;
-        console.log('Written to pin: ' + motorReverse);
-    });
-}
-
-function closePins() {
-    gpio.destroy(function() {
-        console.log('All pins unexported');
-        return process.exit(0);
-    });
-}
