@@ -1,44 +1,45 @@
+//setup web server
 var http = require("http"),
     url = require("url"),
     path = require("path"),
     fs = require("fs")
 port = process.argv[2] || 8888;
 
-
+// require rpi-gpio so we can use gpio
 var gpio = require('rpi-gpio');
-
+//setup pins for motor
 var motorReverse = 16;
 var motorForward = 18;
 var motorEnable = 22;
+//setup motor run time
+var motorRunTime = 5000;
 
 var delay = 5000;
 
+var serialport = require("serialport");
+var SerialPort = serialport.SerialPort; // localize object constructor
+
+var sp = new SerialPort("/dev/ttyAMA0", {
+    baudrate: 9600,
+    parser: serialport.parsers.raw
+});
+sp.on("open", function () {
+    console.log('open');
+    sp.on('data', function(data) {
+        var buff = new Buffer(data, 'utf8');
+        var encoded_hex = buff.toString('hex');
+        var encoded_int = parseInt(encoded_hex, 16);
+        //console.log('data received: ' + data);
+        console.log('encoded hex data: ' + encoded_hex);
+        console.log('encoded int data: ' + encoded_int);
+    });
+});
+
+gpio.setup(motorForward, gpio.DIR_OUT, forward);
+gpio.setup(motorReverse, gpio.DIR_OUT, reverse);
+gpio.setup(motorEnable, gpio.DIR_OUT, motorOn);
+
 http.createServer(function(request, response) {
-
-    var serialport = require("serialport");
-    var SerialPort = serialport.SerialPort; // localize object constructor
-
-    var sp = new SerialPort("/dev/ttyAMA0", {
-        baudrate: 9600,
-        parser: serialport.parsers.raw
-    });
-    sp.on("open", function () {
-        console.log('open');
-        sp.on('data', function(data) {
-            var buff = new Buffer(data, 'utf8');
-            var encoded_hex = buff.toString('hex');
-            var encoded_int = parseInt(encoded_hex, 16);
-            //console.log('data received: ' + data);
-            console.log('encoded hex data: ' + encoded_hex);
-            console.log('encoded int data: ' + encoded_int);
-        });
-    });
-
-    gpio.setup(motorForward, gpio.DIR_OUT, forward);
-    gpio.setup(motorReverse, gpio.DIR_OUT, reverse);
-    gpio.setup(motorEnable, gpio.DIR_OUT, motorOn);
-
-
 
     var uri = url.parse(request.url).pathname
         , filename = path.join(process.cwd(), uri);
