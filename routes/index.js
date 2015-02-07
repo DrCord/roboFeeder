@@ -1,46 +1,68 @@
 var express = require('express');
 var router = express.Router();
 
+var gpio = require('rpi-gpio');
+
+var motorReverse = 16;
+var motorForward = 18;
+var motorEnable = 22;
+
+var delay = 5000;
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
-  //setup serial port to read RFID
-
-  var gpio = require('rpi-gpio');
-
-  var pin   = 23;
-  var delay = 2000;
-  var count = 0;
-  var max   = 10;
-
-  gpio.on('change', function(channel, value) {
-    console.log('Channel ' + channel + ' value is now ' + value);
-  });
-  gpio.setup(23, gpio.DIR_OUT, off);
-  gpio.setup(24, gpio.DIR_OUT, on);
-  gpio.setup(25, gpio.DIR_OUT, on);
-
-  function on() {
-    if (count >= max) {
-      gpio.destroy(function() {
-        console.log('Closed pins, now exit');
-        return process.exit(0);
-      });
-      return;
-    }
-
-    setTimeout(function() {
-      gpio.write(pin, 1, off);
-      count += 1;
-    }, delay);
-  }
-
-  function off() {
-    setTimeout(function() {
-      gpio.write(pin, 0, on);
-    }, delay);
-  }
-
+  //motor test
+  gpio.setup(motorForward, gpio.DIR_OUT, forward);
+  gpio.setup(motorReverse, gpio.DIR_OUT, reverse);
+  gpio.setup(motorEnable, gpio.DIR_OUT, motorOn);
 });
 
 module.exports = router;
+
+function motorOn() {
+    gpio.write(motorEnable, true, function(err) {
+        if (err) throw err;
+        console.log('Written to pin (on): ' + motorEnable);
+    });
+    setTimeout(function() {
+        motorOff();
+    }, delay);
+}
+
+function motorOff() {
+    gpio.write(motorEnable, false, function(err) {
+        if (err) throw err;
+        console.log('Written to pin (off): ' + motorEnable);
+    });
+    closePins();
+}
+
+function forward() {
+    gpio.write(motorForward, true, function(err) {
+        if (err) throw err;
+        console.log('Written to pin: ' + motorForward);
+    });
+    //gpio.write(motorReverse, false, function(err) {
+    //    if (err) throw err;
+    //    console.log('Written to pin ' + motorReverse);
+    //});
+}
+
+function reverse() {
+    //gpio.write(motorForward, false, function(err) {
+    //    if (err) throw err;
+    //    console.log('Written to pin: ' + motorForward);
+    //});
+    gpio.write(motorReverse, false, function(err) {
+        if (err) throw err;
+        console.log('Written to pin: ' + motorReverse);
+    });
+}
+
+function closePins() {
+    gpio.destroy(function() {
+        console.log('All pins unexported');
+        return process.exit(0);
+    });
+}
