@@ -15,9 +15,8 @@ var SerialPort = serialport.SerialPort; // localize object constructor
 
 var Rfid = {
     allowedTags: [
-        null,
-        02150427,
-        03304786
+        '02150427',
+        '03304786'
     ]
 };
 
@@ -28,6 +27,7 @@ var Motor = {
     enablePin: 22,
     runTime: 5000,
     on: function(){
+        console.log('Motor.on called');
         gpio.write(Motor.enablePin, true, function(err) {
             if (err) throw err;
             console.log('Motor.enablePin ' + Motor.enablePin + ' set HIGH');
@@ -37,6 +37,7 @@ var Motor = {
         }, Motor.runTime);
     },
     off: function(){
+        console.log('Motor.off called')
         gpio.write(Motor.enablePin, false, function(err) {
             if (err) throw err;
             console.log('Motor.enablePin ' + Motor.enablePin + ' set LOW.');
@@ -49,11 +50,9 @@ var Motor = {
             if (err) throw err;
             console.log('Motor.reversePin ' + Motor.reversePin + ' set LOW.');
         });
-        //setTimeout(function() {
-        //    Motor.reverse();
-        //}, Motor.runTime);
     },
     forward: function(){
+        console.log('Motor.forward called');
         Motor.on();
         gpio.write(Motor.forwardPin, true, function(err) {
             if (err) throw err;
@@ -65,6 +64,7 @@ var Motor = {
         });
     },
     reverse: function(){
+        console.log('Motor.reverse called');
         Motor.on();
         gpio.write(Motor.reversePin, true, function(err) {
             if (err) throw err;
@@ -112,6 +112,7 @@ var Serial = {
         console.log('zerofilled code: ', zerofilled_code);
         var codeIndex = null;
         for(var i=0; i < Rfid.allowedTags.length; i++){
+            console.log('Rfid.allowedTags[i]: ', Rfid.allowedTags[i]);
             if(Rfid.allowedTags[i] == zerofilled_code){
                 codeIndex = i;
                 break;
@@ -121,13 +122,13 @@ var Serial = {
         //must use strict equals
         if(codeIndex !== null){
             console.log('tag match');
-            if(codeIndex === 1){
-                //white tag index 1
+            if(codeIndex === 0){
+                //white tag index 0
                 console.log('white tag match: ', code);
                 Motor.forward();
             }
-            else if(codeIndex === 0){
-                //blue tag index 2
+            else if(codeIndex === 1){
+                //blue tag index 1
                 console.log('blue tag match: ', code);
                 Motor.reverse();
             }
