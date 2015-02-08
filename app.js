@@ -8,10 +8,19 @@ port = process.argv[2] || 8888;
 // require rpi-gpio so we can use gpio
 var gpio = require('rpi-gpio');
 var async = require('async');
+//require filesystem
+var fs = require('fs');
 
 //setup serialport
 var serialport = require("serialport");
 var SerialPort = serialport.SerialPort; // localize object constructor
+
+//read allowed tags from file
+fs.readFile('./allowedCodes.js', function (err, data) {
+    if (err) throw err;
+    console.log('fs.readFile(./allowedCodes.js');
+    console.log(data);
+});
 
 var Rfid = {
     allowedTags: [
@@ -28,6 +37,7 @@ var Motor = {
     forwardPin: 18,
     enablePin: 22,
     runTime: 4000,
+    waitTime: 5000,
     running: false,
     on: function(){
         //turns on the motor drive pin
@@ -157,6 +167,7 @@ var Serial = {
 
 //for higher level functions
 var Robofeeder = {
+    options: {},
     open: function(){
         Motor.reverse();
         setTimeout(
@@ -175,7 +186,7 @@ var Robofeeder = {
         Robofeeder.open();
         setTimeout(
             Robofeeder.close,
-            5000
+            Motor.waitTime
         );
     }
 };
