@@ -137,17 +137,18 @@ var Serial = {
         }
         //Toolbox.printDebugMsg('codeIndex: ', codeIndex);
         if(codeIndex !== null){
-            Toolbox.printDebugMsg('tag match');
-            if(codeIndex === 0){
-                //white tag index 0
-                Toolbox.printDebugMsg('white tag match: ', code);
-                Motor.forward();
-            }
-            else if(codeIndex === 1){
-                //blue tag index 1
-                Toolbox.printDebugMsg('blue tag match: ', code);
-                Motor.reverse();
-            }
+            Toolbox.printDebugMsg('tag match ', code);
+            Robofeeder.open();
+            //if(codeIndex === 0){
+            //    //white tag index 0
+            //    Toolbox.printDebugMsg('white tag match: ', code);
+            //    Motor.forward();
+            //}
+            //else if(codeIndex === 1){
+            //    //blue tag index 1
+            //    Toolbox.printDebugMsg('blue tag match: ', code);
+            //    Motor.reverse();
+            //}
         }
     }
 };
@@ -159,6 +160,13 @@ var Robofeeder = {
     },
     close: function(){
         Motor.reverse();
+    },
+    cycle: function(){
+        Robofeeder.open();
+        setTimeout(
+            Robofeeder.close,
+            5000
+        );
     }
 };
 
@@ -186,11 +194,8 @@ async.parallel([
     },
 ], function(err, results){
     Toolbox.printDebugMsg('Motor Pins set up');
-    Robofeeder.open();
-    setTimeout(
-        Robofeeder.close,
-        50000
-    )
+    Toolbox.printDebugMsg('Running initial open/close cycle');
+    Robofeeder.cycle();
 });
 
 http.createServer(function(request, response) {
