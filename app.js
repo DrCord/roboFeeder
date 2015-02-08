@@ -15,6 +15,7 @@ var SerialPort = serialport.SerialPort; // localize object constructor
 
 var Rfid = {
     allowedTags: [
+        null,
         02150427,
         03304786
     ]
@@ -109,27 +110,25 @@ var Serial = {
         console.log('incoming code: ', code);
         zerofilled_code = zeroFill( code, 8 );
         console.log('zerofilled code: ', zerofilled_code);
-        codeIndex = false;
+        var codeIndex = null;
         for(var i=0; i < Rfid.allowedTags.length; i++){
             if(Rfid.allowedTags[i] == zerofilled_code){
                 codeIndex = i;
                 break;
             }
         }
+        console.log('codeIndex: ', codeIndex);
         //must use strict equals
-        if(codeIndex !== false){
+        if(codeIndex !== null){
             console.log('tag match');
-            console.log('codeIndex: ', codeIndex);
-            if(codeIndex === 0){
-                //white tag index 0
-                console.log('white tag match');
-                console.log(code);
+            if(codeIndex === 1){
+                //white tag index 1
+                console.log('white tag match: ', code);
                 Motor.forward();
             }
-            else if(codeIndex === 1){
-                //blue tag index 1
-                console.log('blue tag match');
-                console.log(code);
+            else if(codeIndex === 0){
+                //blue tag index 2
+                console.log('blue tag match: ', code);
                 Motor.reverse();
             }
         }
