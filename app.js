@@ -26,18 +26,23 @@ var Motor = {
     forwardPin: 18,
     enablePin: 22,
     runTime: 5000,
+    running: false,
     on: function(){
         console.log('Motor.on called');
-        gpio.write(Motor.enablePin, true, function(err) {
-            if (err) throw err;
-            console.log('Motor.enablePin ' + Motor.enablePin + ' set HIGH');
-        });
-        setTimeout(function() {
-            Motor.off();
-        }, Motor.runTime);
+        if(!Motor.running){
+            Motor.running = true;
+            gpio.write(Motor.enablePin, true, function(err) {
+                if (err) throw err;
+                console.log('Motor.enablePin ' + Motor.enablePin + ' set HIGH');
+            });
+            setTimeout(function() {
+                Motor.off();
+            }, Motor.runTime);
+        }
     },
     off: function(){
-        console.log('Motor.off called')
+        console.log('Motor.off called');
+        Motor.running = false;
         gpio.write(Motor.enablePin, false, function(err) {
             if (err) throw err;
             console.log('Motor.enablePin ' + Motor.enablePin + ' set LOW.');
@@ -119,7 +124,6 @@ var Serial = {
             }
         }
         console.log('codeIndex: ', codeIndex);
-        //must use strict equals
         if(codeIndex !== null){
             console.log('tag match');
             if(codeIndex === 0){
