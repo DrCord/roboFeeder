@@ -13,8 +13,13 @@ var async = require('async');
 var serialport = require("serialport");
 var SerialPort = serialport.SerialPort; // localize object constructor
 
+//debug true turns on all console.log msgs
+var debug = true;
+
 var Rfid = {
     allowedTags: [
+        //uses strings to preserve leading zeros
+        //TODO read these from a file
         '02150427',
         '03304786'
     ]
@@ -25,15 +30,15 @@ var Motor = {
     reversePin: 16,
     forwardPin: 18,
     enablePin: 22,
-    runTime: 5000,
+    runTime: 3500,
     running: false,
     on: function(){
-        console.log('Motor.on called');
+        print_debug_msg('Motor.on called');
         if(!Motor.running){
             Motor.running = true;
             gpio.write(Motor.enablePin, true, function(err) {
                 if (err) throw err;
-                console.log('Motor.enablePin ' + Motor.enablePin + ' set HIGH');
+                print_debug_msg('Motor.enablePin ' + Motor.enablePin + ' set HIGH');
             });
             setTimeout(function() {
                 Motor.off();
@@ -41,50 +46,50 @@ var Motor = {
         }
     },
     off: function(){
-        console.log('Motor.off called');
+        print_debug_msg('Motor.off called');
         Motor.running = false;
         gpio.write(Motor.enablePin, false, function(err) {
             if (err) throw err;
-            console.log('Motor.enablePin ' + Motor.enablePin + ' set LOW.');
+            print_debug_msg('Motor.enablePin ' + Motor.enablePin + ' set LOW.');
         });
         gpio.write(Motor.forwardPin, false, function(err) {
             if (err) throw err;
-            console.log('Motor.forwardPin ' + Motor.forwardPin + ' set LOW.');
+            print_debug_msg('Motor.forwardPin ' + Motor.forwardPin + ' set LOW.');
         });
         gpio.write(Motor.reversePin, false, function(err) {
             if (err) throw err;
-            console.log('Motor.reversePin ' + Motor.reversePin + ' set LOW.');
+            print_debug_msg('Motor.reversePin ' + Motor.reversePin + ' set LOW.');
         });
     },
     forward: function(){
-        console.log('Motor.forward called');
+        print_debug_msg('Motor.forward called');
         Motor.on();
         gpio.write(Motor.forwardPin, true, function(err) {
             if (err) throw err;
-            console.log('Motor.forwardPin ' + Motor.forwardPin + ' set HIGH.');
+            print_debug_msg('Motor.forwardPin ' + Motor.forwardPin + ' set HIGH.');
         });
         gpio.write(Motor.reversePin, false, function(err) {
             if (err) throw err;
-            console.log('Motor.reversePin ' + Motor.reversePin + ' set LOW.');
+            print_debug_msg('Motor.reversePin ' + Motor.reversePin + ' set LOW.');
         });
     },
     reverse: function(){
-        console.log('Motor.reverse called');
+        print_debug_msg('Motor.reverse called');
         Motor.on();
         gpio.write(Motor.reversePin, true, function(err) {
             if (err) throw err;
-            console.log('Motor.reversePin ' + Motor.reversePin + ' set HIGH');
+            print_debug_msg('Motor.reversePin ' + Motor.reversePin + ' set HIGH');
         });
         gpio.write(Motor.forwardPin, false, function(err) {
             if (err) throw err;
-            console.log('Written to pin: ' + Motor.reversePin + ' set LOW');
+            print_debug_msg('Written to pin: ' + Motor.reversePin + ' set LOW');
         });
     }
 };
 
 function closePins(){
     gpio.destroy(function() {
-        console.log('--- All pins un-exported, gpio closed ---');
+        print_debug_msg('--- All pins un-exported, gpio closed ---');
         return process.exit(0);
     });
 }
@@ -97,6 +102,12 @@ function zeroFill( number, width ){
     return number + ""; // always return a string
 }
 
+function print_debug_msg(msg){
+    if(debug){
+        console.log(msg);
+    }
+}
+
 var Serial = {
     sp: new SerialPort("/dev/ttyAMA0", {
             baudrate: 9600,
@@ -106,34 +117,34 @@ var Serial = {
         var buff = new Buffer(data, 'utf8');
         var encoded_hex = buff.toString('hex');
         var encoded_int = parseInt(encoded_hex, 16);
-        //console.log('data received: ' + data);
-        //console.log('encoded hex data: ' + encoded_hex);
-        //console.log('encoded int data: ' + encoded_int);
+        //print_debug_msg('data received: ' + data);
+        //print_debug_msg('encoded hex data: ' + encoded_hex);
+        //print_debug_msg('encoded int data: ' + encoded_int);
         Serial.checkCode(encoded_int);
     },
     checkCode: function(code){
-        console.log('incoming code: ', code);
+        //print_debug_msg('checkCode - incoming code: ', code);
         zerofilled_code = zeroFill( code, 8 );
-        console.log('zerofilled code: ', zerofilled_code);
+        //print_debug_msg('zerofilled code: ', zerofilled_code);
         var codeIndex = null;
         for(var i=0; i < Rfid.allowedTags.length; i++){
-            console.log('Rfid.allowedTags[i]: ', Rfid.allowedTags[i]);
+            //print_debug_msg('Rfid.allowedTags[i]: ', Rfid.allowedTags[i]);
             if(Rfid.allowedTags[i] == zerofilled_code){
                 codeIndex = i;
                 break;
             }
         }
-        console.log('codeIndex: ', codeIndex);
+        //print_debug_msg('codeIndex: ', codeIndex);
         if(codeIndex !== null){
-            console.log('tag match');
+            print_debug_msg('tag match');
             if(codeIndex === 0){
                 //white tag index 0
-                console.log('white tag match: ', code);
+                print_debug_msg('white tag match: ', code);
                 Motor.forward();
             }
             else if(codeIndex === 1){
                 //blue tag index 1
-                console.log('blue tag match: ', code);
+                print_debug_msg('blue tag match: ', code);
                 Motor.reverse();
             }
         }
@@ -141,7 +152,7 @@ var Serial = {
 };
 
 Serial.sp.on("open", function() {
-    console.log('Serial connection open.');
+    print_debug_msg('Serial connection open.');
     Serial.sp.on('data', function(data) {
         Serial.receiveData(data);
     });
@@ -149,7 +160,7 @@ Serial.sp.on("open", function() {
 
 gpio.on('change', function(channel, value){
     //send monitoring data to server for monitor on site
-    console.log('Channel ' + channel + ' value is now ' + value);
+    print_debug_msg('Channel ' + channel + ' value is now ' + value);
 });
 
 async.parallel([
@@ -163,7 +174,7 @@ async.parallel([
         gpio.setup(Motor.enablePin, gpio.DIR_OUT, callback)
     },
 ], function(err, results){
-    console.log('Motor Pins set up');
+    print_debug_msg('Motor Pins set up');
     Motor.on();
     Motor.forward();
 });
