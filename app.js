@@ -109,16 +109,16 @@ var Serial = {
         console.log('incoming code: ', code);
         zerofilled_code = zeroFill( code, 8 );
         console.log('zerofilled code: ', zerofilled_code);
-        codeIndex = Rfid.allowedTags.indexOf(code);
+        codeIndex = Rfid.allowedTags.indexOf(zerofilled_code);
         if(codeIndex > -1){
             console.log('tag match');
-            if(codeIndex == 0){
+            if(codeIndex === 0){
                 //white tag index 0
                 console.log('white tag match');
                 console.log(code);
                 Motor.forward();
             }
-            else if(codeIndex == 1){
+            else if(codeIndex === 1){
                 //blue tag index 1
                 console.log('blue tag match');
                 console.log(code);
