@@ -69,22 +69,27 @@ var Serial = {
         var buff = new Buffer(data, 'utf8');
         var encoded_hex = buff.toString('hex');
         var encoded_int = parseInt(encoded_hex, 16);
-        //console.log('data received: ' + data);
+        console.log('data received: ' + data);
         console.log('encoded hex data: ' + encoded_hex);
         console.log('encoded int data: ' + encoded_int);
     }
 };
 
 Serial.sp.on("open", function() {
-    console.log('open');
+    console.log('Serial connection open.');
     Serial.sp.on('data', function(data) {
         Serial.receiveData(data);
     });
 });
 
-gpio.setup(Motor.forwardPin, gpio.DIR_OUT, Motor.forward);
+gpio.setup(Motor.forwardPin, gpio.DIR_OUT, Motor.forward/*, Motor.forwardPin*/);
 gpio.setup(Motor.reversePin, gpio.DIR_OUT, Motor.reverse);
 gpio.setup(Motor.enablePin, gpio.DIR_OUT, Motor.on);
+
+gpio.on('change', function(channel, value){
+    //send monitoring data to server for monitor on site
+    console.log('Channel ' + channel + ' value is now ' + value);
+});
 
 http.createServer(function(request, response) {
 
