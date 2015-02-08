@@ -30,15 +30,15 @@ var Motor = {
     reversePin: 16,
     forwardPin: 18,
     enablePin: 22,
-    runTime: 3500,
+    runTime: 4000,
     running: false,
     on: function(){
-        print_debug_msg('Motor.on called');
+        Toolbox.printDebugMsg('Motor.on called');
         if(!Motor.running){
             Motor.running = true;
             gpio.write(Motor.enablePin, true, function(err) {
                 if (err) throw err;
-                print_debug_msg('Motor.enablePin ' + Motor.enablePin + ' set HIGH');
+                Toolbox.printDebugMsg('Motor.enablePin ' + Motor.enablePin + ' set HIGH');
             });
             setTimeout(function() {
                 Motor.off();
@@ -46,67 +46,71 @@ var Motor = {
         }
     },
     off: function(){
-        print_debug_msg('Motor.off called');
+        Toolbox.printDebugMsg('Motor.off called');
         Motor.running = false;
         gpio.write(Motor.enablePin, false, function(err) {
             if (err) throw err;
-            print_debug_msg('Motor.enablePin ' + Motor.enablePin + ' set LOW.');
+            Toolbox.printDebugMsg('Motor.enablePin ' + Motor.enablePin + ' set LOW.');
         });
         gpio.write(Motor.forwardPin, false, function(err) {
             if (err) throw err;
-            print_debug_msg('Motor.forwardPin ' + Motor.forwardPin + ' set LOW.');
+            Toolbox.printDebugMsg('Motor.forwardPin ' + Motor.forwardPin + ' set LOW.');
         });
         gpio.write(Motor.reversePin, false, function(err) {
             if (err) throw err;
-            print_debug_msg('Motor.reversePin ' + Motor.reversePin + ' set LOW.');
+            Toolbox.printDebugMsg('Motor.reversePin ' + Motor.reversePin + ' set LOW.');
         });
     },
     forward: function(){
-        print_debug_msg('Motor.forward called');
+        Toolbox.printDebugMsg('Motor.forward called');
         Motor.on();
         gpio.write(Motor.forwardPin, true, function(err) {
             if (err) throw err;
-            print_debug_msg('Motor.forwardPin ' + Motor.forwardPin + ' set HIGH.');
+            Toolbox.printDebugMsg('Motor.forwardPin ' + Motor.forwardPin + ' set HIGH.');
         });
         gpio.write(Motor.reversePin, false, function(err) {
             if (err) throw err;
-            print_debug_msg('Motor.reversePin ' + Motor.reversePin + ' set LOW.');
+            Toolbox.printDebugMsg('Motor.reversePin ' + Motor.reversePin + ' set LOW.');
         });
     },
     reverse: function(){
-        print_debug_msg('Motor.reverse called');
+        Toolbox.printDebugMsg('Motor.reverse called');
         Motor.on();
         gpio.write(Motor.reversePin, true, function(err) {
             if (err) throw err;
-            print_debug_msg('Motor.reversePin ' + Motor.reversePin + ' set HIGH');
+            Toolbox.printDebugMsg('Motor.reversePin ' + Motor.reversePin + ' set HIGH');
         });
         gpio.write(Motor.forwardPin, false, function(err) {
             if (err) throw err;
-            print_debug_msg('Written to pin: ' + Motor.reversePin + ' set LOW');
+            Toolbox.printDebugMsg('Written to pin: ' + Motor.reversePin + ' set LOW');
         });
     }
 };
 
-function closePins(){
-    gpio.destroy(function() {
-        print_debug_msg('--- All pins un-exported, gpio closed ---');
-        return process.exit(0);
-    });
-}
-
-function zeroFill( number, width ){
-    width -= number.toString().length;
-    if ( width > 0 )    {
-        return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+var Gpio = {
+    closePins: function(){
+        gpio.destroy(function() {
+            Toolbox.printDebugMsg('--- All pins un-exported, gpio closed ---');
+            return process.exit(0);
+        });
     }
-    return number + ""; // always return a string
-}
+};
 
-function print_debug_msg(msg){
-    if(debug){
-        console.log(msg);
+var Toolbox = {
+    debug: true,
+    zeroFill: function(){
+        width -= number.toString().length;
+        if ( width > 0 )    {
+            return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+        }
+        return number + ""; // always return a string
+    },
+    printDebugMsg: function(msg){
+        if(Toolbox.debug){
+            console.log(msg);
+        }
     }
-}
+};
 
 var Serial = {
     sp: new SerialPort("/dev/ttyAMA0", {
@@ -117,34 +121,34 @@ var Serial = {
         var buff = new Buffer(data, 'utf8');
         var encoded_hex = buff.toString('hex');
         var encoded_int = parseInt(encoded_hex, 16);
-        //print_debug_msg('data received: ' + data);
-        //print_debug_msg('encoded hex data: ' + encoded_hex);
-        //print_debug_msg('encoded int data: ' + encoded_int);
+        //Toolbox.printDebugMsg('data received: ' + data);
+        //Toolbox.printDebugMsg('encoded hex data: ' + encoded_hex);
+        //Toolbox.printDebugMsg('encoded int data: ' + encoded_int);
         Serial.checkCode(encoded_int);
     },
     checkCode: function(code){
-        //print_debug_msg('checkCode - incoming code: ', code);
-        zerofilled_code = zeroFill( code, 8 );
-        //print_debug_msg('zerofilled code: ', zerofilled_code);
+        //Toolbox.printDebugMsg('checkCode - incoming code: ', code);
+        zerofilled_code = Toolbox.zeroFill( code, 8 );
+        //Toolbox.printDebugMsg('zerofilled code: ', zerofilled_code);
         var codeIndex = null;
         for(var i=0; i < Rfid.allowedTags.length; i++){
-            //print_debug_msg('Rfid.allowedTags[i]: ', Rfid.allowedTags[i]);
+            //Toolbox.printDebugMsg('Rfid.allowedTags[i]: ', Rfid.allowedTags[i]);
             if(Rfid.allowedTags[i] == zerofilled_code){
                 codeIndex = i;
                 break;
             }
         }
-        //print_debug_msg('codeIndex: ', codeIndex);
+        //Toolbox.printDebugMsg('codeIndex: ', codeIndex);
         if(codeIndex !== null){
-            print_debug_msg('tag match');
+            Toolbox.printDebugMsg('tag match');
             if(codeIndex === 0){
                 //white tag index 0
-                print_debug_msg('white tag match: ', code);
+                Toolbox.printDebugMsg('white tag match: ', code);
                 Motor.forward();
             }
             else if(codeIndex === 1){
                 //blue tag index 1
-                print_debug_msg('blue tag match: ', code);
+                Toolbox.printDebugMsg('blue tag match: ', code);
                 Motor.reverse();
             }
         }
@@ -152,7 +156,7 @@ var Serial = {
 };
 
 Serial.sp.on("open", function() {
-    print_debug_msg('Serial connection open.');
+    Toolbox.printDebugMsg('Serial connection open.');
     Serial.sp.on('data', function(data) {
         Serial.receiveData(data);
     });
@@ -160,7 +164,7 @@ Serial.sp.on("open", function() {
 
 gpio.on('change', function(channel, value){
     //send monitoring data to server for monitor on site
-    print_debug_msg('Channel ' + channel + ' value is now ' + value);
+    Toolbox.printDebugMsg('Channel ' + channel + ' value is now ' + value);
 });
 
 async.parallel([
@@ -174,7 +178,7 @@ async.parallel([
         gpio.setup(Motor.enablePin, gpio.DIR_OUT, callback)
     },
 ], function(err, results){
-    print_debug_msg('Motor Pins set up');
+    Toolbox.printDebugMsg('Motor Pins set up');
     Motor.on();
     Motor.forward();
 });
