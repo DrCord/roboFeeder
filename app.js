@@ -40,9 +40,9 @@ var Motor = {
             if (err) throw err;
             console.log('Written to pin (off): ' + Motor.enablePin);
         });
-        setTimeout(function() {
-            closePins();
-        }, Motor.runTime);
+        //setTimeout(function() {
+        //    Motor.reverse();
+        //}, Motor.runTime);
     },
     forward: function(){
         gpio.write(Motor.forwardPin, true, function(err) {
@@ -52,7 +52,7 @@ var Motor = {
         gpio.write(Motor.reversePin, false, function(err) {
             if (err) throw err;
             console.log('Written to pin: ' + Motor.reversePin);
-        })
+        });
     },
     reverse: function(){
         gpio.write(Motor.reversePin, true, function(err) {
@@ -62,7 +62,7 @@ var Motor = {
         gpio.write(Motor.forwardPin, false, function(err) {
             if (err) throw err;
             console.log('Written to pin: ' + Motor.reversePin);
-        })
+        });
     }
 };
 
@@ -91,25 +91,29 @@ var Serial = {
         var buff = new Buffer(data, 'utf8');
         var encoded_hex = buff.toString('hex');
         var encoded_int = parseInt(encoded_hex, 16);
-        console.log('data received: ' + data);
-        console.log('encoded hex data: ' + encoded_hex);
-        console.log('encoded int data: ' + encoded_int);
+        //console.log('data received: ' + data);
+        //console.log('encoded hex data: ' + encoded_hex);
+        //console.log('encoded int data: ' + encoded_int);
         Serial.checkCode(encoded_int);
     },
     checkCode: function(code){
         console.log('incoming code: ', code);
         zerofilled_code = zeroFill( code, 8 );
-        if(codeIndex = Rfid.allowedTags.indexOf(code) > -1){
+        console.log('zerofilled code: ', zerofilled_code);
+        codeIndex = Rfid.allowedTags.indexOf(code);
+        if(codeIndex > -1){
             console.log('tag match');
             if(codeIndex == 0){
                 //white tag index 0
                 console.log('white tag match');
                 console.log(code);
+                Motor.forward();
             }
             else if(codeIndex == 1){
                 //blue tag index 1
                 console.log('blue tag match');
                 console.log(code);
+                Motor.reverse();
             }
         }
     }
