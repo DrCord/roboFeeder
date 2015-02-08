@@ -33,6 +33,7 @@ var Motor = {
         //turns on the motor drive pin
         //needs to be called with Motor.forward or Motor.reverse to actually run motor
         Toolbox.printDebugMsg('Motor.on called');
+        Toolbox.printDebugMsg('Motor.running: ' + Motor.running);
         if(!Motor.running){
             Motor.running = true;
             gpio.write(Motor.enablePin, true, function(err) {
@@ -44,6 +45,7 @@ var Motor = {
     off: function(){
         //turns all the way off all three pins involved
         Toolbox.printDebugMsg('Motor.off called');
+        Toolbox.printDebugMsg('Motor.running: ' + Motor.running);
         Motor.running = false;
         gpio.write(Motor.enablePin, false, function(err) {
             if (err) throw err;
@@ -137,7 +139,7 @@ var Serial = {
         }
         //Toolbox.printDebugMsg('codeIndex: ', codeIndex);
         if(codeIndex !== null){
-            Toolbox.printDebugMsg('tag match ', code);
+            Toolbox.printDebugMsg('tag match: ' + code);
             Robofeeder.open();
             //if(codeIndex === 0){
             //    //white tag index 0
