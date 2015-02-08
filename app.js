@@ -140,7 +140,7 @@ var Serial = {
         //Toolbox.printDebugMsg('codeIndex: ', codeIndex);
         if(codeIndex !== null){
             Toolbox.printDebugMsg('tag match: ' + code);
-            Robofeeder.open();
+            Robofeeder.cycle();
             //if(codeIndex === 0){
             //    //white tag index 0
             //    Toolbox.printDebugMsg('white tag match: ', code);
