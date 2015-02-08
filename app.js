@@ -112,13 +112,14 @@ var Serial = {
         codeIndex = Rfid.allowedTags.indexOf(zerofilled_code);
         if(codeIndex > -1){
             console.log('tag match');
-            if(codeIndex === 0){
+            console.log('codeIndex: ', codeIndex);
+            if(codeIndex == 0){
                 //white tag index 0
                 console.log('white tag match');
                 console.log(code);
                 Motor.forward();
             }
-            else if(codeIndex === 1){
+            else if(codeIndex == 1){
                 //blue tag index 1
                 console.log('blue tag match');
                 console.log(code);
