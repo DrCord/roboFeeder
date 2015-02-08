@@ -13,13 +13,10 @@ var async = require('async');
 var serialport = require("serialport");
 var SerialPort = serialport.SerialPort; // localize object constructor
 
-//debug true turns on all console.log msgs
-var debug = true;
-
 var Rfid = {
     allowedTags: [
         //uses strings to preserve leading zeros
-        //TODO read these from a file
+        //TODO: read allowed tags from a file
         '02150427',
         '03304786'
     ]
@@ -33,6 +30,8 @@ var Motor = {
     runTime: 4000,
     running: false,
     on: function(){
+        //turns on the motor drive pin
+        //needs to be called with Motor.forward or Motor.reverse to actually run motor
         Toolbox.printDebugMsg('Motor.on called');
         if(!Motor.running){
             Motor.running = true;
@@ -40,12 +39,10 @@ var Motor = {
                 if (err) throw err;
                 Toolbox.printDebugMsg('Motor.enablePin ' + Motor.enablePin + ' set HIGH');
             });
-            setTimeout(function() {
-                Motor.off();
-            }, Motor.runTime);
         }
     },
     off: function(){
+        //turns all the way off all three pins involved
         Toolbox.printDebugMsg('Motor.off called');
         Motor.running = false;
         gpio.write(Motor.enablePin, false, function(err) {
@@ -97,7 +94,7 @@ var Gpio = {
 };
 
 var Toolbox = {
-    debug: true,
+    debug: true, //turns on all debugging console.log messages
     zeroFill: function(number, width){
         width -= number.toString().length;
         if ( width > 0 )    {
@@ -155,6 +152,16 @@ var Serial = {
     }
 };
 
+//for higher level functions
+var Robofeeder = {
+    open: function(){
+        Motor.forward();
+    },
+    close: function(){
+        Motor.reverse();
+    }
+};
+
 Serial.sp.on("open", function() {
     Toolbox.printDebugMsg('Serial connection open.');
     Serial.sp.on('data', function(data) {
@@ -179,8 +186,11 @@ async.parallel([
     },
 ], function(err, results){
     Toolbox.printDebugMsg('Motor Pins set up');
-    Motor.on();
-    Motor.forward();
+    Robofeeder.open();
+    setTimeout(
+        Robofeeder.close,
+        50000
+    )
 });
 
 http.createServer(function(request, response) {
