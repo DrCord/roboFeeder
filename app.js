@@ -156,10 +156,10 @@ var Serial = {
 //for higher level functions
 var Robofeeder = {
     open: function(){
-        Motor.forward();
+        Motor.reverse();
     },
     close: function(){
-        Motor.reverse();
+        Motor.forward();
     },
     cycle: function(){
         Robofeeder.open();
