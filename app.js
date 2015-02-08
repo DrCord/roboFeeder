@@ -157,9 +157,17 @@ var Serial = {
 var Robofeeder = {
     open: function(){
         Motor.reverse();
+        setTimeout(
+            Robofeeder.off,
+            Motor.runTime
+        );
     },
     close: function(){
         Motor.forward();
+        setTimeout(
+            Robofeeder.off,
+            Motor.runTime
+        );
     },
     cycle: function(){
         Robofeeder.open();
