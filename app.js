@@ -98,7 +98,7 @@ var Gpio = {
 
 var Toolbox = {
     debug: true,
-    zeroFill: function(){
+    zeroFill: function(number, width){
         width -= number.toString().length;
         if ( width > 0 )    {
             return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
@@ -128,7 +128,7 @@ var Serial = {
     },
     checkCode: function(code){
         //Toolbox.printDebugMsg('checkCode - incoming code: ', code);
-        zerofilled_code = Toolbox.zeroFill( code, 8 );
+        zerofilled_code = Toolbox.zeroFill(code, 8);
         //Toolbox.printDebugMsg('zerofilled code: ', zerofilled_code);
         var codeIndex = null;
         for(var i=0; i < Rfid.allowedTags.length; i++){
