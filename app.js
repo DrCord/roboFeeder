@@ -29,7 +29,7 @@ var Motor = {
     on: function(){
         gpio.write(Motor.enablePin, true, function(err) {
             if (err) throw err;
-            console.log('Written to pin (on): ' + Motor.enablePin);
+            console.log('Motor.enablePin ' + Motor.enablePin + ' set HIGH');
         });
         setTimeout(function() {
             Motor.off();
@@ -38,45 +38,54 @@ var Motor = {
     off: function(){
         gpio.write(Motor.enablePin, false, function(err) {
             if (err) throw err;
-            console.log('Written to pin (off): ' + Motor.enablePin);
+            console.log('Motor.enablePin ' + Motor.enablePin + ' set LOW.');
+        });
+        gpio.write(Motor.forwardPin, false, function(err) {
+            if (err) throw err;
+            console.log('Motor.forwardPin ' + Motor.forwardPin + ' set LOW.');
+        });
+        gpio.write(Motor.reversePin, false, function(err) {
+            if (err) throw err;
+            console.log('Motor.reversePin ' + Motor.reversePin + ' set LOW.');
         });
         //setTimeout(function() {
         //    Motor.reverse();
         //}, Motor.runTime);
     },
     forward: function(){
+        Motor.on();
         gpio.write(Motor.forwardPin, true, function(err) {
             if (err) throw err;
-            console.log('Written to pin: ' + Motor.forwardPin);
+            console.log('Motor.forwardPin ' + Motor.forwardPin + ' set HIGH.');
         });
         gpio.write(Motor.reversePin, false, function(err) {
             if (err) throw err;
-            console.log('Written to pin: ' + Motor.reversePin);
+            console.log('Motor.reversePin ' + Motor.reversePin + ' set LOW.');
         });
     },
     reverse: function(){
+        Motor.on();
         gpio.write(Motor.reversePin, true, function(err) {
             if (err) throw err;
-            console.log('Written to pin: ' + Motor.reversePin);
+            console.log('Motor.reversePin ' + Motor.reversePin + ' set HIGH');
         });
         gpio.write(Motor.forwardPin, false, function(err) {
             if (err) throw err;
-            console.log('Written to pin: ' + Motor.reversePin);
+            console.log('Written to pin: ' + Motor.reversePin + ' set LOW');
         });
     }
 };
 
-function closePins() {
+function closePins(){
     gpio.destroy(function() {
-        console.log('--- All pins unexported, gpio closed ---');
+        console.log('--- All pins un-exported, gpio closed ---');
         return process.exit(0);
     });
 }
 
 function zeroFill( number, width ){
     width -= number.toString().length;
-    if ( width > 0 )
-    {
+    if ( width > 0 )    {
         return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
     }
     return number + ""; // always return a string
@@ -132,16 +141,16 @@ gpio.on('change', function(channel, value){
 });
 
 async.parallel([
-    function(callback) {
+    function(callback){
         gpio.setup(Motor.forwardPin, gpio.DIR_OUT, callback)
     },
-    function(callback) {
+    function(callback){
         gpio.setup(Motor.reversePin, gpio.DIR_OUT, callback)
     },
-    function(callback) {
+    function(callback){
         gpio.setup(Motor.enablePin, gpio.DIR_OUT, callback)
     },
-], function(err, results) {
+], function(err, results){
     console.log('Motor Pins set up');
     Motor.on();
     Motor.forward();
