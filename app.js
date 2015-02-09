@@ -15,6 +15,16 @@ var fs = require('fs');
 var serialport = require("serialport");
 var SerialPort = serialport.SerialPort; // localize object constructor
 
+var File = {
+    readOptions : {
+        encoding: 'utf8'
+    },
+    watchOptions: {
+        persistent: true
+    },
+    applicationPath: '/home/pi/roboFeeder'
+};
+
 var Rfid = {
     allowedTagsFileName: 'allowedTags.xml',
     //uses strings to preserve leading zeros
@@ -23,35 +33,41 @@ var Rfid = {
     parseXMLFileToArray: function(data, xmlTag){
         str1 = '<' + xmlTag + '>' + '.*?' + '</' + xmlTag + '>';
         var regex = new RegExp(str1, "gi");
-        matches = data.match(regex);
+        var matches = data.match(regex);
         if(matches.length){
             xmlTag = '</?' + xmlTag + '>';
             var regex = new RegExp(xmlTag, "gi");
-            for(var i=0; i<matches.length; i++){
+            for(var i = 0; i < matches.length; i++){
                 matches[i] = matches[i].replace(regex, '');
             }
             return matches;
         }
         return false;
+    },
+    getAllowedTags: function(){
+        fs.readFile(Rfid.allowedTagsFileName, File.readOptions, function (err, data) {
+            if (err) throw err;
+            console.log('fs.readFile(./' + Rfid.allowedTagsFileName);
+            console.log(data);
+            console.log(Rfid.parseXMLFileToArray(data, 'code'));
+            Rfid.allowedTags = Rfid.parseXMLFileToArray(data, 'code');
+            console.log('Rfid.allowedTags tags:');
+            console.log(Rfid.allowedTags);
+        });
+    },
+    watchAllowedTagsFile: function(){
+        fs.watch(Rfid.allowedTagsFileName, File.watchOptions, function(event, filename) {
+            Rfid.allowedTags = Rfid.parseXMLFileToArray(data, 'code');
+            console.log(event + " event occurred on " + filename);
+        });
+    },
+    init: function(){
+        //read allowed tags from file
+        Rfid.getAllowedTags();
+        //setup watch on file to get changes
+        Rfid.watchAllowedTagsFile();
     }
 };
-var File = {
-    readOptions : {
-        encoding: 'utf8'
-    },
-    applicationPath: '/home/pi/roboFeeder'
-};
-
-//read allowed tags from file
-fs.readFile(Rfid.allowedTagsFileName, File.readOptions, function (err, data) {
-    if (err) throw err;
-    console.log('fs.readFile(./' + Rfid.allowedTagsFileName);
-    console.log(data);
-    console.log(Rfid.parseXMLFileToArray(data, 'code'));
-    Rfid.allowedTags = Rfid.parseXMLFileToArray(data, 'code');
-    console.log('Rfid.allowedTags tags:');
-    console.log(Rfid.allowedTags);
-});
 
 //setup pins vars and motor functions
 var Motor = {
@@ -115,15 +131,44 @@ var Motor = {
             if (err) throw err;
             Toolbox.printDebugMsg('Written to pin: ' + Motor.reversePin + ' set LOW');
         });
+    },
+    init: function(){
+        async.parallel([
+            function(callback){
+                gpio.setup(Motor.forwardPin, gpio.DIR_OUT, callback)
+            },
+            function(callback){
+                gpio.setup(Motor.reversePin, gpio.DIR_OUT, callback)
+            },
+            function(callback){
+                gpio.setup(Motor.enablePin, gpio.DIR_OUT, callback)
+            },
+        ], function(err, results){
+            Toolbox.printDebugMsg('Motor Pins set up');
+            Toolbox.printDebugMsg('Running initial open/close cycle');
+            Robofeeder.cycle();
+        });
     }
 };
 
 var Gpio = {
+    bindChange: function(){
+        gpio.on('change', function(channel, value){
+            //send monitoring data to server for monitor on site
+            Toolbox.printDebugMsg('Channel ' + channel + ' value is now ' + value);
+        });
+    },
     closePins: function(){
         gpio.destroy(function() {
             Toolbox.printDebugMsg('--- All pins un-exported, gpio closed ---');
             return process.exit(0);
         });
+    },
+    init: function(){
+        //bind change of GPIO pins if debugging
+        if(Toolbox.debug){
+            Gpio.bindChange();
+        }
     }
 };
 
@@ -145,9 +190,9 @@ var Toolbox = {
 
 var Serial = {
     sp: new SerialPort("/dev/ttyAMA0", {
-            baudrate: 9600,
-            parser: serialport.parsers.raw
-        }),
+        baudrate: 9600,
+        parser: serialport.parsers.raw
+    }),
     receiveData: function(data){
         var buff = new Buffer(data, 'utf8');
         var encoded_hex = buff.toString('hex');
@@ -184,9 +229,16 @@ var Serial = {
             //    Motor.reverse();
             //}
         }
+    },
+    init: function(){
+        Serial.sp.on("open", function() {
+            Toolbox.printDebugMsg('Serial connection open.');
+            Serial.sp.on('data', function(data) {
+                Serial.receiveData(data);
+            });
+        });
     }
 };
-
 //for higher level functions
 var Robofeeder = {
     options: {
@@ -215,33 +267,11 @@ var Robofeeder = {
     }
 };
 
-Serial.sp.on("open", function() {
-    Toolbox.printDebugMsg('Serial connection open.');
-    Serial.sp.on('data', function(data) {
-        Serial.receiveData(data);
-    });
-});
-
-gpio.on('change', function(channel, value){
-    //send monitoring data to server for monitor on site
-    Toolbox.printDebugMsg('Channel ' + channel + ' value is now ' + value);
-});
-
-async.parallel([
-    function(callback){
-        gpio.setup(Motor.forwardPin, gpio.DIR_OUT, callback)
-    },
-    function(callback){
-        gpio.setup(Motor.reversePin, gpio.DIR_OUT, callback)
-    },
-    function(callback){
-        gpio.setup(Motor.enablePin, gpio.DIR_OUT, callback)
-    },
-], function(err, results){
-    Toolbox.printDebugMsg('Motor Pins set up');
-    Toolbox.printDebugMsg('Running initial open/close cycle');
-    Robofeeder.cycle();
-});
+// -- DO STUFF --
+Rfid.init();
+Serial.init();
+Gpio.init()
+Motor.init();
 
 http.createServer(function(request, response) {
 
