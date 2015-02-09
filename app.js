@@ -180,7 +180,7 @@ var Toolbox = {
     }
 };
 var Serial = {
-    sp: new Serial.SerialPort("/dev/ttyAMA0", {
+    sp: new SerialPort("/dev/ttyAMA0", {
         baudrate: 9600,
         parser: serialport.parsers.raw
     }),
