@@ -16,6 +16,9 @@ var serialport = require("serialport");
 var SerialPort = serialport.SerialPort; // localize object constructor
 
 //read allowed tags from file
+readOptions = {
+    encoding: 'utf-8'
+};
 fs.readFile('./allowedCodes.js', function (err, data) {
     if (err) throw err;
     console.log('fs.readFile(./allowedCodes.js');
