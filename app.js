@@ -48,6 +48,9 @@ fs.readFile(Rfid.allowedTagsFileName, File.readOptions, function (err, data) {
     console.log('fs.readFile(./' + Rfid.allowedTagsFileName);
     console.log(data);
     console.log(Rfid.parseXMLFileToArray(data, 'code'));
+    Rfid.allowedTags = Rfid.parseXMLFileToArray(data, 'code');
+    console.log('Rfid.allowedTags tags:');
+    console.log(Rfid.allowedTags);
 });
 
 //setup pins vars and motor functions
