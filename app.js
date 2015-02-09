@@ -20,11 +20,19 @@ var Rfid = {
     //uses strings to preserve leading zeros
     //TODO: read allowed tags from a file
     allowedTags: [],
-    parseXMLFile: function(data, xmlTag){
+    parseXMLFileToArray: function(data, xmlTag){
         str1 = '<' + xmlTag + '>' + '.*?' + '</' + xmlTag + '>';
         var regex = new RegExp(str1, "gi");
         matches = data.match(regex);
-        return matches;
+        if(matches.length){
+            xmlTag = '</?' + xmlTag + '>';
+            var regex = new RegExp(xmlTag, "gi");
+            for(var i=0; i<matches.length; i++){
+                matches[i].replace(regex, '');
+            }
+            return matches;
+        }
+        return false;
     }
 };
 var File = {
@@ -39,7 +47,7 @@ fs.readFile(Rfid.allowedTagsFileName, File.readOptions, function (err, data) {
     if (err) throw err;
     console.log('fs.readFile(./' + Rfid.allowedTagsFileName);
     console.log(data);
-    console.log(Rfid.parseXMLFile(data, 'code'));
+    console.log(Rfid.parseXMLFileToArray(data, 'code'));
 });
 
 //setup pins vars and motor functions
