@@ -26,7 +26,7 @@ var Rfid = {
 };
 var File = {
     readOptions : {
-        encoding: 'xml'
+        encoding: 'utf8'
     },
     applicationPath: '/home/pi/roboFeeder'
 };
