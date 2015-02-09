@@ -28,7 +28,7 @@ var Rfid = {
             xmlTag = '</?' + xmlTag + '>';
             var regex = new RegExp(xmlTag, "gi");
             for(var i=0; i<matches.length; i++){
-                matches[i].replace(regex, '');
+                matches[i] = matches[i].replace(regex, '');
             }
             return matches;
         }
