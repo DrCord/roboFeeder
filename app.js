@@ -10,6 +10,8 @@ var gpio = require('rpi-gpio');
 var async = require('async');
 //setup serialport
 var serialport = require("serialport");
+// localize object constructor
+var SerialPort = serialport.SerialPort;
 //setup object for each part of application
 var File = {
     readOptions : {
@@ -178,7 +180,6 @@ var Toolbox = {
     }
 };
 var Serial = {
-    SerialPort: serialport.SerialPort, // localize object constructor
     sp: new Serial.SerialPort("/dev/ttyAMA0", {
         baudrate: 9600,
         parser: serialport.parsers.raw
