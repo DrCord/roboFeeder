@@ -21,7 +21,8 @@ var Rfid = {
     //TODO: read allowed tags from a file
     allowedTags: [],
     parseXMLFile: function(data, xmlTag){
-        regex = '/' + '<' + xmlTag + '>' + '.*?' + '</' + xmlTag + '>' + '/i';
+        str1 = '<' + xmlTag + '>' + '.*?' + '</' + xmlTag + '>';
+        var regex = new RegExp(str1, "gi");
         matches = data.match(regex);
         return matches;
     }
@@ -31,6 +32,12 @@ var File = {
         encoding: 'utf8'
     },
     applicationPath: '/home/pi/roboFeeder'
+};
+
+var  RegExp = {
+    quote: function(str) {
+        return str.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+    }
 };
 //read allowed tags from file
 fs.readFile(Rfid.allowedTagsFileName, File.readOptions, function (err, data) {
