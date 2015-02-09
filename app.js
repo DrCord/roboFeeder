@@ -34,11 +34,6 @@ var File = {
     applicationPath: '/home/pi/roboFeeder'
 };
 
-var  RegExp = {
-    quote: function(str) {
-        return str.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
-    }
-};
 //read allowed tags from file
 fs.readFile(Rfid.allowedTagsFileName, File.readOptions, function (err, data) {
     if (err) throw err;
