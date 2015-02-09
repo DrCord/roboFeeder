@@ -20,8 +20,10 @@ var Rfid = {
     //uses strings to preserve leading zeros
     //TODO: read allowed tags from a file
     allowedTags: [],
-    parseAllowedTagFile: function(){
-
+    parseXMLFile: function(data, xmlTag){
+        regex = '/' + '<' + xmlTag + '>' + '.*?' + '</' + xmlTag + '>' + '/i';
+        matches = data.match(regex);
+        return matches;
     }
 };
 var File = {
@@ -35,6 +37,7 @@ fs.readFile(Rfid.allowedTagsFileName, File.readOptions, function (err, data) {
     if (err) throw err;
     console.log('fs.readFile(./' + Rfid.allowedTagsFileName);
     console.log(data);
+    console.log(Rfid.parseXMLFile(data, 'code'));
 });
 
 //setup pins vars and motor functions
@@ -173,7 +176,9 @@ var Serial = {
 
 //for higher level functions
 var Robofeeder = {
-    options: {},
+    options: {
+
+    },
     open: function(){
         Motor.reverse();
         setTimeout(
