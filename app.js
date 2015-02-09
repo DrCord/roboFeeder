@@ -15,24 +15,27 @@ var fs = require('fs');
 var serialport = require("serialport");
 var SerialPort = serialport.SerialPort; // localize object constructor
 
-//read allowed tags from file
-readOptions = {
-    encoding: 'utf-8'
+var Rfid = {
+    allowedTagsFileName: 'allowedTags.xml',
+    //uses strings to preserve leading zeros
+    //TODO: read allowed tags from a file
+    allowedTags: [],
+    parseAllowedTagFile: function(){
+
+    }
 };
-fs.readFile('./allowedCodes.js', function (err, data) {
+var File = {
+    readOptions : {
+        encoding: 'xml'
+    },
+    applicationPath: '/home/pi/roboFeeder'
+};
+//read allowed tags from file
+fs.readFile(Rfid.allowedTagsFileName, File.readOptions, function (err, data) {
     if (err) throw err;
-    console.log('fs.readFile(./allowedCodes.js');
+    console.log('fs.readFile(./' + Rfid.allowedTagsFileName);
     console.log(data);
 });
-
-var Rfid = {
-    allowedTags: [
-        //uses strings to preserve leading zeros
-        //TODO: read allowed tags from a file
-        '02150427',
-        '03304786'
-    ]
-};
 
 //setup pins vars and motor functions
 var Motor = {
