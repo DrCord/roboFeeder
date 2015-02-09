@@ -1,20 +1,16 @@
-//setup web server
+//setup node web server
 var http = require("http"),
     url = require("url"),
     path = require("path"),
     fs = require("fs")
 port = process.argv[2] || 8888;
-
-// require rpi-gpio so we can use gpio
+// allow use of gpio - https://www.npmjs.com/package/rpi-gpio
 var gpio = require('rpi-gpio');
+//allow better formatting for asynchronous calls - https://github.com/caolan/async
 var async = require('async');
-//require filesystem
-var fs = require('fs');
-
 //setup serialport
 var serialport = require("serialport");
-var SerialPort = serialport.SerialPort; // localize object constructor
-
+//setup object for each part of application
 var File = {
     readOptions : {
         encoding: 'utf8'
@@ -24,11 +20,9 @@ var File = {
     },
     applicationPath: '/home/pi/roboFeeder'
 };
-
 var Rfid = {
     allowedTagsFileName: 'allowedTags.xml',
-    //uses strings to preserve leading zeros
-    //TODO: read allowed tags from a file
+    //allowedTags uses strings to preserve leading zeros
     allowedTags: [],
     parseXMLFileToArray: function(data, xmlTag){
         str1 = '<' + xmlTag + '>' + '.*?' + '</' + xmlTag + '>';
@@ -68,8 +62,6 @@ var Rfid = {
         Rfid.watchAllowedTagsFile();
     }
 };
-
-//setup pins vars and motor functions
 var Motor = {
     reversePin: 16,
     forwardPin: 18,
@@ -146,11 +138,10 @@ var Motor = {
         ], function(err, results){
             Toolbox.printDebugMsg('Motor Pins set up');
             Toolbox.printDebugMsg('Running initial open/close cycle');
-            Robofeeder.cycle();
+            RoboFeeder.cycle();
         });
     }
 };
-
 var Gpio = {
     bindChange: function(){
         gpio.on('change', function(channel, value){
@@ -171,7 +162,6 @@ var Gpio = {
         }
     }
 };
-
 var Toolbox = {
     debug: true, //turns on all debugging console.log messages
     zeroFill: function(number, width){
@@ -187,9 +177,9 @@ var Toolbox = {
         }
     }
 };
-
 var Serial = {
-    sp: new SerialPort("/dev/ttyAMA0", {
+    SerialPort: serialport.SerialPort, // localize object constructor
+    sp: new Serial.SerialPort("/dev/ttyAMA0", {
         baudrate: 9600,
         parser: serialport.parsers.raw
     }),
@@ -217,7 +207,7 @@ var Serial = {
         //Toolbox.printDebugMsg('codeIndex: ', codeIndex);
         if(codeIndex !== null){
             Toolbox.printDebugMsg('tag match: ' + code);
-            Robofeeder.cycle();
+            RoboFeeder.cycle();
             //if(codeIndex === 0){
             //    //white tag index 0
             //    Toolbox.printDebugMsg('white tag match: ', code);
@@ -239,8 +229,8 @@ var Serial = {
         });
     }
 };
-//for higher level functions
-var Robofeeder = {
+var RoboFeeder = {
+    //for higher level functions
     options: {
 
     },
@@ -259,48 +249,54 @@ var Robofeeder = {
         );
     },
     cycle: function(){
-        Robofeeder.open();
+        RoboFeeder.open();
         setTimeout(
-            Robofeeder.close,
+            RoboFeeder.close,
             Motor.waitTime
         );
+    },
+    init: function(){
+        Rfid.init();
+        Serial.init();
+        Gpio.init();
+        Motor.init();
+        WebServer.create();
+    }
+};
+var WebServer = {
+    create: function(){
+        http.createServer(function(request, response) {
+
+            var uri = url.parse(request.url).pathname
+                , filename = path.join(process.cwd(), uri);
+
+            path.exists(filename, function(exists) {
+                if(!exists) {
+                    response.writeHead(404, {"Content-Type": "text/plain"});
+                    response.write("404 Not Found\n");
+                    response.end();
+                    return;
+                }
+
+                if (fs.statSync(filename).isDirectory()) filename += 'index.html';
+
+                fs.readFile(filename, "binary", function(err, file) {
+                    if(err) {
+                        response.writeHead(500, {"Content-Type": "text/plain"});
+                        response.write(err + "\n");
+                        response.end();
+                        return;
+                    }
+
+                    response.writeHead(200);
+                    response.write(file, "binary");
+                    response.end();
+                });
+            });
+        }).listen(parseInt(port, 10));
+        console.log("Static file server running at\n  => http://localhost:" + port + "/\nCTRL + C to $shutdown");
     }
 };
 
 // -- DO STUFF --
-Rfid.init();
-Serial.init();
-Gpio.init()
-Motor.init();
-
-http.createServer(function(request, response) {
-
-    var uri = url.parse(request.url).pathname
-        , filename = path.join(process.cwd(), uri);
-
-    path.exists(filename, function(exists) {
-        if(!exists) {
-            response.writeHead(404, {"Content-Type": "text/plain"});
-            response.write("404 Not Found\n");
-            response.end();
-            return;
-        }
-
-        if (fs.statSync(filename).isDirectory()) filename += 'index.html';
-
-        fs.readFile(filename, "binary", function(err, file) {
-            if(err) {
-                response.writeHead(500, {"Content-Type": "text/plain"});
-                response.write(err + "\n");
-                response.end();
-                return;
-            }
-
-            response.writeHead(200);
-            response.write(file, "binary");
-            response.end();
-        });
-    });
-}).listen(parseInt(port, 10));
-
-console.log("Static file server running at\n  => http://localhost:" + port + "/\nCTRL + C to $shutdown");
+RoboFeeder.init();
