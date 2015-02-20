@@ -230,10 +230,22 @@ var Serial = {
         });
     }
 };
+var Pir = {
+    // Passive InfraRed Sensor
+    init: function(){
+        // TODO - waiting on sensor in mail
+    }
+};
+var Output = {
+    // Status indication LEDs, etc.
+    init: function(){
+        // TODO
+    }
+};
 var RoboFeeder = {
     //for higher level functions
     options: {
-
+        // TODO - expose configuration options to web page
     },
     open: function(){
         Motor.reverse();
@@ -255,6 +267,9 @@ var RoboFeeder = {
             RoboFeeder.close,
             Motor.waitTime
         );
+    },
+    loadOptions: function(){
+
     },
     init: function(){
         Rfid.init();
@@ -295,7 +310,10 @@ var WebServer = {
                 });
             });
         }).listen(parseInt(port, 10));
-        console.log("Static file server running at\n  => http://localhost:" + port + "/\nCTRL + C to $shutdown");
+        console.log("File server running at\n  => http://localhost:" + port + "/\nCTRL + C to $shutdown");
+    },
+    displaySettings: function(){
+
     }
 };
 
