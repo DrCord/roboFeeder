@@ -138,7 +138,7 @@ var Motor = {
                 gpio.setup(Motor.enablePin, gpio.DIR_OUT, callback)
             },
         ], function(err, results){
-            Toolbox.printDebugMsg('Motor Pins set up');
+            Toolbox.printDebugMsg('Motor Pins setup');
             Toolbox.printDebugMsg('Running initial open/close cycle');
             RoboFeeder.cycle();
         });
@@ -232,8 +232,18 @@ var Serial = {
 };
 var Pir = {
     // Passive InfraRed Sensor
+    sensorPin: 40,
     init: function(){
-        // TODO - waiting on sensor in mail
+        async.parallel([
+            function(callback){
+                gpio.setup(Pir.sensorPin, gpio.DIR_IN, callback)
+            },
+        ], function(err, results){
+            Toolbox.printDebugMsg('PIR Pin setup');
+            gpio.read(Pir.sensorPin, function(err, value) {
+                console.log('The Pir value is ' + value);
+            });
+        });
     }
 };
 var Output = {
