@@ -232,16 +232,24 @@ var Serial = {
 };
 var Pir = {
     // Passive InfraRed Sensor
+    enablePin: 36,
     sensorPin: 40,
     init: function(){
         async.parallel([
             function(callback){
+                gpio.setup(Pir.enablePin, gpio.DIR_OUT, callback)
+            },
+            function(callback){
                 gpio.setup(Pir.sensorPin, gpio.DIR_IN, callback)
             },
         ], function(err, results){
-            Toolbox.printDebugMsg('PIR Pin setup');
+            Toolbox.printDebugMsg('PIR Pins setup');
+            gpio.write(Pir.enablePin, true, function(err) {
+                if (err) throw err;
+                Toolbox.printDebugMsg('Pir.enablePin ' + Pir.enablePin + ' set HIGH');
+            });
             gpio.read(Pir.sensorPin, function(err, value) {
-                console.log('The Pir value is ' + value);
+                console.log('The Pir sensor pin value is ' + value);
             });
         });
     }
@@ -286,6 +294,7 @@ var RoboFeeder = {
         Serial.init();
         Gpio.init();
         Motor.init();
+        Pir.init();
         WebServer.create();
     }
 };
