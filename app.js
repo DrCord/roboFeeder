@@ -222,7 +222,7 @@ var Serial = {
         }
     },
     init: function(){
-        Serial.sp.on("open", function() {
+        Serial.sp.on('open', function() {
             Toolbox.printDebugMsg('Serial connection open.');
             Serial.sp.on('data', function(data) {
                 Serial.receiveData(data);
@@ -232,8 +232,8 @@ var Serial = {
 };
 var Pir = {
     // Passive InfraRed Sensor
-    enablePin: 36,
-    sensorPin: 40,
+    enablePin: 11,
+    sensorPin: 12,
     init: function(){
         async.parallel([
             function(callback){
@@ -244,14 +244,57 @@ var Pir = {
             },
         ], function(err, results){
             Toolbox.printDebugMsg('PIR Pins setup');
-            gpio.write(Pir.enablePin, true, function(err) {
-                if (err) throw err;
-                Toolbox.printDebugMsg('Pir.enablePin ' + Pir.enablePin + ' set HIGH');
-            });
-            gpio.read(Pir.sensorPin, function(err, value) {
-                console.log('The Pir sensor pin value is ' + value);
-            });
+            Pir.enable();
+            Pir.read();
+            Pir.disable();
+            Toolbox.printDebugMsg('PIR tested');
         });
+    },
+    enable: function(){
+        gpio.write(Pir.enablePin, true, function(err) {
+            if (err) throw err;
+            Toolbox.printDebugMsg('Pir.enablePin ' + Pir.enablePin + ' set HIGH');
+        });
+    },
+    disable: function(){
+        gpio.write(Pir.enablePin, false, function(err) {
+            if (err) throw err;
+            Toolbox.printDebugMsg('Pir.enablePin ' + Pir.enablePin + ' set LOW');
+        });
+    },
+    read: function(){
+        gpio.read(Pir.sensorPin, function(err, value) {
+            console.log('The Pir sensor pin value is ' + value);
+            return value;
+        });
+    },
+    monitor: function(){
+        Pir.enable();
+        var ee = new process.EventEmitter(),
+            pinState;
+
+        ee.on('stateChange', function(previousValue, value){
+            console.log('PIR sensor pin state changed from', previousValue, 'to', value);
+        });
+
+        Pir.interval = setInterval(function(){
+            gpio.read(Pir.sensorPin, function(err, value) {
+                if(err){
+                    ee.emit('error', err);
+                }
+                else{
+                    if(pinState !== value){
+                        var previousState = pinState;
+                        pinState = value;
+                        ee.emit('stateChange', previousState, value);
+                    }
+                }
+            });
+        }, 50); // check button state every 50ms
+    },
+    monitorEnd: function(){
+        Pir.disable();
+        clearInterval(Pir.interval);
     }
 };
 var Output = {
@@ -264,13 +307,18 @@ var RoboFeeder = {
     //for higher level functions
     options: {
         // TODO - expose configuration options to web page
+        openTime: (10 * 1000) // minimum open time in milliseconds
     },
     open: function(){
         Motor.reverse();
         setTimeout(
-            Motor.off,
+            RoboFeeder.openCallback,
             Motor.runTime
         );
+    },
+    openCallback: function(){
+        Motor.off();
+        Pir.monitor();
     },
     close: function(){
         Motor.forward();
@@ -287,9 +335,10 @@ var RoboFeeder = {
         );
     },
     loadOptions: function(){
-
+        // TODO
     },
     init: function(){
+        RoboFeeder.loadOptions();
         Rfid.init();
         Serial.init();
         Gpio.init();
