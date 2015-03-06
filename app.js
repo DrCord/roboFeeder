@@ -419,6 +419,7 @@ var RoboFeeder = {
         Gpio.init();
         Motor.init();
         Pir.init();
+        Output.init();
         WebServer.create();
     }
 };
