@@ -26,6 +26,8 @@ var Rfid = {
     allowedTagsFileName: 'allowedTags.xml',
     //allowedTags uses strings to preserve leading zeros
     allowedTags: [],
+    threshold: (10 * 1000),
+    lastTrigger: null,
     parseXMLFileToArray: function(data, xmlTag){
         str1 = '<' + xmlTag + '>' + '.*?' + '</' + xmlTag + '>';
         var regex = new RegExp(str1, "gi");
@@ -57,11 +59,17 @@ var Rfid = {
             console.log(event + " event occurred on " + filename);
         });
     },
+    setLastTrigger: function(){
+        var date = new Date();
+        var unix_secs = date.getTime();
+        Rfid.lastTrigger = unix_secs;
+    },
     init: function(){
         //read allowed tags from file
         Rfid.getAllowedTags();
         //setup watch on file to get changes
         Rfid.watchAllowedTagsFile();
+        RoboFeeder.status.rfid = true;
     }
 };
 var Motor = {
@@ -139,8 +147,9 @@ var Motor = {
             },
         ], function(err, results){
             Toolbox.printDebugMsg('Motor Pins setup');
-            Toolbox.printDebugMsg('Running initial open/close cycle');
-            RoboFeeder.cycle();
+            Toolbox.printDebugMsg('Running initial open/close cycle without enabling PIR monitoring');
+            RoboFeeder.cycle(false);
+            RoboFeeder.status.motor = true;
         });
     }
 };
@@ -191,9 +200,9 @@ var Serial = {
         //Toolbox.printDebugMsg('data received: ' + data);
         //Toolbox.printDebugMsg('encoded hex data: ' + encoded_hex);
         //Toolbox.printDebugMsg('encoded int data: ' + encoded_int);
-        Serial.checkCode(encoded_int);
+        Serial.checkCode(encoded_int, RoboFeeder.status.open);
     },
-    checkCode: function(code){
+    checkCode: function(code, rechecking){
         //Toolbox.printDebugMsg('checkCode - incoming code: ', code);
         zerofilled_code = Toolbox.zeroFill(code, 8);
         //Toolbox.printDebugMsg('zerofilled code: ', zerofilled_code);
@@ -207,18 +216,22 @@ var Serial = {
         }
         //Toolbox.printDebugMsg('codeIndex: ', codeIndex);
         if(codeIndex !== null){
-            Toolbox.printDebugMsg('tag match: ' + code);
-            RoboFeeder.cycle();
-            //if(codeIndex === 0){
-            //    //white tag index 0
-            //    Toolbox.printDebugMsg('white tag match: ', code);
-            //    Motor.forward();
-            //}
-            //else if(codeIndex === 1){
-            //    //blue tag index 1
-            //    Toolbox.printDebugMsg('blue tag match: ', code);
-            //    Motor.reverse();
-            //}
+            if(!rechecking){
+                RoboFeeder.open();
+                Pir.monitor();
+            }
+            Toolbox.printDebugMsg('RFID tag match: ' + code);
+            Rfid.setLastTrigger();
+            /*if(codeIndex === 0){
+                //white tag index 0
+                Toolbox.printDebugMsg('white tag match: ', code);
+                Motor.forward();
+            }
+            else if(codeIndex === 1){
+                //blue tag index 1
+                Toolbox.printDebugMsg('blue tag match: ', code);
+                Motor.reverse();
+            }*/
         }
     },
     init: function(){
@@ -228,28 +241,16 @@ var Serial = {
                 Serial.receiveData(data);
             });
         });
+        RoboFeeder.status.serial = true;
     }
 };
 var Pir = {
     // Passive InfraRed Sensor
     enablePin: 11,
     sensorPin: 12,
-    init: function(){
-        async.parallel([
-            function(callback){
-                gpio.setup(Pir.enablePin, gpio.DIR_OUT, callback)
-            },
-            function(callback){
-                gpio.setup(Pir.sensorPin, gpio.DIR_IN, callback)
-            },
-        ], function(err, results){
-            Toolbox.printDebugMsg('PIR Pins setup');
-            Pir.enable();
-            Pir.read();
-            Pir.disable();
-            Toolbox.printDebugMsg('PIR tested');
-        });
-    },
+    threshold: (10 * 1000),
+    lastTrigger: null,
+    checkFrequency: 50,
     enable: function(){
         gpio.write(Pir.enablePin, true, function(err) {
             if (err) throw err;
@@ -275,9 +276,10 @@ var Pir = {
 
         ee.on('stateChange', function(previousValue, value){
             console.log('PIR sensor pin state changed from', previousValue, 'to', value);
+            Pir.setLastTrigger();
         });
 
-        Pir.interval = setInterval(function(){
+        Pir.intervalTimer = setInterval(function(){
             gpio.read(Pir.sensorPin, function(err, value) {
                 if(err){
                     ee.emit('error', err);
@@ -290,11 +292,33 @@ var Pir = {
                     }
                 }
             });
-        }, 50); // check button state every 50ms
+        }, Pir.checkFrequency);
     },
     monitorEnd: function(){
         Pir.disable();
-        clearInterval(Pir.interval);
+        clearInterval(Pir.intervalTimer);
+    },
+    setLastTrigger: function(){
+        var date = new Date();
+        var unix_secs = date.getTime();
+        Pir.lastTrigger = unix_secs;
+    },
+    init: function(){
+        async.parallel([
+            function(callback){
+                gpio.setup(Pir.enablePin, gpio.DIR_OUT, callback)
+            },
+            function(callback){
+                gpio.setup(Pir.sensorPin, gpio.DIR_IN, callback)
+            },
+        ], function(err, results){
+            Toolbox.printDebugMsg('PIR Pins setup');
+            Pir.enable();
+            Pir.read();
+            Pir.disable();
+            Toolbox.printDebugMsg('PIR tested');
+            RoboFeeder.status.pir = true;
+        });
     }
 };
 var Output = {
@@ -304,31 +328,49 @@ var Output = {
     }
 };
 var RoboFeeder = {
-    //for higher level functions
+    //for higher level functions and variables
     options: {
         // TODO - expose configuration options to web page
         openTime: (10 * 1000) // minimum open time in milliseconds
     },
-    open: function(){
+    status: {
+        open: false,
+        pir: false,
+        rfid: false,
+        motor: false,
+        serial: false
+    },
+    intervalTimer: null,
+    checkFrequency: 50,
+    open: function(enable){
+        enable = enable || true;
         Motor.reverse();
+        RoboFeeder.status.open = true;
         setTimeout(
-            RoboFeeder.openCallback,
+            function(){ RoboFeeder.openCallback(enable); },
             Motor.runTime
         );
     },
-    openCallback: function(){
+    openCallback: function(enable){
         Motor.off();
-        Pir.monitor();
+        if(enable){
+            Pir.monitor();
+        }
     },
     close: function(){
         Motor.forward();
+        RoboFeeder.status.open = false;
         setTimeout(
-            Motor.off,
+            RoboFeeder.closeCallback,
             Motor.runTime
         );
     },
-    cycle: function(){
-        RoboFeeder.open();
+    closeCallback: function(){
+        Motor.off();
+    },
+    cycle: function(enable){
+        enable = enable || true;
+        RoboFeeder.open(enable);
         setTimeout(
             RoboFeeder.close,
             Motor.waitTime
@@ -336,6 +378,39 @@ var RoboFeeder = {
     },
     loadOptions: function(){
         // TODO
+    },
+    monitor: function(){
+        var ee = new process.EventEmitter();
+
+        ee.on('stateChange', function(event_name){
+            console.log('roboFeeder monitor event emitter triggered: ' + event_name);
+        });
+
+        RoboFeeder.intervalTimer = setInterval(function(){
+            if(err){
+                ee.emit('error', err);
+            }
+            else{
+                var date = new Date();
+                var unix_secs = date.getTime();
+                if(unix_secs - Pir.threshold >= Pir.lastTrigger){
+                    ee.emit('stateChange', 'PIR');
+                    var pir = true;
+                }
+                if(unix_secs - Rfid.threshold >= Rfid.lastTrigger){
+                    ee.emit('stateChange', 'RFID');
+                    var rfid = true;
+                }
+                if(pir && rfid){
+                    Pir.monitorEnd();
+                    RoboFeeder.monitorEnd();
+                    RoboFeeder.close();
+                }
+            }
+        }, RoboFeeder.checkFrequency);
+    },
+    monitorEnd: function(){
+        clearInterval(RoboFeeder.intervalTimer);
     },
     init: function(){
         RoboFeeder.loadOptions();
