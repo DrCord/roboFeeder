@@ -10,24 +10,24 @@ Dependencies:
 
 Parts List:
 * Raspberry Pi ([A+](http://www.adafruit.com/products/2266), [B+](http://www.adafruit.com/products/1914), [Pi 2](http://www.adafruit.com/products/2358))
-* Micro SD card (4GB+) compatible with Raspberry Pi with Raspbian installed [Adafruit](https://www.adafruit.com/products/1562)
-* Wireless network dongle compatible with Raspberry Pi with a decent antenna [Adafruit](http://www.adafruit.com/products/1012)
+* Micro SD card (4GB+) compatible with Raspberry Pi with Raspbian installed ([Adafruit](https://www.adafruit.com/products/1562))
+* Wireless network dongle compatible with Raspberry Pi with a decent antenna ([Adafruit](http://www.adafruit.com/products/1012))
 (if using the Raspberry Pi A+ you will need either a [serial to usb cable](http://www.adafruit.com/products/954) or a HDMI monitor/tv and keyboard to program the Raspberry pi with the Wifi connection details.)
 * PIR Sensor [SparkFun](https://www.sparkfun.com/products/8630)
-* RFID Sensor with serial output (9600 bps to use codebase without changing) [AliExpress](http://www.aliexpress.com/store/product/Free-Shipping-RFID-module-HZ-1050-Kits-125KHZ-Serial-port-UART-output-for-arduino-uno-2560/1026060_1780057192.html)
-* Logic Level Converter 5v - 3.3V (bi-directional) - [SparkFun](https://www.sparkfun.com/products/12009)
-* AdaFruit Half-size Perma-proto Raspberry Pi [Adafruit](http://www.adafruit.com/products/1148)
-* Downgrade GPIO Ribbon Cable for Pi A+/B+/Pi 2 - 40p to 26p [Adafruit](https://www.adafruit.com/products/1986)
+* RFID Sensor with serial output (9600 bps to use codebase without changing) ([AliExpress](http://www.aliexpress.com/store/product/Free-Shipping-RFID-module-HZ-1050-Kits-125KHZ-Serial-port-UART-output-for-arduino-uno-2560/1026060_1780057192.html))
+* Logic Level Converter 5v - 3.3V (bi-directional) ([SparkFun](https://www.sparkfun.com/products/12009))
+* AdaFruit Half-size Perma-proto Raspberry Pi ([Adafruit](http://www.adafruit.com/products/1148))
+* Downgrade GPIO Ribbon Cable for Pi A+/B+/Pi 2 - 40p to 26p ([Adafruit](https://www.adafruit.com/products/1986))
 * Resistors (220, 1K, 10K, Other) //TODO: Note other resistor resistance
 * Wire (ideally of various colors) //TODO: estimate total length and optimal number of colors
-* Momentary Push Button Switch x2 [Adafruit](https://www.adafruit.com/products/1119)
+* Momentary Push Button Switch x2 ([Adafruit](https://www.adafruit.com/products/1119))
 * CD/DVD-ROM Drive (Up-cycled - as long as the drive tray and motor work, the older the better, older drives are more robust)
 * Hinge (1-2 inch) //TODO: measure
 * Hook and Eye Latch //TODO: measure
 * Small self tapping screws //TODO: Measure
 * 3/4 inch wood //TODO - get minimum measurements of piece that all pieces can be cut from
-* Raspberry Pi compatible USB power wall plug [Adafruit](https://www.adafruit.com/products/501)
-* USB to Micro USB cable [Adafruit](https://www.adafruit.com/products/592)
+* Raspberry Pi compatible USB power wall plug ([Adafruit](https://www.adafruit.com/products/501))
+* USB to Micro USB cable ([Adafruit](https://www.adafruit.com/products/592))
 
 License
 
