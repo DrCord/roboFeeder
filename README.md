@@ -13,7 +13,7 @@ Parts List:
 * Micro SD card (4GB+) compatible with Raspberry Pi with Raspbian installed ([Adafruit](https://www.adafruit.com/products/1562))
 * Wireless network dongle compatible with Raspberry Pi with a decent antenna ([Adafruit](http://www.adafruit.com/products/1012))
 (if using the Raspberry Pi A+ you will need either a [serial to usb cable](http://www.adafruit.com/products/954) or a HDMI monitor/tv and keyboard to program the Raspberry pi with the Wifi connection details.)
-* PIR Sensor [SparkFun](https://www.sparkfun.com/products/8630)
+* PIR Sensor ([SparkFun](https://www.sparkfun.com/products/8630))
 * RFID Sensor with serial output (9600 bps to use codebase without changing) ([AliExpress](http://www.aliexpress.com/store/product/Free-Shipping-RFID-module-HZ-1050-Kits-125KHZ-Serial-port-UART-output-for-arduino-uno-2560/1026060_1780057192.html))
 * Logic Level Converter 5v - 3.3V (bi-directional) ([SparkFun](https://www.sparkfun.com/products/12009))
 * AdaFruit Half-size Perma-proto Raspberry Pi ([Adafruit](http://www.adafruit.com/products/1148))
