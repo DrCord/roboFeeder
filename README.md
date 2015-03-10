@@ -1,7 +1,7 @@
 # roboFeeder
 ##nodejs code to run RFID pet feeder using a Raspberry Pi
 
-[github](https://github.com/DrCord/roboFeeder)
+[github repository](https://github.com/DrCord/roboFeeder)
 
 Dependencies:
 * NodeJS
@@ -16,6 +16,7 @@ Parts List:
 * PIR Sensor ([SparkFun](https://www.sparkfun.com/products/8630))
 * RFID Sensor with serial output (9600 bps to use codebase without changing) ([AliExpress](http://www.aliexpress.com/store/product/Free-Shipping-RFID-module-HZ-1050-Kits-125KHZ-Serial-port-UART-output-for-arduino-uno-2560/1026060_1780057192.html))
 * Logic Level Converter 5v - 3.3V (bi-directional) ([SparkFun](https://www.sparkfun.com/products/12009))
+* L293D Chip - Dual H-Bridge Motor Driver ([Adafruit](https://www.adafruit.com/products/807))
 * AdaFruit Half-size Perma-proto Raspberry Pi ([Adafruit](http://www.adafruit.com/products/1148))
 * Downgrade GPIO Ribbon Cable for Pi A+/B+/Pi 2 - 40p to 26p ([Adafruit](https://www.adafruit.com/products/1986))
 * Resistors (220, 1K, 10K, Other) //TODO: Note other resistor resistance
@@ -24,10 +25,12 @@ Parts List:
 * CD/DVD-ROM Drive (Up-cycled - as long as the drive tray and motor work, the older the better, older drives are more robust)
 * Hinge (1-2 inch) //TODO: measure
 * Hook and Eye Latch //TODO: measure
-* Small self tapping screws //TODO: Measure
+* Small self tapping screws //TODO: Measure size and count quantity
 * 3/4 inch wood //TODO - get minimum measurements of piece that all pieces can be cut from
-* Raspberry Pi compatible USB power wall plug ([Adafruit](https://www.adafruit.com/products/501))
-* USB to Micro USB cable ([Adafruit](https://www.adafruit.com/products/592))
+* 5.5v - 23v output Standard AC to DC wall plug (ideally recycle an unused one from something else or get one from your local reuse store)
+* Compatible input power jack //TODO get jack name and specifications
+* Hobbywing 5V/6V 3 Amp Switch-Mode Ultimate BEC ([DealExtreme](http://www.dx.com/p/hobbywing-5v-6v-3a-switch-mode-ultimate-bec-ubec-15149))
+* Small perf-board ([Adafruit](https://www.adafruit.com/products/1608))
 
 License
 
