@@ -2,6 +2,7 @@
 ##nodejs code to run RFID pet feeder using a Raspberry Pi
 
 [github repository](https://github.com/DrCord/roboFeeder)
+[project website](http://robofeeder.cordslatton.com)
 
 Dependencies:
 * NodeJS
