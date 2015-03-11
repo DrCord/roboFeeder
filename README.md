@@ -28,8 +28,8 @@ Parts List:
 * Hook and Eye Latch //TODO: measure
 * Small self tapping screws //TODO: Measure size and count quantity
 * 3/4 inch wood //TODO - get minimum measurements of piece that all pieces can be cut from
-* 5.5v - 23v output Standard AC to DC wall plug (ideally recycle an unused one from something else or get one from your local reuse store)
-* Compatible input power jack //TODO get jack name and specifications
+* 5.5v - 23v output Standard AC to DC wall plug - Size M (ideally recycle an unused one from something else or get one from your local reuse store)
+* Size M DC Coaxial input power jack ([Radioshack](http://www.radioshack.com/size-m-panel-mount-coaxial-dc-power-jack/2741563.html))
 * Hobbywing 5V/6V 3 Amp Switch-Mode Ultimate BEC ([DealExtreme](http://www.dx.com/p/hobbywing-5v-6v-3a-switch-mode-ultimate-bec-ubec-15149))
 * Small perf-board ([Adafruit](https://www.adafruit.com/products/1608))
 
