@@ -31,7 +31,9 @@ Parts List:
 * 5.5v - 23v output Standard AC to DC wall plug - Size M (ideally recycle an unused one from something else or get one from your local reuse store)
 * Size M DC Coaxial input power jack ([Radioshack](http://www.radioshack.com/size-m-panel-mount-coaxial-dc-power-jack/2741563.html))
 * Hobbywing 5V/6V 3 Amp Switch-Mode Ultimate BEC ([DealExtreme](http://www.dx.com/p/hobbywing-5v-6v-3a-switch-mode-ultimate-bec-ubec-15149))
-* Small perf-board ([Adafruit](https://www.adafruit.com/products/1608))
+* Shrink Tubing([Adafruit](http://www.adafruit.com/products/1649))
+* Male Single Row Headers ([Adafruit](http://www.adafruit.com/products/392))
+* Female Headers([Adafruit](http://www.adafruit.com/products/598))
 
 License
 
