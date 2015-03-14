@@ -1,0 +1,18 @@
+doctype html
+html(lang="en")
+  head
+    title= 'RoboFeeder - Welcome'
+    script(type='text/javascript').
+      WebServer.displaySettings();
+  body
+    h1 RoboFeeder
+    #content
+      section#status
+        h2 Status
+        #allowedTags
+            h3 Allowed Tags
+          ul
+            each tag in Rfid.allowedTags
+              li= tag
+      section#options
+        h2 Options

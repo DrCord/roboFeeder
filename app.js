@@ -465,9 +465,9 @@ var WebServer = {
                 // Load jade
                 var jade = require('jade');
                 // Compile template rendering function
-                var fn = jade.compileFile('index.tpl', { pretty: true, filename: 'index-path' });
+                var fn = jade.compileFile('index.jade', { pretty: true, filename: 'index', globals: ['Rfid'] });
                 // Render the function
-                var html = fn(locals);
+                var html = fn(Rfid);
                 // Write rendered content to file
                 fs.writeFileSync('index.html', html);
 

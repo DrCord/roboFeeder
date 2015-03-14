@@ -1,0 +1,30 @@
+{
+  "name": "roboFeeder",
+  "version": "1.0.0",
+  "description": "raspi based rfid pet feeder",
+  "main": "app.js",
+  "scripts": {
+    "test": "sudo node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DrCord/roboFeeder.git"
+  },
+  "keywords": [
+    "node",
+    "rfid",
+    "raspi"
+  ],
+  "author": "Cord Slatton-Valle",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/DrCord/roboFeeder/issues"
+  },
+  "homepage": "https://github.com/DrCord/roboFeeder",
+  "dependencies": {
+    "async": "^0.9.0",
+    "express": "^4.12.2",
+    "jade": "^1.9.2",
+    "rpi-gpio": "^0.5.1"
+  }
+}
