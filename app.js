@@ -387,29 +387,24 @@ var RoboFeeder = {
         });
 
         RoboFeeder.intervalTimer = setInterval(function(){
-            if(err){
-                ee.emit('error', err);
-            }
-            else{
-                var date = new Date();
-                var unix_secs = date.getTime();
-                console.log('RoboFeeder.intervalTimer - unix_secs: ', unix_secs);
-                console.log('RoboFeeder.intervalTimer - Pir.lastTrigger: ', Pir.lastTrigger);
-                console.log('RoboFeeder.intervalTimer - Rfid.lastTrigger: ', Rfid.lastTrigger);
+            var date = new Date();
+            var unix_secs = date.getTime();
+            console.log('RoboFeeder.intervalTimer - unix_secs: ', unix_secs);
+            console.log('RoboFeeder.intervalTimer - Pir.lastTrigger: ', Pir.lastTrigger);
+            console.log('RoboFeeder.intervalTimer - Rfid.lastTrigger: ', Rfid.lastTrigger);
 
-                if(unix_secs - Pir.threshold >= Pir.lastTrigger){
-                    ee.emit('stateChange', 'PIR');
-                    var pir = true;
-                }
-                if(unix_secs - Rfid.threshold >= Rfid.lastTrigger){
-                    ee.emit('stateChange', 'RFID');
-                    var rfid = true;
-                }
-                if(pir && rfid){
-                    Pir.monitorEnd();
-                    RoboFeeder.monitorEnd();
-                    RoboFeeder.close();
-                }
+            if(unix_secs - Pir.threshold >= Pir.lastTrigger){
+                ee.emit('stateChange', 'PIR');
+                var pir = true;
+            }
+            if(unix_secs - Rfid.threshold >= Rfid.lastTrigger){
+                ee.emit('stateChange', 'RFID');
+                var rfid = true;
+            }
+            if(pir && rfid){
+                Pir.monitorEnd();
+                RoboFeeder.monitorEnd();
+                RoboFeeder.close();
             }
         }, RoboFeeder.checkFrequency);
     },
