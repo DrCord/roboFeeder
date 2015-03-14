@@ -354,6 +354,7 @@ var RoboFeeder = {
     openCallback: function(enable){
         Motor.off();
         if(enable){
+            Pir.monitor();
             RoboFeeder.monitor();
         }
     },
@@ -383,15 +384,15 @@ var RoboFeeder = {
         var ee = new process.EventEmitter();
 
         ee.on('stateChange', function(event_name){
-            console.log('roboFeeder monitor event emitter triggered: ' + event_name);
+            Toolbox.printDebugMsg('roboFeeder monitor event emitter triggered: ' + event_name);
         });
 
         RoboFeeder.intervalTimer = setInterval(function(){
             var date = new Date();
             var unix_secs = date.getTime();
-            console.log('RoboFeeder.intervalTimer - unix_secs: ', unix_secs);
-            console.log('RoboFeeder.intervalTimer - Pir.lastTrigger: ', Pir.lastTrigger);
-            console.log('RoboFeeder.intervalTimer - Rfid.lastTrigger: ', Rfid.lastTrigger);
+            Toolbox.printDebugMsg('RoboFeeder.intervalTimer - unix_secs: ', unix_secs);
+            Toolbox.printDebugMsg('RoboFeeder.intervalTimer - Pir.lastTrigger: ', Pir.lastTrigger);
+            Toolbox.printDebugMsg('RoboFeeder.intervalTimer - Rfid.lastTrigger: ', Rfid.lastTrigger);
 
             if(unix_secs - Pir.threshold >= Pir.lastTrigger){
                 ee.emit('stateChange', 'PIR');
