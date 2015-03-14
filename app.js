@@ -354,7 +354,7 @@ var RoboFeeder = {
     openCallback: function(enable){
         Motor.off();
         if(enable){
-            Pir.monitor();
+            RoboFeeder.monitor();
         }
     },
     close: function(){
