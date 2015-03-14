@@ -45,12 +45,12 @@ var Rfid = {
     getAllowedTags: function(){
         fs.readFile(Rfid.allowedTagsFileName, File.readOptions, function (err, data) {
             if (err) throw err;
-            console.log('fs.readFile(./' + Rfid.allowedTagsFileName);
-            console.log(data);
-            console.log(Rfid.parseXMLFileToArray(data, 'code'));
+            //console.log('fs.readFile(./' + Rfid.allowedTagsFileName);
+            //console.log(data);
+            //console.log(Rfid.parseXMLFileToArray(data, 'code'));
             Rfid.allowedTags = Rfid.parseXMLFileToArray(data, 'code');
-            console.log('Rfid.allowedTags tags:');
-            console.log(Rfid.allowedTags);
+            //console.log('Rfid.allowedTags tags:');
+            //console.log(Rfid.allowedTags);
         });
     },
     watchAllowedTagsFile: function(){
@@ -462,6 +462,14 @@ var WebServer = {
                 }
 
                 if (fs.statSync(filename).isDirectory()) filename += 'index.html';
+                // Load jade
+                var jade = require('jade');
+                // Compile template rendering function
+                var fn = jade.compileFile('index.tpl', { pretty: true, filename: 'index-path' });
+                // Render the function
+                var html = fn(locals);
+                // Write rendered content to file
+                fs.writeFileSync('index.html', html);
 
                 fs.readFile(filename, "binary", function(err, file) {
                     if(err) {
