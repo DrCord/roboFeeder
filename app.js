@@ -63,6 +63,7 @@ var Rfid = {
         var date = new Date();
         var unix_secs = date.getTime();
         Rfid.lastTrigger = unix_secs;
+        Toolbox.printDebugMsg('Rfid.lastTrigger set: ' + unix_secs);
     },
     init: function(){
         //read allowed tags from file
@@ -82,20 +83,20 @@ var Motor = {
     on: function(){
         //turns on the motor drive pin
         //needs to be called with Motor.forward or Motor.reverse to actually run motor
-        Toolbox.printDebugMsg('Motor.on called');
-        Toolbox.printDebugMsg('Motor.running: ' + Motor.running);
+        //Toolbox.printDebugMsg('Motor.on called');
+        //Toolbox.printDebugMsg('Motor.running: ' + Motor.running);
         if(!Motor.running){
             Motor.running = true;
             gpio.write(Motor.enablePin, true, function(err) {
                 if (err) throw err;
-                Toolbox.printDebugMsg('Motor.enablePin ' + Motor.enablePin + ' set HIGH');
+                //Toolbox.printDebugMsg('Motor.enablePin ' + Motor.enablePin + ' set HIGH');
             });
         }
     },
     off: function(){
         //turns all the way off all three pins involved
-        Toolbox.printDebugMsg('Motor.off called');
-        Toolbox.printDebugMsg('Motor.running: ' + Motor.running);
+        //Toolbox.printDebugMsg('Motor.off called');
+        //Toolbox.printDebugMsg('Motor.running: ' + Motor.running);
         Motor.running = false;
         gpio.write(Motor.enablePin, false, function(err) {
             if (err) throw err;
@@ -111,27 +112,27 @@ var Motor = {
         });
     },
     forward: function(){
-        Toolbox.printDebugMsg('Motor.forward called');
+        //Toolbox.printDebugMsg('Motor.forward called');
         Motor.on();
         gpio.write(Motor.forwardPin, true, function(err) {
             if (err) throw err;
-            Toolbox.printDebugMsg('Motor.forwardPin ' + Motor.forwardPin + ' set HIGH.');
+            //Toolbox.printDebugMsg('Motor.forwardPin ' + Motor.forwardPin + ' set HIGH.');
         });
         gpio.write(Motor.reversePin, false, function(err) {
             if (err) throw err;
-            Toolbox.printDebugMsg('Motor.reversePin ' + Motor.reversePin + ' set LOW.');
+            //Toolbox.printDebugMsg('Motor.reversePin ' + Motor.reversePin + ' set LOW.');
         });
     },
     reverse: function(){
-        Toolbox.printDebugMsg('Motor.reverse called');
+        //Toolbox.printDebugMsg('Motor.reverse called');
         Motor.on();
         gpio.write(Motor.reversePin, true, function(err) {
             if (err) throw err;
-            Toolbox.printDebugMsg('Motor.reversePin ' + Motor.reversePin + ' set HIGH');
+            //Toolbox.printDebugMsg('Motor.reversePin ' + Motor.reversePin + ' set HIGH');
         });
         gpio.write(Motor.forwardPin, false, function(err) {
             if (err) throw err;
-            Toolbox.printDebugMsg('Written to pin: ' + Motor.reversePin + ' set LOW');
+            //Toolbox.printDebugMsg('Written to pin: ' + Motor.reversePin + ' set LOW');
         });
     },
     init: function(){
@@ -302,6 +303,7 @@ var Pir = {
         var date = new Date();
         var unix_secs = date.getTime();
         Pir.lastTrigger = unix_secs;
+        Toolbox.printDebugMsg('Pir.lastTrigger set: ' + unix_secs);
     },
     init: function(){
         async.parallel([
@@ -343,7 +345,9 @@ var RoboFeeder = {
     intervalTimer: null,
     checkFrequency: 100,
     open: function(enable){
-        enable = enable || true;
+        if(enable !== false){
+            enable = true;
+        }
         Motor.reverse();
         RoboFeeder.status.open = true;
         setTimeout(
@@ -370,7 +374,9 @@ var RoboFeeder = {
         Motor.off();
     },
     cycle: function(enable){
-        enable = enable || true;
+        if(enable !== false){
+            enable = true;
+        }
         RoboFeeder.open(enable);
         setTimeout(
             RoboFeeder.close,
@@ -381,26 +387,43 @@ var RoboFeeder = {
         // TODO
     },
     monitor: function(){
-        var ee = new process.EventEmitter();
+        var ee = new process.EventEmitter(),
+            rfid = false,
+            pir = false;
 
-        ee.on('stateChange', function(event_name){
+            ee.on('stateChange', function(event_name){
             Toolbox.printDebugMsg('roboFeeder monitor event emitter triggered: ' + event_name);
         });
 
         RoboFeeder.intervalTimer = setInterval(function(){
             var date = new Date();
             var unix_secs = date.getTime();
-            Toolbox.printDebugMsg('RoboFeeder.intervalTimer - unix_secs: ', unix_secs);
-            Toolbox.printDebugMsg('RoboFeeder.intervalTimer - Pir.lastTrigger: ', Pir.lastTrigger);
-            Toolbox.printDebugMsg('RoboFeeder.intervalTimer - Rfid.lastTrigger: ', Rfid.lastTrigger);
 
             if(unix_secs - Pir.threshold >= Pir.lastTrigger){
-                ee.emit('stateChange', 'PIR');
-                var pir = true;
+                //Toolbox.printDebugMsg('RoboFeeder.intervalTimer - Pir.lastTrigger: ' + Pir.lastTrigger);
+                if(!pir){
+                    ee.emit('stateChange', 'PIR: past interval');
+                    pir = true;
+                }
+            }
+            else{
+                if(pir){
+                    ee.emit('stateChange', 'PIR: reset interval');
+                    pir = false;
+                }
             }
             if(unix_secs - Rfid.threshold >= Rfid.lastTrigger){
-                ee.emit('stateChange', 'RFID');
-                var rfid = true;
+                //Toolbox.printDebugMsg('RoboFeeder.intervalTimer - Rfid.lastTrigger: ' + Rfid.lastTrigger);
+                if(!rfid){
+                    ee.emit('stateChange', 'RFID: past interval');
+                    rfid = true;
+                }
+            }
+            else{
+                if(rfid){
+                    ee.emit('stateChange', 'RFID: reset interval');
+                    rfid = false;
+                }
             }
             if(pir && rfid){
                 Pir.monitorEnd();
