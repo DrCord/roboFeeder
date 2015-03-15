@@ -1,11 +1,12 @@
 doctype html
 html(lang="en")
   head
-    title= 'RoboFeeder - Welcome'
+    title!= title
     script(type='text/javascript').
       WebServer.displaySettings();
   body
     h1 RoboFeeder
+    h2!= message
     #content
       section#status
         h2 Status
