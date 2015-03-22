@@ -36,6 +36,8 @@ Parts List:
 * Female Headers([Adafruit](http://www.adafruit.com/products/598))
 
 Setup Instructions
+* setup wifi credentials //TODO: update wifi file location
+* disable shell and kernel messages via serial in the raspi-config utility
 * add this code to the `/etc/rc.local` file before the `exit 0` line
 
     `#autorun node.js server,js file on boot`
