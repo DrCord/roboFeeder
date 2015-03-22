@@ -1,18 +1,38 @@
 doctype html
 html(lang="en")
   head
-    title!= title
-    script(type='text/javascript').
-      WebServer.displaySettings();
+    title= 'RoboFeeder - Welcome'
   body
     h1 RoboFeeder
     h2!= message
     #content
       section#status
         h2 Status
-        #allowedTags
-            h3 Allowed Tags
-          ul
-
+        ul
+          if status_open
+            li= 'Tray open'
+          else
+            li= 'Tray closed'
+          if status_pir
+            li= 'PIR ready'
+          else
+            li= 'PIR not ready'
+          if status_rfid
+              li= 'RFID ready'
+          else
+            li= 'RFID not ready'
+          if status_motor
+              li= 'Motor ready'
+          else
+            li= 'Motor not ready'
+          if status_serial
+              li= 'Serial ready'
+          else
+            li= 'Serial not ready'
+      section#allowedTags
+        h2 Allowed Tags
+        ul
+          each tag in allowedTags
+            li!= tag
       section#options
         h2 Options

@@ -5,7 +5,9 @@ var http = require("http"),
     fs = require("fs"),
     express = require('express'),
     app = express(),
-port = process.argv[2] || 8888;
+port = process.argv[2] || 8080;
+// sets port 8080 to default or unless otherwise specified in the environment
+app.set('port', port);
 // allow use of gpio - https://www.npmjs.com/package/rpi-gpio
 var gpio = require('rpi-gpio');
 //allow better formatting for asynchronous calls - https://github.com/caolan/async
@@ -45,7 +47,7 @@ var Rfid = {
         return false;
     },
     getAllowedTags: function(){
-        fs.readFile(Rfid.allowedTagsFileName, File.readOptions, function (err, data) {
+        fs.readFile(File.applicationPath + '/' + Rfid.allowedTagsFileName, File.readOptions, function (err, data) {
             if (err) throw err;
             //console.log('fs.readFile(./' + Rfid.allowedTagsFileName);
             //console.log(data);
@@ -56,7 +58,7 @@ var Rfid = {
         });
     },
     watchAllowedTagsFile: function(){
-        fs.watch(Rfid.allowedTagsFileName, File.watchOptions, function(event, filename) {
+        fs.watch(File.applicationPath + '/' + Rfid.allowedTagsFileName, File.watchOptions, function(event, filename) {
             Rfid.allowedTags = Rfid.parseXMLFileToArray(data, 'code');
             console.log(event + " event occurred on " + filename);
         });
@@ -450,13 +452,20 @@ var RoboFeeder = {
 };
 var WebServer = {
     create: function(){
-        app.set('views', './views');
+        app.set('views', File.applicationPath + '/views');
         app.set('view engine', 'jade');
         app.get('/', function (req, res) {
-            res.render('index', { title: 'RoboFeeder - Welcome', message: 'Hello there!'});
-        })
+            res.render('index', {
+                allowedTags: Rfid.allowedTags,
+                status_open: RoboFeeder.status.open,
+                status_pir: RoboFeeder.status.pir,
+                status_rfid: RoboFeeder.status.rfid,
+                status_motor: RoboFeeder.status.motor,
+                status_serial: RoboFeeder.status.serial
+            });
+        });
 
-        var server = app.listen(3000, function () {
+        var server = app.listen(port, function () {
             var host = server.address().address;
             var port = server.address().port;
             console.log('Example app listening at http://%s:%s', host, port);
