@@ -35,6 +35,13 @@ Parts List:
 * Male Single Row Headers ([Adafruit](http://www.adafruit.com/products/392))
 * Female Headers([Adafruit](http://www.adafruit.com/products/598))
 
+Setup Instructions
+* add this code to the /etc/rc.local file before the exit 0 line
+`#autorun node.js server,js file on boot`
+`su pi -c 'sudo node /home/pi/roboFeeder/app.js < /dev/null &'`
+`#autorun the soft shutdown switch code`
+`python /home/pi/roboFeeder/softShutdownSwitch.py`
+
 License
 
 Software, parts list and CAD files to build and run a RFID controlled Raspberry Pi pet feeder
