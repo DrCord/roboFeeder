@@ -1,11 +1,19 @@
 //setup node web server
-var http = require("http"),
-    url = require("url"),
-    path = require("path"),
-    fs = require("fs"),
+var http = require('http'),
+    bodyParser = require('body-parser'),
+    methodOverride = require('method-override'),
+    //errorHandler = require('error-handler'),
+    morgan = require('morgan'),
+    routes = require('./routes'),
+    api = require('./routes/api'),
+    url = require('url'),
+    path = require('path'),
+    fs = require('fs'),
     express = require('express'),
-    app = express(),
-port = process.argv[2] || 8080;
+    port = process.argv[2] || 8080;
+
+var app = module.exports = express();
+
 // sets port 8080 to default or unless otherwise specified in the environment
 app.set('port', port);
 // allow use of gpio - https://www.npmjs.com/package/rpi-gpio
@@ -447,28 +455,70 @@ var RoboFeeder = {
         Motor.init();
         Pir.init();
         Output.init();
-        WebServer.create();
+        WebServer.init();
     }
 };
 var WebServer = {
-    create: function(){
+    init: function(){
         app.set('views', File.applicationPath + '/views');
         app.set('view engine', 'jade');
-        app.get('/', function (req, res) {
-            res.render('index', {
-                allowedTags: Rfid.allowedTags,
-                status_open: RoboFeeder.status.open,
-                status_pir: RoboFeeder.status.pir,
-                status_rfid: RoboFeeder.status.rfid,
-                status_motor: RoboFeeder.status.motor,
-                status_serial: RoboFeeder.status.serial
-            });
-        });
+        app.use(morgan('dev'));
+        app.use(bodyParser.urlencoded({ extended: false }));
+        app.use(bodyParser.json());
+        app.use(methodOverride());
+        app.use(express.static(path.join(__dirname, 'public')));
+
+        /* var env = process.env.NODE_ENV || 'development';
+
+        // development only
+        if (env === 'development') {
+            app.use(express.errorHandler());
+        }
+        // production only
+        if (env === 'production') {
+            // TODO
+        }*/
+
+        /** Routes */
+        //data to pass to templates
+        var templateData = {
+            allowedTags: Rfid.allowedTags,
+            status_open: RoboFeeder.status.open,
+            status_pir: RoboFeeder.status.pir,
+            status_rfid: RoboFeeder.status.rfid,
+            status_motor: RoboFeeder.status.motor,
+            status_serial: RoboFeeder.status.serial
+        };
+        app.locals = templateData;
+
+        // serve index and view partials
+        app.get('/', routes.index);
+        app.get('/partials/:name', routes.partials);
+
+        // JSON API
+        app.get('/api/name', api.name);
+
+        // redirect all others to the index (HTML5 history)
+        app.get('*', routes.index);
+
+        WebServer.create();
+    },
+    create: function(){
+        //app.get('/', function (req, res) {
+        //    res.render('index', {
+        //        allowedTags: Rfid.allowedTags,
+        //        status_open: RoboFeeder.status.open,
+        //        status_pir: RoboFeeder.status.pir,
+        //        status_rfid: RoboFeeder.status.rfid,
+        //        status_motor: RoboFeeder.status.motor,
+        //        status_serial: RoboFeeder.status.serial
+        //    });
+        //});
 
         var server = app.listen(port, function () {
             var host = server.address().address;
             var port = server.address().port;
-            console.log('Example app listening at http://%s:%s', host, port);
+            console.log('RoboFeeder app listening at http://%s:%s', host, port);
         });
     },
     displaySettings: function(){

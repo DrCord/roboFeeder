@@ -1,0 +1,33 @@
+h1 RoboFeeder
+    h2!= message
+    #content
+        section#status
+            h2 Status
+            ul
+                if status_open
+                    li= 'Tray open'
+                else
+                    li= 'Tray closed'
+                if status_pir
+                    li= 'PIR ready'
+                else
+                    li= 'PIR not ready'
+                if status_rfid
+                    li= 'RFID ready'
+                else
+                    li= 'RFID not ready'
+                if status_motor
+                    li= 'Motor ready'
+                else
+                    li= 'Motor not ready'
+                if status_serial
+                    li= 'Serial ready'
+                else
+                    li= 'Serial not ready'
+        section#allowedTags
+            h2 Allowed Tags
+            ul
+            li(ng-repeat="allowedTag in allowedTags")
+                {{allowedTag}}
+        section#options
+            h2 Options

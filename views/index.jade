@@ -1,38 +1,21 @@
-doctype html
-html(lang="en")
-  head
-    title= 'RoboFeeder - Welcome'
-  body
-    h1 RoboFeeder
-    h2!= message
-    #content
-      section#status
-        h2 Status
-        ul
-          if status_open
-            li= 'Tray open'
-          else
-            li= 'Tray closed'
-          if status_pir
-            li= 'PIR ready'
-          else
-            li= 'PIR not ready'
-          if status_rfid
-              li= 'RFID ready'
-          else
-            li= 'RFID not ready'
-          if status_motor
-              li= 'Motor ready'
-          else
-            li= 'Motor not ready'
-          if status_serial
-              li= 'Serial ready'
-          else
-            li= 'Serial not ready'
-      section#allowedTags
-        h2 Allowed Tags
-        ul
-          each tag in allowedTags
-            li!= tag
-      section#options
-        h2 Options
+extends layout
+block body
+    div(ng-controller='AppCtrl')
+        h2 Hello {{name}}
+        ul.menu
+            li
+                a(href='view1') view1
+            li
+                a(href='view2') view2
+
+        div(ng-view)
+
+        div
+            | RoboFeeder app: v
+            span(app-version)
+                script(src='js/lib/angular/angular.js')
+    script(src='js/app.js')
+    script(src='js/services.js')
+    script(src='js/controllers.js')
+    script(src='js/filters.js')
+    script(src='js/directives.js')
