@@ -1,19 +1,23 @@
 extends layout
 block body
     div(ng-controller='AppCtrl')
-        h2 Hello {{name}}
+        h1 RoboFeeder App v
+            span(app-version)
         ul.menu
             li
-                a(href='view1') view1
+                a(href='status') Status
             li
-                a(href='view2') view2
+                a(href='tags') Tags
+            li
+                a(href='options') Options
 
         div(ng-view)
 
-        div
-            | RoboFeeder app: v
-            span(app-version)
-                script(src='js/lib/angular/angular.js')
+        div#errors(ng-show="errors.length")
+            h2 Errors
+            ul
+                li.error(ng-repeat="error in errors") {{error}}
+    script(src='js/lib/angular/angular.js')
     script(src='js/app.js')
     script(src='js/services.js')
     script(src='js/controllers.js')

@@ -1,0 +1,19 @@
+#content
+    section#status
+        h2 Status
+        ul
+            li.tray Tray
+              span.open(ng-show="status.open")  open
+              span.closed(ng-show="!status.open")  closed
+            li.pir PIR sensor
+                span.active(ng-show="status.pir")  active
+                span.inactive(ng-show="!status.pir")  inactive
+            li.rfid RFID reader
+                span.online(ng-show="status.rfid")  online
+                span.offline.error(ng-show="!status.rfid")  offline
+            li.motor Tray motor
+                span.online(ng-show="status.motor")  online
+                span.offline.error(ng-show="!status.motor")  offline
+            li.serial Serial communication
+                span.online(ng-show="status.serial")  online
+                span.offline.error(ng-show="!status.serial")  offline

@@ -10,16 +10,20 @@ angular.module('roboFeeder', [
 ]).
 config(function ($routeProvider, $locationProvider) {
   $routeProvider.
-    when('/view1', {
-      templateUrl: 'partials/partial1',
-      controller: 'MyCtrl1'
+    when('/status', {
+      templateUrl: 'partials/status',
+      controller: 'AppCtrl'
     }).
-    when('/view2', {
-      templateUrl: 'partials/partial2',
-      controller: 'MyCtrl2'
+    when('/tags', {
+      templateUrl: 'partials/tags',
+      controller: 'AppCtrl'
+    }).
+    when('/options', {
+      templateUrl: 'partials/options',
+      controller: 'AppCtrl'
     }).
     otherwise({
-      redirectTo: '/view1'
+      redirectTo: '/status'
     });
 
   $locationProvider.html5Mode(true);

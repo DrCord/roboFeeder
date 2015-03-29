@@ -1,0 +1,15 @@
+#content
+    section#allowedTags
+        h2 Allowed Tags
+        ul
+        li(ng-repeat="allowedTag in allowedTags") {{allowedTag}}
+    section#actions
+        div#authorize
+            h3 Authorize a New Tag
+            input(type="text", name="authorizeNewTag", ng-model="authorizeNewTag")
+            button Authorize Tag
+        div#remove
+            h3 Remove an Existing Tag
+            select(id="removeTag", name="removeTag-select", ng-model="removeTag", ng-options="allowedTag as allowedTag for allowedTag in allowedTags")
+            button Remove Tag
+

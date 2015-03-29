@@ -480,23 +480,29 @@ var WebServer = {
         }*/
 
         /** Routes */
-        //data to pass to templates
-        var templateData = {
-            allowedTags: Rfid.allowedTags,
-            status_open: RoboFeeder.status.open,
-            status_pir: RoboFeeder.status.pir,
-            status_rfid: RoboFeeder.status.rfid,
-            status_motor: RoboFeeder.status.motor,
-            status_serial: RoboFeeder.status.serial
-        };
-        app.locals = templateData;
-
         // serve index and view partials
         app.get('/', routes.index);
         app.get('/partials/:name', routes.partials);
 
         // JSON API
-        app.get('/api/name', api.name);
+        app.get('/api/allowedTags/get', function(req, res){
+            return res.json({ allowedTags: Rfid.allowedTags });
+        });
+        app.get('/api/status/open', function(req, res){
+            return res.json({ status: RoboFeeder.status.open });
+        });
+        app.get('/api/status/pir', function(req, res){
+            return res.json({ status: RoboFeeder.status.pir });
+        });
+        app.get('/api/status/rfid', function(req, res){
+            return res.json({ status: RoboFeeder.status.rfid });
+        });
+        app.get('/api/status/motor', function(req, res){
+            return res.json({ status: RoboFeeder.status.motor });
+        });
+        app.get('/api/status/serial', function(req, res){
+            return res.json({ status: RoboFeeder.status.serial });
+        });
 
         // redirect all others to the index (HTML5 history)
         app.get('*', routes.index);
@@ -504,17 +510,6 @@ var WebServer = {
         WebServer.create();
     },
     create: function(){
-        //app.get('/', function (req, res) {
-        //    res.render('index', {
-        //        allowedTags: Rfid.allowedTags,
-        //        status_open: RoboFeeder.status.open,
-        //        status_pir: RoboFeeder.status.pir,
-        //        status_rfid: RoboFeeder.status.rfid,
-        //        status_motor: RoboFeeder.status.motor,
-        //        status_serial: RoboFeeder.status.serial
-        //    });
-        //});
-
         var server = app.listen(port, function () {
             var host = server.address().address;
             var port = server.address().port;
