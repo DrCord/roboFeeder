@@ -10,6 +10,7 @@ var http = require('http'),
     path = require('path'),
     fs = require('fs'),
     express = require('express'),
+    xml2js = require('xml2js'),
     port = process.argv[2] || 8080;
 
 var app = module.exports = express();
@@ -32,7 +33,9 @@ var File = {
     watchOptions: {
         persistent: true
     },
-    applicationPath: '/home/pi/roboFeeder'
+    applicationPath: '/home/pi/roboFeeder',
+    parseXMLString : require('xml2js').parseString,
+    xmlBuilder : new xml2js.Builder({rootName: 'codes'})
 };
 var Rfid = {
     allowedTagsFileName: 'allowedTags.xml',
@@ -44,7 +47,7 @@ var Rfid = {
         str1 = '<' + xmlTag + '>' + '.*?' + '</' + xmlTag + '>';
         var regex = new RegExp(str1, "gi");
         var matches = data.match(regex);
-        if(matches.length){
+        if((matches != null) && (matches.length)){
             xmlTag = '</?' + xmlTag + '>';
             var regex = new RegExp(xmlTag, "gi");
             for(var i = 0; i < matches.length; i++){
@@ -60,15 +63,20 @@ var Rfid = {
             //console.log('fs.readFile(./' + Rfid.allowedTagsFileName);
             //console.log(data);
             //console.log(Rfid.parseXMLFileToArray(data, 'code'));
-            Rfid.allowedTags = Rfid.parseXMLFileToArray(data, 'code');
+            Rfid.allowedTags = Rfid.parseXMLFileToArray(data, 'code') || [];
             //console.log('Rfid.allowedTags tags:');
             //console.log(Rfid.allowedTags);
         });
     },
     watchAllowedTagsFile: function(){
         fs.watch(File.applicationPath + '/' + Rfid.allowedTagsFileName, File.watchOptions, function(event, filename) {
-            Rfid.allowedTags = Rfid.parseXMLFileToArray(data, 'code');
+            //Rfid.allowedTags = Rfid.parseXMLFileToArray(data, 'code');
             console.log(event + " event occurred on " + filename);
+            if (filename) {
+                console.log('filename provided: ' + filename);
+            } else {
+                console.log('filename not provided');
+            }
         });
     },
     setLastTrigger: function(){
@@ -76,6 +84,36 @@ var Rfid = {
         var unix_secs = date.getTime();
         Rfid.lastTrigger = unix_secs;
         Toolbox.printDebugMsg('Rfid.lastTrigger set: ' + unix_secs);
+    },
+    saveAllowedTags: function(xml){
+        fs.writeFile(
+            File.applicationPath + '/' + Rfid.allowedTagsFileName,
+            xml,
+            function(err) {
+                if(err) {
+                    return console.log(err);
+                }
+                console.log("The allowed Tags XML file was saved.");
+            }
+        );
+    },
+    saveAllowedTag: function(tag){
+        Rfid.allowedTags.push(tag);
+        var xml = Rfid.allowedTagsToXML();
+        Rfid.saveAllowedTags(xml);
+    },
+    removeAllowedTag: function(tag){
+        var tagIndex = Rfid.allowedTags.indexOf(tag);
+        if (tagIndex > -1) {
+            Rfid.allowedTags.splice(tagIndex, 1);
+        }
+        var xml = Rfid.allowedTagsToXML();
+        Rfid.saveAllowedTags(xml);
+    },
+    allowedTagsToXML: function(){
+        var obj = {code: Rfid.allowedTags};
+        var xml = File.xmlBuilder.buildObject(obj);
+        return xml;
     },
     init: function(){
         //read allowed tags from file
@@ -89,7 +127,7 @@ var Motor = {
     reversePin: 16,
     forwardPin: 18,
     enablePin: 22,
-    runTime: 4000,
+    runTime: 2800,
     waitTime: 5000,
     running: false,
     on: function(){
@@ -354,7 +392,8 @@ var RoboFeeder = {
         motor: false,
         serial: false
     },
-    intervalTimer: null,
+    intervalTimer: '',
+    openTimer: '',
     checkFrequency: 100,
     open: function(enable){
         if(enable !== false){
@@ -362,7 +401,7 @@ var RoboFeeder = {
         }
         Motor.reverse();
         RoboFeeder.status.open = true;
-        setTimeout(
+        RoboFeeder.openTimer = setTimeout(
             function(){ RoboFeeder.openCallback(enable); },
             Motor.runTime
         );
@@ -377,7 +416,7 @@ var RoboFeeder = {
     close: function(){
         Motor.forward();
         RoboFeeder.status.open = false;
-        setTimeout(
+        RoboFeeder.openTimer = setTimeout(
             RoboFeeder.closeCallback,
             Motor.runTime
         );
@@ -447,6 +486,9 @@ var RoboFeeder = {
     monitorEnd: function(){
         clearInterval(RoboFeeder.intervalTimer);
     },
+    openTimerEnd: function(){
+        clearInterval(RoboFeeder.openTimer);
+    },
     init: function(){
         RoboFeeder.loadOptions();
         Rfid.init();
@@ -463,13 +505,12 @@ var WebServer = {
         app.set('views', File.applicationPath + '/views');
         app.set('view engine', 'jade');
         app.use(morgan('dev'));
-        app.use(bodyParser.urlencoded({ extended: false }));
+        app.use(bodyParser.urlencoded({ extended: true }));
         app.use(bodyParser.json());
         app.use(methodOverride());
         app.use(express.static(path.join(__dirname, 'public')));
 
         /* var env = process.env.NODE_ENV || 'development';
-
         // development only
         if (env === 'development') {
             app.use(express.errorHandler());
@@ -483,11 +524,47 @@ var WebServer = {
         // serve index and view partials
         app.get('/', routes.index);
         app.get('/partials/:name', routes.partials);
-
         // JSON API
-        app.get('/api/allowedTags/get', function(req, res){
+        //tags
+        app.get('/api/tags/allowed/get', function(req, res){
             return res.json({ allowedTags: Rfid.allowedTags });
         });
+        app.post('/api/tags/allowed/add', function(req, res){
+            if(typeof req.body.tag != "undefined"){
+                Rfid.saveAllowedTag(req.body.tag);
+            }
+            return res.json({ allowedTags: Rfid.allowedTags });
+        });
+        app.post('/api/tags/allowed/remove', function(req, res){
+            if(typeof req.body.tag != "undefined"){
+                Rfid.removeAllowedTag(req.body.tag);
+            }
+            return res.json({ allowedTags: Rfid.allowedTags });
+        });
+        //manual open
+        app.get('/api/open', function(req, res){
+            RoboFeeder.openTimerEnd();
+            RoboFeeder.open(false);
+            RoboFeeder.openTimerEnd();
+            setTimeout(
+                function(){ return res.json({ status: RoboFeeder.status.open }); },
+                Motor.runTime
+            );
+        });
+        //manual close
+        app.get('/api/close', function(req, res){
+            RoboFeeder.openTimerEnd();
+            RoboFeeder.close();
+            RoboFeeder.openTimerEnd();
+            setTimeout(
+                function(){ return res.json({ status: RoboFeeder.status.open }); },
+                Motor.runTime
+            );
+        });
+        app.get('/api/test', function(req, res){
+            return res.json(Rfid.allowedTagsToXML());
+        });
+        //statuses
         app.get('/api/status/open', function(req, res){
             return res.json({ status: RoboFeeder.status.open });
         });
@@ -503,7 +580,6 @@ var WebServer = {
         app.get('/api/status/serial', function(req, res){
             return res.json({ status: RoboFeeder.status.serial });
         });
-
         // redirect all others to the index (HTML5 history)
         app.get('*', routes.index);
 

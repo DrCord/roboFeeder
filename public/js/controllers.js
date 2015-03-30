@@ -4,11 +4,13 @@ angular.module('roboFeeder.controllers', []).
     controller('AppCtrl', function ($scope, $http) {
         $scope.status = {};
         $scope.errors = [];
-        // get allowed tags
-        $http.get('/api/allowedTags/get').success(function( data ) {
-            $scope.allowedTags = data.allowedTags;
-        });
-        // get statuses
+        $scope.authorizeNewTagInput = {};
+        $scope.removeTagSelect = {};
+        $scope.getAllowedTags = function(){
+            $http.get('/api/tags/allowed/get').success(function( data ) {
+                $scope.allowedTags = data.allowedTags;
+            });
+        };
         $scope.getStatuses = function(){
             $http.get('/api/status/open').success(function( data ) {
                 $scope.status.open = data.status;
@@ -26,8 +28,31 @@ angular.module('roboFeeder.controllers', []).
                 $scope.status.serial = data.status;
             });
         };
+        $scope.open = function(){
+            $http.get('/api/open').success(function( data ) {
+                $scope.status.open = data.status;
+            });
+        };
+        $scope.close = function(){
+            $http.get('/api/close').success(function( data ) {
+                $scope.status.open = data.status;
+            });
+        };
+        $scope.authorizeTag = function(tag){
+            $http.post('/api/tags/allowed/add', {tag: tag}).
+                success(function( data ) {
+                    $scope.allowedTags = data.allowedTags;
+            });
+        };
+        $scope.removeTag = function(tag){
+            $http.post('/api/tags/allowed/remove', {tag: tag}).
+                success(function( data ) {
+                    $scope.allowedTags = data.allowedTags;
+            });
+        };
         $scope.init = function(){
             $scope.getStatuses();
+            $scope.getAllowedTags();
         };
         $scope.init();
     });

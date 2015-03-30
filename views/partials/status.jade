@@ -4,7 +4,9 @@
         ul
             li.tray Tray
               span.open(ng-show="status.open")  open
+                button.btn.btn-sm.btn-danger(ng-click="close()") Close Tray
               span.closed(ng-show="!status.open")  closed
+                button.btn.btn-sm.btn-success(ng-click="open()") Open Tray
             li.pir PIR sensor
                 span.active(ng-show="status.pir")  active
                 span.inactive(ng-show="!status.pir")  inactive
