@@ -5,3 +5,9 @@ body{
 span button{
     margin: 0 10px;
 }
+.help-text{
+    font-size: 12px;
+    font-weight: normal;
+    font-style: italic;
+    padding-left: 6px;
+}
