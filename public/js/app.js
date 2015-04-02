@@ -18,8 +18,12 @@ config(function ($routeProvider, $locationProvider) {
       templateUrl: 'partials/tags',
       controller: 'AppCtrl'
     }).
-    when('/options', {
-      templateUrl: 'partials/options',
+    when('/settings', {
+      templateUrl: 'partials/settings',
+      controller: 'AppCtrl'
+    }).
+    when('/log', {
+      templateUrl: 'partials/log',
       controller: 'AppCtrl'
     }).
     otherwise({

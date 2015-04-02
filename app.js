@@ -63,7 +63,12 @@ var Rfid = {
             //console.log('fs.readFile(./' + Rfid.allowedTagsFileName);
             //console.log(data);
             //console.log(Rfid.parseXMLFileToArray(data, 'code'));
-            Rfid.allowedTags = Rfid.parseXMLFileToArray(data, 'code') || [];
+            //Rfid.allowedTags = Rfid.parseXMLFileToArray(data, 'code') || [];
+            File.parseXMLString(data, function (err, result) {
+                //console.log('File.parseXMLString - result:');
+                //console.log(result['codes']['code'] || []);
+                Rfid.allowedTags = result['codes']['code'] || [];
+            });
             //console.log('Rfid.allowedTags tags:');
             //console.log(Rfid.allowedTags);
         });

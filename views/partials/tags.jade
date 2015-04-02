@@ -10,9 +10,9 @@
                 span.help-text (8 digit numeric code)
             form(name="authorizeTagForm", ng-submit="authorizeTag()")
                 input(type="text", name="newTagInput", ng-model="newTag", ng-pattern="/^[0-9]{8}$/")
-                input(type="submit", value="Authorize Tag")
+                input(type="submit", value="Authorize Tag" class="btn btn-sm btn-success")
                 span(ng-show="authorizeTagForm.newTagInput.$error.pattern").error Not a valid code
         div#remove
             h3 Remove Existing Tag
             select(id="removeTag", name="removeTag-select", ng-model="removeTagSelect", ng-options="allowedTag as allowedTag for allowedTag in allowedTags")
-            button(ng-click="removeTag(removeTagSelect)") Remove Tag
+            button(ng-click="removeTag(removeTagSelect)" class="btn btn-sm btn-danger") Remove Tag

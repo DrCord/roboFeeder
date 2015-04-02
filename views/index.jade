@@ -11,11 +11,13 @@ block body
                     li
                         a(href='tags') Tags
                     li
-                        a(href='options') Options
+                        a(href='settings') Settings
+                    li
+                        a(href='log') Log
 
         div(ng-view)
 
-        div#errors(ng-show="errors.length")
+        div#errors(ng-show="errors.length" ng-cloak)
             h2 Errors
             ul
                 li.error(ng-repeat="error in errors") {{error}}
