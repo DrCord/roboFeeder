@@ -43,45 +43,17 @@ var Rfid = {
     allowedTags: [],
     threshold: (10 * 1000),
     lastTrigger: null,
-    parseXMLFileToArray: function(data, xmlTag){
-        str1 = '<' + xmlTag + '>' + '.*?' + '</' + xmlTag + '>';
-        var regex = new RegExp(str1, "gi");
-        var matches = data.match(regex);
-        if((matches != null) && (matches.length)){
-            xmlTag = '</?' + xmlTag + '>';
-            var regex = new RegExp(xmlTag, "gi");
-            for(var i = 0; i < matches.length; i++){
-                matches[i] = matches[i].replace(regex, '');
-            }
-            return matches;
-        }
-        return false;
-    },
     getAllowedTags: function(){
         fs.readFile(File.applicationPath + '/' + Rfid.allowedTagsFileName, File.readOptions, function (err, data) {
             if (err) throw err;
-            //console.log('fs.readFile(./' + Rfid.allowedTagsFileName);
-            //console.log(data);
-            //console.log(Rfid.parseXMLFileToArray(data, 'code'));
-            //Rfid.allowedTags = Rfid.parseXMLFileToArray(data, 'code') || [];
             File.parseXMLString(data, function (err, result) {
-                //console.log('File.parseXMLString - result:');
-                //console.log(result['codes']['code'] || []);
                 Rfid.allowedTags = result['codes']['code'] || [];
             });
-            //console.log('Rfid.allowedTags tags:');
-            //console.log(Rfid.allowedTags);
         });
     },
     watchAllowedTagsFile: function(){
         fs.watch(File.applicationPath + '/' + Rfid.allowedTagsFileName, File.watchOptions, function(event, filename) {
-            //Rfid.allowedTags = Rfid.parseXMLFileToArray(data, 'code');
             console.log(event + " event occurred on " + filename);
-            if (filename) {
-                console.log('filename provided: ' + filename);
-            } else {
-                console.log('filename not provided');
-            }
         });
     },
     setLastTrigger: function(){
