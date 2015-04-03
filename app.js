@@ -11,7 +11,8 @@ var http = require('http'),
     fs = require('fs'),
     express = require('express'),
     xml2js = require('xml2js'),
-    port = process.argv[2] || 8080;
+    ip = process.argv[2] || '192.168.1.116',
+    port = process.argv[3] || 8080;
 
 var app = module.exports = express();
 
@@ -33,9 +34,7 @@ var File = {
     watchOptions: {
         persistent: true
     },
-    applicationPath: '/home/pi/roboFeeder',
-    parseXMLString : require('xml2js').parseString,
-    xmlBuilder : new xml2js.Builder({rootName: 'codes'})
+    applicationPath: '/home/pi/roboFeeder'
 };
 var Rfid = {
     allowedTagsFileName: 'allowedTags.xml',
@@ -43,10 +42,12 @@ var Rfid = {
     allowedTags: [],
     threshold: (10 * 1000),
     lastTrigger: null,
+    parseXMLString : require('xml2js').parseString,
+    xmlBuilder : new xml2js.Builder({rootName: 'codes'}),
     getAllowedTags: function(){
         fs.readFile(File.applicationPath + '/' + Rfid.allowedTagsFileName, File.readOptions, function (err, data) {
             if (err) throw err;
-            File.parseXMLString(data, function (err, result) {
+            Rfid.parseXMLString(data, function (err, result) {
                 Rfid.allowedTags = result['codes']['code'] || [];
             });
         });
@@ -90,7 +91,7 @@ var Rfid = {
     },
     allowedTagsToXML: function(){
         var obj = {code: Rfid.allowedTags};
-        var xml = File.xmlBuilder.buildObject(obj);
+        var xml = Rfid.xmlBuilder.buildObject(obj);
         return xml;
     },
     init: function(){
@@ -370,9 +371,11 @@ var Output = {
 };
 var RoboFeeder = {
     //for higher level functions and variables
-    options: {
+    settings: {
         // TODO - expose configuration options to web page
-        openTime: (10 * 1000) // minimum open time in milliseconds
+        //time in milliseconds, default to 10 seconds
+        rfidThreshold: (10 * 1000), // rfid threshold for closing
+        pirThreshold: (10 * 1000) // pir threshold for closing
     },
     status: {
         open: false,
@@ -384,6 +387,9 @@ var RoboFeeder = {
     intervalTimer: '',
     openTimer: '',
     checkFrequency: 100,
+    settingsFileName: 'settings.xml',
+    parseXMLString : new xml2js.Parser(),
+    xmlBuilder : new xml2js.Builder({rootName: 'settings'}),
     open: function(enable){
         if(enable !== false){
             enable = true;
@@ -424,7 +430,29 @@ var RoboFeeder = {
         );
     },
     loadOptions: function(){
-        // TODO
+        fs.readFile(File.applicationPath + '/' + RoboFeeder.settingsFileName, File.readOptions, function (err, data) {
+            if (err) throw err;
+            RoboFeeder.parseXMLString.parseString(data, function (err, result) {
+                //json = JSON.stringify(result['settings']['setting']);
+                for(var i = 0; i < result['settings']['setting'].length; i++) {
+                    var setting = result['settings']['setting'][i];
+                    console.log('RoboFeeder.loadOptions() - setting');
+                    console.log(setting);
+                    console.log(setting['name']);
+                    console.log(setting['value']);
+                    switch (setting['name']) {
+                        case "[ 'rfidThreshold' ]":
+                            console.log('switch statement: rfid');
+                            RoboFeeder.settings.rfidThreshold = setting['value'];
+                        case 'pirThreshold':
+                            console.log('switch statement: pir');
+                            RoboFeeder.settings.pirThreshold = setting['value'];
+                    }
+                }
+            });
+            console.log('RoboFeeder.loadOptions() - RoboFeeder.settings');
+            console.log(RoboFeeder.settings);
+        });
     },
     monitor: function(){
         var ee = new process.EventEmitter(),
@@ -575,14 +603,11 @@ var WebServer = {
         WebServer.create();
     },
     create: function(){
-        var server = app.listen(port, function () {
+        var server = app.listen(port, ip, function () {
             var host = server.address().address;
             var port = server.address().port;
             console.log('RoboFeeder app listening at http://%s:%s', host, port);
         });
-    },
-    displaySettings: function(){
-
     }
 };
 
