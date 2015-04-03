@@ -11,6 +11,7 @@ var http = require('http'),
     fs = require('fs'),
     express = require('express'),
     xml2js = require('xml2js'),
+    Datastore = require('nedb'),
     ip = process.argv[2] || '192.168.1.116',
     port = process.argv[3] || 8080;
 
@@ -36,11 +37,27 @@ var File = {
     },
     applicationPath: '/home/pi/roboFeeder'
 };
+var DataBase = {
+    defaultSettings: {
+        rfidThreshold : {
+            name: 'rfidThreshold',
+            value: 15000
+        },
+        pirThreshold : {
+            name: 'pirThreshold',
+            value: 11000
+        }
+    },
+    settings: new Datastore({ filename: File.applicationPath + '/db/settings.db', autoload: true }),
+    init: function(){
+        // do nothing currently
+        // TODO? check if settings db file has settings in it, if not reset to default
+    }
+};
 var Rfid = {
     allowedTagsFileName: 'allowedTags.xml',
     //allowedTags uses strings to preserve leading zeros
     allowedTags: [],
-    threshold: (10 * 1000),
     lastTrigger: null,
     parseXMLString : require('xml2js').parseString,
     xmlBuilder : new xml2js.Builder({rootName: 'codes'}),
@@ -289,7 +306,6 @@ var Pir = {
     // Passive InfraRed Sensor
     enablePin: 11,
     sensorPin: 12,
-    threshold: (10 * 1000),
     lastTrigger: null,
     checkFrequency: 50,
     enable: function(){
@@ -374,8 +390,8 @@ var RoboFeeder = {
     settings: {
         // TODO - expose configuration options to web page
         //time in milliseconds, default to 10 seconds
-        rfidThreshold: (10 * 1000), // rfid threshold for closing
-        pirThreshold: (10 * 1000) // pir threshold for closing
+        rfidThreshold: 10000, // rfid threshold for closing
+        pirThreshold: 10000 // pir threshold for closing
     },
     status: {
         open: false,
@@ -429,29 +445,16 @@ var RoboFeeder = {
             Motor.waitTime
         );
     },
-    loadOptions: function(){
-        fs.readFile(File.applicationPath + '/' + RoboFeeder.settingsFileName, File.readOptions, function (err, data) {
-            if (err) throw err;
-            RoboFeeder.parseXMLString.parseString(data, function (err, result) {
-                //json = JSON.stringify(result['settings']['setting']);
-                for(var i = 0; i < result['settings']['setting'].length; i++) {
-                    var setting = result['settings']['setting'][i];
-                    console.log('RoboFeeder.loadOptions() - setting');
-                    console.log(setting);
-                    console.log(setting['name']);
-                    console.log(setting['value']);
-                    switch (setting['name']) {
-                        case "[ 'rfidThreshold' ]":
-                            console.log('switch statement: rfid');
-                            RoboFeeder.settings.rfidThreshold = setting['value'];
-                        case 'pirThreshold':
-                            console.log('switch statement: pir');
-                            RoboFeeder.settings.pirThreshold = setting['value'];
-                    }
-                }
-            });
-            console.log('RoboFeeder.loadOptions() - RoboFeeder.settings');
-            console.log(RoboFeeder.settings);
+    loadSettings: function(){
+        DataBase.settings.find({name: 'rfidThreshold'}, function (err, docs) {
+            RoboFeeder.settings.rfidThreshold = docs[0]['value'];
+            console.log('RoboFeeder.settings.rfidThreshold');
+            console.log(RoboFeeder.settings.rfidThreshold);
+        });
+        DataBase.settings.find({name: 'pirThreshold'}, function (err, docs) {
+            RoboFeeder.settings.pirThreshold = docs[0]['value'];
+            console.log('RoboFeeder.settings.pirThreshold');
+            console.log(RoboFeeder.settings.pirThreshold);
         });
     },
     monitor: function(){
@@ -467,7 +470,7 @@ var RoboFeeder = {
             var date = new Date();
             var unix_secs = date.getTime();
 
-            if(unix_secs - Pir.threshold >= Pir.lastTrigger){
+            if(unix_secs - RoboFeeder.settings.pirThreshold >= Pir.lastTrigger){
                 //Toolbox.printDebugMsg('RoboFeeder.intervalTimer - Pir.lastTrigger: ' + Pir.lastTrigger);
                 if(!pir){
                     ee.emit('stateChange', 'PIR: past interval');
@@ -480,7 +483,7 @@ var RoboFeeder = {
                     pir = false;
                 }
             }
-            if(unix_secs - Rfid.threshold >= Rfid.lastTrigger){
+            if(unix_secs - RoboFeeder.settings.rfidThreshold >= Rfid.lastTrigger){
                 //Toolbox.printDebugMsg('RoboFeeder.intervalTimer - Rfid.lastTrigger: ' + Rfid.lastTrigger);
                 if(!rfid){
                     ee.emit('stateChange', 'RFID: past interval');
@@ -507,7 +510,8 @@ var RoboFeeder = {
         clearInterval(RoboFeeder.openTimer);
     },
     init: function(){
-        RoboFeeder.loadOptions();
+        DataBase.init();
+        RoboFeeder.loadSettings();
         Rfid.init();
         Serial.init();
         Gpio.init();
