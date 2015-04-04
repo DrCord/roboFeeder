@@ -1,4 +1,9 @@
 #content
     section#settings
         h2 Settings
-        p TODO
+        form(name="settingsForm", ng-submit="saveSettings()")
+            div(ng-repeat="(name, value) in roboFeederSettings")
+                label {{name}}
+                    input(type="text", name="setting-{{name}}", ng-model="roboFeederSettings[name]", value="{{value}}")
+            input(type="submit", value="Save Settings", class="btn btn-sm btn-success")
+        pre {{roboFeederSettings}}

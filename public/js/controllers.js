@@ -6,6 +6,7 @@ angular.module('roboFeeder.controllers', []).
         $scope.errors = [];
         $scope.newTag = '';
         $scope.removeTagSelect = {};
+        $scope.roboFeederSettings = {};
         $scope.getAllowedTags = function(){
             $http.get('/api/tags/allowed/get').success(function( data ) {
                 $scope.allowedTags = data.allowedTags;
@@ -53,9 +54,21 @@ angular.module('roboFeeder.controllers', []).
                     $scope.allowedTags = data.allowedTags;
             });
         };
+        $scope.getSettings = function(){
+            $http.get('/api/settings/get').success(function( data ) {
+                $scope.roboFeederSettings = data.roboFeederSettings;
+            });
+        };
+        $scope.saveSettings = function(){
+            $http.post('/api/settings/save', {roboFeederSettings: $scope.roboFeederSettings}).
+                success(function( data ) {
+                    $scope.roboFeederSettings = data.roboFeederSettings;
+                });
+        };
         $scope.init = function(){
             $scope.getStatuses();
             $scope.getAllowedTags();
+            $scope.getSettings();
         };
         $scope.init();
     });

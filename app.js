@@ -1,33 +1,31 @@
 //setup node web server
-var http = require('http'),
+// require needed modules
+var api = require('./routes/api'),
+    async = require('async'), //allow better formatting for asynchronous calls - https://github.com/caolan/async
     bodyParser = require('body-parser'),
-    methodOverride = require('method-override'),
-    //errorHandler = require('error-handler'),
-    morgan = require('morgan'),
-    routes = require('./routes'),
-    api = require('./routes/api'),
-    url = require('url'),
-    path = require('path'),
-    fs = require('fs'),
+    datastore = require('nedb'),
     express = require('express'),
-    xml2js = require('xml2js'),
-    Datastore = require('nedb'),
-    ip = process.argv[2] || '192.168.1.116',
+    fs = require('fs'),
+    gpio = require('rpi-gpio'), // allow use of gpio - https://www.npmjs.com/package/rpi-gpio
+    http = require('http'),    
+    methodOverride = require('method-override'),
+    morgan = require('morgan'),
+    path = require('path'),
+    routes = require('./routes'),
+    serialport = require('serialport'),
+    url = require('url'),
+    xml2js = require('xml2js');
+// setup ip and port
+var ip = process.argv[2] || '192.168.1.116', // has to be actual ip of device
     port = process.argv[3] || 8080;
 
 var app = module.exports = express();
-
-// sets port 8080 to default or unless otherwise specified in the environment
+// sets port 8080 to default unless otherwise specified via script init argument
 app.set('port', port);
-// allow use of gpio - https://www.npmjs.com/package/rpi-gpio
-var gpio = require('rpi-gpio');
-//allow better formatting for asynchronous calls - https://github.com/caolan/async
-var async = require('async');
-//setup serialport
-var serialport = require("serialport");
-// localize object constructor
+// localize serialport object constructor
 var SerialPort = serialport.SerialPort;
-//setup object for each part of application
+
+// object for each part of application
 var File = {
     readOptions : {
         encoding: 'utf8'
@@ -37,21 +35,21 @@ var File = {
     },
     applicationPath: '/home/pi/roboFeeder'
 };
-var DataBase = {
+var Database = {
     defaultSettings: {
         rfidThreshold : {
             name: 'rfidThreshold',
-            value: 15000
+            value: 10000
         },
         pirThreshold : {
             name: 'pirThreshold',
-            value: 11000
+            value: 10000
         }
     },
-    settings: new Datastore({ filename: File.applicationPath + '/db/settings.db', autoload: true }),
+    settings: new datastore({ filename: File.applicationPath + '/db/roboFeeder.db', autoload: true }),
     init: function(){
         // do nothing currently
-        // TODO? check if settings db file has settings in it, if not reset to default
+        // TODO - check if settings db file has settings in it, if not reset to default settings
     }
 };
 var Rfid = {
@@ -390,8 +388,9 @@ var RoboFeeder = {
     settings: {
         // TODO - expose configuration options to web page
         //time in milliseconds, default to 10 seconds
-        rfidThreshold: 10000, // rfid threshold for closing
-        pirThreshold: 10000 // pir threshold for closing
+        pirThreshold: 9000, // pir threshold for closing
+        rfidThreshold: 9000 // rfid threshold for closing
+
     },
     status: {
         open: false,
@@ -403,9 +402,6 @@ var RoboFeeder = {
     intervalTimer: '',
     openTimer: '',
     checkFrequency: 100,
-    settingsFileName: 'settings.xml',
-    parseXMLString : new xml2js.Parser(),
-    xmlBuilder : new xml2js.Builder({rootName: 'settings'}),
     open: function(enable){
         if(enable !== false){
             enable = true;
@@ -446,15 +442,16 @@ var RoboFeeder = {
         );
     },
     loadSettings: function(){
-        DataBase.settings.find({name: 'rfidThreshold'}, function (err, docs) {
-            RoboFeeder.settings.rfidThreshold = docs[0]['value'];
-            console.log('RoboFeeder.settings.rfidThreshold');
-            console.log(RoboFeeder.settings.rfidThreshold);
-        });
-        DataBase.settings.find({name: 'pirThreshold'}, function (err, docs) {
-            RoboFeeder.settings.pirThreshold = docs[0]['value'];
-            console.log('RoboFeeder.settings.pirThreshold');
-            console.log(RoboFeeder.settings.pirThreshold);
+        Database.settings.find({type: 'setting'}, function (err, docs) {
+            if(typeof docs[0] != "undefined"){
+                var count = 0;
+                for (var setting in RoboFeeder.settings) {
+                    RoboFeeder.settings[setting] = docs[count]['value'];
+                    //console.log('RoboFeeder.settings.' + docs[count]['name']);
+                    //console.log(RoboFeeder.settings[setting]);
+                    count++;
+                }
+            }
         });
     },
     monitor: function(){
@@ -510,7 +507,7 @@ var RoboFeeder = {
         clearInterval(RoboFeeder.openTimer);
     },
     init: function(){
-        DataBase.init();
+        Database.init();
         RoboFeeder.loadSettings();
         Rfid.init();
         Serial.init();
@@ -531,22 +528,20 @@ var WebServer = {
         app.use(methodOverride());
         app.use(express.static(path.join(__dirname, 'public')));
 
-        /* var env = process.env.NODE_ENV || 'development';
-        // development only
-        if (env === 'development') {
-            app.use(express.errorHandler());
-        }
-        // production only
-        if (env === 'production') {
-            // TODO
-        }*/
-
+        //WebServer.setupEnvironment();
         /** Routes */
         // serve index and view partials
         app.get('/', routes.index);
         app.get('/partials/:name', routes.partials);
+        WebServer.setupApi();
+        // redirect all others to the index (HTML5 history)
+        app.get('*', routes.index);
+
+        WebServer.create();
+    },
+    setupApi: function(){
         // JSON API
-        //tags
+        // tags
         app.get('/api/tags/allowed/get', function(req, res){
             return res.json({ allowedTags: Rfid.allowedTags });
         });
@@ -562,7 +557,7 @@ var WebServer = {
             }
             return res.json({ allowedTags: Rfid.allowedTags });
         });
-        //manual open
+        // manual open
         app.get('/api/open', function(req, res){
             RoboFeeder.openTimerEnd();
             RoboFeeder.open(false);
@@ -572,7 +567,7 @@ var WebServer = {
                 Motor.runTime
             );
         });
-        //manual close
+        // manual close
         app.get('/api/close', function(req, res){
             RoboFeeder.openTimerEnd();
             RoboFeeder.close();
@@ -582,10 +577,7 @@ var WebServer = {
                 Motor.runTime
             );
         });
-        app.get('/api/test', function(req, res){
-            return res.json(Rfid.allowedTagsToXML());
-        });
-        //statuses
+        // statuses
         app.get('/api/status/open', function(req, res){
             return res.json({ status: RoboFeeder.status.open });
         });
@@ -601,10 +593,30 @@ var WebServer = {
         app.get('/api/status/serial', function(req, res){
             return res.json({ status: RoboFeeder.status.serial });
         });
-        // redirect all others to the index (HTML5 history)
-        app.get('*', routes.index);
-
-        WebServer.create();
+        // settings
+        app.get('/api/settings/get', function(req, res){
+            return res.json({ roboFeederSettings: RoboFeeder.settings });
+        });
+        app.post('/api/settings/save', function(req, res){
+            if(typeof req.body.roboFeederSettings != "undefined"){
+                RoboFeeder.settings = req.body.roboFeederSettings;
+                console.log('app.post(\'/api/settings/save\' - RoboFeeder.settings');
+                console.log(RoboFeeder.settings);
+            }
+            return res.json({ allowedTags: Rfid.allowedTags });
+        });
+    },
+    setupEnvironment: function(){
+        /* TODO - decide if needed: not sure if I want this - leaving it for now
+         var env = process.env.NODE_ENV || 'development';
+         // development only
+         if (env === 'development') {
+         app.use(express.errorHandler());
+         }
+         // production only
+         if (env === 'production') {
+         // noting setup for production
+         }*/
     },
     create: function(){
         var server = app.listen(port, ip, function () {
