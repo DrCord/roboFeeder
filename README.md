@@ -6,8 +6,22 @@
 
 Dependencies:
 * NodeJS
-* nodejs package rpi-gpio https://www.npmjs.com/package/rpi-gpio
-* nodejs package async https://github.com/caolan/async
+* async https://github.com/caolan/async
+* body-parser https://www.npmjs.com/package/body-parser
+* express http://expressjs.com
+* nedb https://github.com/louischatriot/nedb
+* npmlog https://github.com/npm/npmlog
+* rpi-gpio https://www.npmjs.com/package/rpi-gpio
+* serialport https://www.npmjs.com/package/serialport
+* xml2js https://www.npmjs.com/package/xml2js
+
+TODO LIST
+* transfer all console.log messages to npmlog calls
+* auto refresh log page
+* add steps to install/setup procedure for downloading code from github and installing npm dependencies
+* status page - auto refresh
+* switch allowed tags to use db instead of xml, remove xml functions and xml2js package dependency
+* allowed tags - complex programs via ui for allowed times, max time, etc.
 
 Parts List:
 * Raspberry Pi ([B+](http://www.adafruit.com/products/1914), [Pi 2](http://www.adafruit.com/products/2358))
@@ -37,6 +51,7 @@ Parts List:
 Setup Instructions
 * setup wifi credentials //TODO: update wifi file location
 * disable shell and kernel messages via serial in the raspi-config utility
+* TODO add step(s) for downloading code from github and installing npm dependencies
 * add this code to the `/etc/rc.local` file before the `exit 0` line
 
     `#autorun node.js server,js file on boot`
@@ -49,7 +64,7 @@ Setup Instructions
 
 License
 
-Software, parts list and CAD files to build and run a RFID controlled Raspberry Pi pet feeder
+Software, parts list and CAD files to build and run a Raspberry Pi controlled pet feeder
 Copyright (C) 2015  Cord Slatton-Valle 
 cord42@gmail.com
 (cordslatton.com)[http://www.cordslatton.com]
