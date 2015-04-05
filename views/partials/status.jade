@@ -8,8 +8,8 @@
               span.closed(ng-show="!status.open")  closed
                 button.btn.btn-sm.btn-success(ng-click="open()") Open Tray
             li.pir PIR sensor
-                span.active(ng-show="status.pir")  active
-                span.inactive(ng-show="!status.pir")  inactive
+                span.active(ng-show="status.pir")  online
+                span.inactive(ng-show="!status.pir")  offline
             li.rfid RFID reader
                 span.online(ng-show="status.rfid")  online
                 span.offline.error(ng-show="!status.rfid")  offline

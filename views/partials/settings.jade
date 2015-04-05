@@ -6,4 +6,4 @@
                 label {{name}}
                     input(type="text", name="setting-{{name}}", ng-model="roboFeederSettings[name]", value="{{value}}")
             input(type="submit", value="Save Settings", class="btn btn-sm btn-success")
-        pre {{roboFeederSettings}}
+        button(ng-click="resetSettings()") Reset Settings to Default

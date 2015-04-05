@@ -1,4 +1,16 @@
 #content
     section#log
         h2 Log
-        p TODO
+        table
+            tr
+                th.message Message
+                th.level Level
+                th.category Category
+                th.timestamp Time
+            tr(ng-repeat="logItem in log")
+                td.message {{logItem.message}}
+                td.level {{logItem.level}}
+                td.category {{logItem.category}}
+                td.timestamp {{logItem.timestamp | date: 'medium'}}
+        p(ng-show="!log.length" ng-cloak) Log is empty
+        button(ng-click="resetLog()", class="btn btn-sm btn-danger") Reset

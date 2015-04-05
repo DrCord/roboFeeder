@@ -7,7 +7,8 @@ var api = require('./routes/api'),
     express = require('express'),
     fs = require('fs'),
     gpio = require('rpi-gpio'), // allow use of gpio - https://www.npmjs.com/package/rpi-gpio
-    http = require('http'),    
+    http = require('http'),
+    log = require('npmlog'),
     methodOverride = require('method-override'),
     morgan = require('morgan'),
     path = require('path'),
@@ -36,20 +37,10 @@ var File = {
     applicationPath: '/home/pi/roboFeeder'
 };
 var Database = {
-    defaultSettings: {
-        rfidThreshold : {
-            name: 'rfidThreshold',
-            value: 10000
-        },
-        pirThreshold : {
-            name: 'pirThreshold',
-            value: 10000
-        }
-    },
-    settings: new datastore({ filename: File.applicationPath + '/db/roboFeeder.db', autoload: true }),
+    datastore: new datastore({ filename: File.applicationPath + '/db/roboFeeder.db', autoload: true }),
     init: function(){
         // do nothing currently
-        // TODO - check if settings db file has settings in it, if not reset to default settings
+        Log.log.info('Database', 'Database initialized');
     }
 };
 var Rfid = {
@@ -115,6 +106,7 @@ var Rfid = {
         //setup watch on file to get changes
         Rfid.watchAllowedTagsFile();
         RoboFeeder.status.rfid = true;
+        Log.log.info('Rfid', 'RFID initialized');
     }
 };
 var Motor = {
@@ -195,6 +187,7 @@ var Motor = {
             Toolbox.printDebugMsg('Running initial open/close cycle without enabling PIR monitoring');
             RoboFeeder.cycle(false);
             RoboFeeder.status.motor = true;
+            Log.log.info('Motor', 'Motor initialized');
         });
     }
 };
@@ -216,6 +209,7 @@ var Gpio = {
         if(Toolbox.debug){
             Gpio.bindChange();
         }
+        Log.log.info('Gpio', 'GPIO initialized');
     }
 };
 var Toolbox = {
@@ -368,12 +362,11 @@ var Pir = {
                 gpio.setup(Pir.sensorPin, gpio.DIR_IN, callback)
             },
         ], function(err, results){
-            Toolbox.printDebugMsg('PIR Pins setup');
             Pir.enable();
             Pir.read();
             Pir.disable();
-            Toolbox.printDebugMsg('PIR tested');
             RoboFeeder.status.pir = true;
+            Log.log.info('Pir', 'PIR pins setup and sensor tested');
         });
     }
 };
@@ -383,14 +376,77 @@ var Output = {
         // TODO
     }
 };
+var Log = {
+    log: log,
+    items: [],
+    init: function(){
+        // setup event listener to save our npmlog events to the db log
+        Log.log.on('log', function(stream){
+            Log.saveItem(stream);
+        });
+        Log.load();
+        Log.log.info('Log', 'Log initialized and log items loaded');
+    },
+    saveItem: function(stream){
+        console.log(stream);
+        var date = new Date();
+        var unix_secs = date.getTime();
+        var logItem = {
+            type: 'log',
+            level: stream.level,
+            category: stream.prefix,
+            message: stream.message,
+            timestamp: unix_secs
+        };
+        Database.datastore.insert(logItem, function (err, newDoc) {   // Callback is optional
+            // DO NOT log this to the npmlog because it will trigger a loop...
+            // newDoc is the newly inserted document, including its _id
+            console.log('Log.saveItem - newDoc');
+            console.log(newDoc);
+        });
+    },
+    load: function(){
+        Database.datastore.find({type: 'log'}, function (err, docs) {
+            //console.log('Log.load');
+            //console.log(docs);
+            if(typeof docs[0] != "undefined"){
+                for (var i=0; i < docs.length; i++) {
+                    logItem = {
+                        message: docs[i]['message'],
+                        level: docs[i]['level'],
+                        category: docs[i]['category'],
+                        timestamp: docs[i]['timestamp']
+                    };
+                    Log.items.push(logItem);
+                }
+            }
+            return Log.items;
+        });
+    },
+    reset: function(){
+        // Remove multiple documents
+        Database.datastore.remove({ type: 'log' }, { multi: true }, function (err, numRemoved) {
+            // DO NOT log this to the npmlog because it will trigger a loop...
+            // newDoc is the newly inserted document, including its _id
+            console.log('Log.reset - numRemoved');
+            console.log(numRemoved);
+            Log.items = [];
+            return Log.items;
+        });
+    }
+};
 var RoboFeeder = {
     //for higher level functions and variables
     settings: {
-        // TODO - expose configuration options to web page
+        // set from db, configurable from ui
         //time in milliseconds, default to 10 seconds
-        pirThreshold: 9000, // pir threshold for closing
-        rfidThreshold: 9000 // rfid threshold for closing
+        pirThreshold: '', // pir threshold for closing
+        rfidThreshold: '' // rfid threshold for closing
 
+    },
+    defaultSettings: {
+        rfidThreshold : 10000,
+        pirThreshold : 10000
     },
     status: {
         open: false,
@@ -442,7 +498,7 @@ var RoboFeeder = {
         );
     },
     loadSettings: function(){
-        Database.settings.find({type: 'setting'}, function (err, docs) {
+        Database.datastore.find({type: 'setting'}, function (err, docs) {
             if(typeof docs[0] != "undefined"){
                 var count = 0;
                 for (var setting in RoboFeeder.settings) {
@@ -451,6 +507,10 @@ var RoboFeeder = {
                     //console.log(RoboFeeder.settings[setting]);
                     count++;
                 }
+            }
+            else{
+                // if cannot get settings from db use default settings
+                RoboFeeder.settings = RoboFeeder.defaultSettings;
             }
         });
     },
@@ -507,6 +567,7 @@ var RoboFeeder = {
         clearInterval(RoboFeeder.openTimer);
     },
     init: function(){
+        Log.init();
         Database.init();
         RoboFeeder.loadSettings();
         Rfid.init();
@@ -540,7 +601,7 @@ var WebServer = {
         WebServer.create();
     },
     setupApi: function(){
-        // JSON API
+        // JSON API allows requests from front end to accomplish tasks
         // tags
         app.get('/api/tags/allowed/get', function(req, res){
             return res.json({ allowedTags: Rfid.allowedTags });
@@ -600,11 +661,31 @@ var WebServer = {
         app.post('/api/settings/save', function(req, res){
             if(typeof req.body.roboFeederSettings != "undefined"){
                 RoboFeeder.settings = req.body.roboFeederSettings;
+                for(var roboFeederSetting in RoboFeeder.settings){
+                    // Set an existing field's value
+                    Database.datastore.update({ name: roboFeederSetting }, { $set: { value: RoboFeeder.settings[roboFeederSetting] } }, {}, function (err, numReplaced) {
+                        console.log('Database.datastore.update - ' + roboFeederSetting);
+                        console.log('numReplaced: ' + numReplaced);
+                    });
+                }
                 console.log('app.post(\'/api/settings/save\' - RoboFeeder.settings');
                 console.log(RoboFeeder.settings);
             }
-            return res.json({ allowedTags: Rfid.allowedTags });
+            return res.json({ roboFeederSettings: RoboFeeder.settings });
         });
+        app.get('/api/settings/reset', function(req, res){
+            RoboFeeder.settings = RoboFeeder.defaultSettings;
+            return res.json({ roboFeederSettings: RoboFeeder.settings });
+        });
+        //log
+        app.get('/api/log/get', function(req, res){
+            return res.json({ log: Log.items });
+        });
+        app.get('/api/log/reset', function(req, res){
+            Log.reset();
+            return res.json({ log: Log.items });
+        });
+
     },
     setupEnvironment: function(){
         /* TODO - decide if needed: not sure if I want this - leaving it for now

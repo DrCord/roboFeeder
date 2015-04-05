@@ -29,6 +29,7 @@
     "method-override": "^1.0.0",
     "morgan": "^1.0.0",
     "nedb": "^1.1.2",
+    "npmlog": "^1.2.0",
     "rpi-gpio": "^0.5.1",
     "serialport": "^1.6.2",
     "xml2js": "^0.4.6"

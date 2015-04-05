@@ -5,6 +5,7 @@ angular.module('roboFeeder.controllers', []).
         $scope.status = {};
         $scope.errors = [];
         $scope.newTag = '';
+        $scope.log = [];
         $scope.removeTagSelect = {};
         $scope.roboFeederSettings = {};
         $scope.getAllowedTags = function(){
@@ -65,10 +66,27 @@ angular.module('roboFeeder.controllers', []).
                     $scope.roboFeederSettings = data.roboFeederSettings;
                 });
         };
+        $scope.resetSettings = function(){
+            $http.get('/api/settings/reset').success(function( data ) {
+                $scope.roboFeederSettings = data.roboFeederSettings;
+            });
+        };
+        $scope.getLog = function(){
+            $http.get('/api/log/get').success(function( data ) {
+                $scope.log = data.log;
+            });
+        };
+        $scope.resetLog = function(){
+            $http.get('/api/log/reset').success(function( data ) {
+                $scope.log = data.items || [];
+            });
+        };
         $scope.init = function(){
             $scope.getStatuses();
             $scope.getAllowedTags();
+            $scope.getLog();
             $scope.getSettings();
         };
+        // do stuff
         $scope.init();
     });

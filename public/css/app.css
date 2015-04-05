@@ -11,3 +11,14 @@ span button{
     font-style: italic;
     padding-left: 6px;
 }
+#log table{
+    border: 1px solid #333;
+}
+#log table th{
+    text-align: center;
+}
+#log table th,
+#log table td{
+    border: 1px solid #333;
+    padding: 3px 10px;
+}
