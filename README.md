@@ -16,10 +16,11 @@ Dependencies:
 * xml2js https://www.npmjs.com/package/xml2js
 
 TODO LIST
-* transfer all console.log messages to npmlog calls
 * auto refresh log page
 * add steps to install/setup procedure for downloading code from github and installing npm dependencies
 * status page - auto refresh
+* add picture(s) to website and git readme display on github
+* update website to match github page, explore possibility of synching website from github page, github gist maybe?
 * switch allowed tags to use db instead of xml, remove xml functions and xml2js package dependency
 * allowed tags - complex programs via ui for allowed times, max time, etc.
 

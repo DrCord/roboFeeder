@@ -1,8 +1,28 @@
-{"type":"setting","name":"rfidThreshold","value":"11000","_id":"n0IK3g0Lo8KXXPX0"}
-{"type":"setting","name":"pirThreshold","value":"15000","_id":"wuMDQthYhDwGNW46"}
-{"type":"log","level":"info","category":"Log","message":"Log initialized and log items loaded","timestamp":1428193123828,"_id":"UIkjvmNVii954aa4"}
-{"type":"log","level":"info","category":"Database","message":"Database initialized","timestamp":1428193123921,"_id":"8A1MhiBFZ5xSnwDz"}
-{"type":"log","level":"info","category":"Rfid","message":"RFID initialized","timestamp":1428193123980,"_id":"tJ5455bs2noMYsZO"}
-{"type":"log","level":"info","category":"Gpio","message":"GPIO initialized","timestamp":1428193124004,"_id":"uVGnnbxuFTX6BCoP"}
-{"type":"log","level":"info","category":"Motor","message":"Motor initialized","timestamp":1428193126841,"_id":"WJ13RuY4VF3v7sHe"}
-{"type":"log","level":"info","category":"Pir","message":"PIR pins setup and sensor tested","timestamp":1428193126931,"_id":"mOqjgXXOWQahsYoP"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Closing Tray","timestamp":1428267473429,"_id":"13V7WtcicMP4J0Kf"}
+{"type":"log","level":"info","category":"Serial","message":"RFID tag match: 02150427","timestamp":1428267461345,"_id":"14B9JD2M9KpKa4I1"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 12345678 was saved.","timestamp":1428267547644,"_id":"1DXB924S3HhyfTfI"}
+{"type":"log","level":"info","category":"Serial","message":"RFID tag match: 02150427","timestamp":1428258852788,"_id":"54tmRnHQ4TCPAjR4"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Opening Tray","timestamp":1428259548170,"_id":"6a3DVg3vx7cBNBPw"}
+{"type":"log","level":"info","category":"Serial","message":"RFID tag not matched: 02178125","timestamp":1428267646938,"_id":"7yqZzF6ZiMZSXPjj"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Closing Tray","timestamp":1428262075654,"_id":"ApFtJ4JMZD9No620"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Opening Tray","timestamp":1428262067541,"_id":"IBBkfEnuHo8E3lBq"}
+{"type":"log","level":"info","category":"Serial","message":"RFID tag match: 02150427","timestamp":1428259795332,"_id":"L2w0Ugstwbwu5eHz"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Closing Tray","timestamp":1428260079128,"_id":"MLGOfiJQD9FHGfzL"}
+{"type":"log","level":"info","category":"Serial","message":"RFID tag not matched: 02178125","timestamp":1428267646177,"_id":"MRNsezRgar1l1BzK"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Opening Tray","timestamp":1428259795266,"_id":"QjQLCVEslbjaCMbE"}
+{"type":"log","level":"info","category":"Serial","message":"RFID tag match: 02150427","timestamp":1428262947998,"_id":"RwdZnh7ICsmeaRrJ"}
+{"type":"log","level":"info","category":"Serial","message":"RFID tag match: 02150427","timestamp":1428262067585,"_id":"X3Apb7MdnqULxlfU"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Opening Tray","timestamp":1428260070912,"_id":"ZQoW9EH1ZJ6nrn9w"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Closing Tray","timestamp":1428262237964,"_id":"cbF5rMLhpGkshmve"}
+{"type":"log","level":"info","category":"Serial","message":"RFID tag match: 02150427","timestamp":1428259548243,"_id":"dNRujf53fcD32FXT"}
+{"type":"log","level":"info","category":"Serial","message":"RFID tag match: 02150427","timestamp":1428260070957,"_id":"dr7rqNQJjzOrCQkN"}
+{"type":"log","level":"info","category":"Serial","message":"RFID tag match: 02150427","timestamp":1428262195072,"_id":"f4MPa1oNEPsDeSWe"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Closing Tray","timestamp":1428262966687,"_id":"hJovweDMEHMfvAqy"}
+{"type":"setting","name":"rfidThreshold","value":"8000","_id":"n0IK3g0Lo8KXXPX0"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Opening Tray","timestamp":1428262195035,"_id":"o6djIqnMCvJkqxOJ"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Opening Tray","timestamp":1428262947947,"_id":"oezbDDPCfhrE9w4x"}
+{"type":"log","level":"info","category":"Serial","message":"RFID tag not matched: 02178125","timestamp":1428267645428,"_id":"qRTSVebJbM6vc03a"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Closing Tray","timestamp":1428259840953,"_id":"r0wf2cIg99wmrEBe"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Opening Tray","timestamp":1428267461313,"_id":"w8PX0ugA78j2LwGB"}
+{"type":"setting","name":"pirThreshold","value":"12000","_id":"wuMDQthYhDwGNW46"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 12345678 was removed.","timestamp":1428267596158,"_id":"z7hthwcAtWjxG2kn"}

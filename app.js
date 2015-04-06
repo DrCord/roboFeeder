@@ -9,8 +9,6 @@ var api = require('./routes/api'),
     gpio = require('rpi-gpio'), // allow use of gpio - https://www.npmjs.com/package/rpi-gpio
     http = require('http'),
     log = require('npmlog'),
-    methodOverride = require('method-override'),
-    morgan = require('morgan'),
     path = require('path'),
     routes = require('./routes'),
     serialport = require('serialport'),
@@ -40,7 +38,7 @@ var Database = {
     datastore: new datastore({ filename: File.applicationPath + '/db/roboFeeder.db', autoload: true }),
     init: function(){
         // do nothing currently
-        Log.log.info('Database', 'Database initialized');
+        Log.log.info('Database', 'Database initialized', false);
     }
 };
 var Rfid = {
@@ -60,14 +58,14 @@ var Rfid = {
     },
     watchAllowedTagsFile: function(){
         fs.watch(File.applicationPath + '/' + Rfid.allowedTagsFileName, File.watchOptions, function(event, filename) {
-            console.log(event + " event occurred on " + filename);
+            Log.log.info('Rfid', 'watchAllowedTagsFile: ' + event + " event occurred on " + filename, false);
         });
     },
     setLastTrigger: function(){
         var date = new Date();
         var unix_secs = date.getTime();
         Rfid.lastTrigger = unix_secs;
-        Toolbox.printDebugMsg('Rfid.lastTrigger set: ' + unix_secs);
+        Log.log.info('Rfid', 'Rfid.lastTrigger set: ' + unix_secs, false);
     },
     saveAllowedTags: function(xml){
         fs.writeFile(
@@ -75,9 +73,9 @@ var Rfid = {
             xml,
             function(err) {
                 if(err) {
-                    return console.log(err);
+                    Log.log.error('Rfid', err);
                 }
-                console.log("The allowed Tags XML file was saved.");
+                Log.log.info('Rfid', 'The allowed tags XML file was saved.', false);
             }
         );
     },
@@ -86,6 +84,7 @@ var Rfid = {
         Rfid.allowedTags = Toolbox.uniq(Rfid.allowedTags);
         var xml = Rfid.allowedTagsToXML();
         Rfid.saveAllowedTags(xml);
+        Log.log.info('Rfid', 'The new allowed tag ' + tag + ' was saved.');
     },
     removeAllowedTag: function(tag){
         var tagIndex = Rfid.allowedTags.indexOf(tag);
@@ -93,6 +92,7 @@ var Rfid = {
             Rfid.allowedTags.splice(tagIndex, 1);
         }
         var xml = Rfid.allowedTagsToXML();
+        Log.log.info('Rfid', 'The allowed tag ' + tag + ' was removed.');
         Rfid.saveAllowedTags(xml);
     },
     allowedTagsToXML: function(){
@@ -106,7 +106,7 @@ var Rfid = {
         //setup watch on file to get changes
         Rfid.watchAllowedTagsFile();
         RoboFeeder.status.rfid = true;
-        Log.log.info('Rfid', 'RFID initialized');
+        Log.log.info('Rfid', 'RFID initialized', false);
     }
 };
 var Motor = {
@@ -116,61 +116,6 @@ var Motor = {
     runTime: 2800,
     waitTime: 5000,
     running: false,
-    on: function(){
-        //turns on the motor drive pin
-        //needs to be called with Motor.forward or Motor.reverse to actually run motor
-        //Toolbox.printDebugMsg('Motor.on called');
-        //Toolbox.printDebugMsg('Motor.running: ' + Motor.running);
-        if(!Motor.running){
-            Motor.running = true;
-            gpio.write(Motor.enablePin, true, function(err) {
-                if (err) throw err;
-                //Toolbox.printDebugMsg('Motor.enablePin ' + Motor.enablePin + ' set HIGH');
-            });
-        }
-    },
-    off: function(){
-        //turns all the way off all three pins involved
-        //Toolbox.printDebugMsg('Motor.off called');
-        //Toolbox.printDebugMsg('Motor.running: ' + Motor.running);
-        Motor.running = false;
-        gpio.write(Motor.enablePin, false, function(err) {
-            if (err) throw err;
-            Toolbox.printDebugMsg('Motor.enablePin ' + Motor.enablePin + ' set LOW.');
-        });
-        gpio.write(Motor.forwardPin, false, function(err) {
-            if (err) throw err;
-            Toolbox.printDebugMsg('Motor.forwardPin ' + Motor.forwardPin + ' set LOW.');
-        });
-        gpio.write(Motor.reversePin, false, function(err) {
-            if (err) throw err;
-            Toolbox.printDebugMsg('Motor.reversePin ' + Motor.reversePin + ' set LOW.');
-        });
-    },
-    forward: function(){
-        //Toolbox.printDebugMsg('Motor.forward called');
-        Motor.on();
-        gpio.write(Motor.forwardPin, true, function(err) {
-            if (err) throw err;
-            //Toolbox.printDebugMsg('Motor.forwardPin ' + Motor.forwardPin + ' set HIGH.');
-        });
-        gpio.write(Motor.reversePin, false, function(err) {
-            if (err) throw err;
-            //Toolbox.printDebugMsg('Motor.reversePin ' + Motor.reversePin + ' set LOW.');
-        });
-    },
-    reverse: function(){
-        //Toolbox.printDebugMsg('Motor.reverse called');
-        Motor.on();
-        gpio.write(Motor.reversePin, true, function(err) {
-            if (err) throw err;
-            //Toolbox.printDebugMsg('Motor.reversePin ' + Motor.reversePin + ' set HIGH');
-        });
-        gpio.write(Motor.forwardPin, false, function(err) {
-            if (err) throw err;
-            //Toolbox.printDebugMsg('Written to pin: ' + Motor.reversePin + ' set LOW');
-        });
-    },
     init: function(){
         async.parallel([
             function(callback){
@@ -183,48 +128,84 @@ var Motor = {
                 gpio.setup(Motor.enablePin, gpio.DIR_OUT, callback)
             },
         ], function(err, results){
-            Toolbox.printDebugMsg('Motor Pins setup');
-            Toolbox.printDebugMsg('Running initial open/close cycle without enabling PIR monitoring');
+            Log.log.info('Motor', 'Motor Pins setup', false);
+            Log.log.info('Motor', 'Running initial open/close cycle without enabling PIR monitoring', false);
             RoboFeeder.cycle(false);
             RoboFeeder.status.motor = true;
-            Log.log.info('Motor', 'Motor initialized');
+            Log.log.info('Motor', 'Motor initialized', false);
+        });
+    },
+    on: function(){
+        //turns on the motor drive pin
+        //needs to be called with Motor.forward or Motor.reverse to actually run motor
+        if(!Motor.running){
+            Motor.running = true;
+            gpio.write(Motor.enablePin, true, function(err) {
+                if (err) throw err;
+            });
+        }
+    },
+    off: function(){
+        //turns all the way off all three pins involved
+        Motor.running = false;
+        gpio.write(Motor.enablePin, false, function(err) {
+            if (err) throw err;
+            Log.log.info('Motor', 'Motor.enablePin ' + Motor.enablePin + ' set LOW.', false);
+        });
+        gpio.write(Motor.forwardPin, false, function(err) {
+            if (err) throw err;
+            Log.log.info('Motor', 'Motor.forwardPin ' + Motor.forwardPin + ' set LOW.', false);
+        });
+        gpio.write(Motor.reversePin, false, function(err) {
+            if (err) throw err;
+            Log.log.info('Motor', 'Motor.reversePin ' + Motor.reversePin + ' set LOW.', false);
+        });
+    },
+    forward: function(){
+        Motor.on();
+        gpio.write(Motor.forwardPin, true, function(err) {
+            if (err) throw err;
+        });
+        gpio.write(Motor.reversePin, false, function(err) {
+            if (err) throw err;
+        });
+    },
+    reverse: function(){
+        Motor.on();
+        gpio.write(Motor.reversePin, true, function(err) {
+            if (err) throw err;
+        });
+        gpio.write(Motor.forwardPin, false, function(err) {
+            if (err) throw err;
         });
     }
 };
 var Gpio = {
+    init: function(){
+        //bind change of GPIO pins
+        Gpio.bindChange();
+        Log.log.info('Gpio', 'GPIO initialized', false);
+    },
     bindChange: function(){
         gpio.on('change', function(channel, value){
             //send monitoring data to server for monitor on site
-            Toolbox.printDebugMsg('Channel ' + channel + ' value is now ' + value);
+            Log.log.info('Gpio', 'Channel ' + channel + ' value is now ' + value, false);
         });
     },
     closePins: function(){
         gpio.destroy(function() {
-            Toolbox.printDebugMsg('--- All pins un-exported, gpio closed ---');
+            Log.log.info('Gpio', '--- All pins un-exported, GPIO closed ---', false);
             return process.exit(0);
         });
-    },
-    init: function(){
-        //bind change of GPIO pins if debugging
-        if(Toolbox.debug){
-            Gpio.bindChange();
-        }
-        Log.log.info('Gpio', 'GPIO initialized');
     }
 };
 var Toolbox = {
-    debug: true, //turns on all debugging console.log messages
     zeroFill: function(number, width){
         width -= number.toString().length;
         if ( width > 0 )    {
             return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
         }
         return number + ""; // always return a string
-    },
-    printDebugMsg: function(msg){
-        if(Toolbox.debug){
-            console.log(msg);
-        }
     },
     uniq: function(a) {
         var prims = {"boolean":{}, "number":{}, "string":{}}, objs = [];
@@ -243,78 +224,87 @@ var Serial = {
         baudrate: 9600,
         parser: serialport.parsers.raw
     }),
-    receiveData: function(data){
-        var buff = new Buffer(data, 'utf8');
-        var encoded_hex = buff.toString('hex');
-        var encoded_int = parseInt(encoded_hex, 16);
-        //Toolbox.printDebugMsg('data received: ' + data);
-        //Toolbox.printDebugMsg('encoded hex data: ' + encoded_hex);
-        //Toolbox.printDebugMsg('encoded int data: ' + encoded_int);
-        Serial.checkCode(encoded_int, RoboFeeder.status.open);
-    },
-    checkCode: function(code, rechecking){
-        //Toolbox.printDebugMsg('checkCode - incoming code: ', code);
-        zerofilled_code = Toolbox.zeroFill(code, 8);
-        //Toolbox.printDebugMsg('zerofilled code: ', zerofilled_code);
-        var codeIndex = null;
-        for(var i=0; i < Rfid.allowedTags.length; i++){
-            //Toolbox.printDebugMsg('Rfid.allowedTags[i]: ', Rfid.allowedTags[i]);
-            if(Rfid.allowedTags[i] == zerofilled_code){
-                codeIndex = i;
-                break;
-            }
-        }
-        //Toolbox.printDebugMsg('codeIndex: ', codeIndex);
-        if(codeIndex !== null){
-            if(!rechecking){
-                RoboFeeder.open();
-                Pir.monitor();
-            }
-            Toolbox.printDebugMsg('RFID tag match: ' + code);
-            Rfid.setLastTrigger();
-            /*if(codeIndex === 0){
-                //white tag index 0
-                Toolbox.printDebugMsg('white tag match: ', code);
-                Motor.forward();
-            }
-            else if(codeIndex === 1){
-                //blue tag index 1
-                Toolbox.printDebugMsg('blue tag match: ', code);
-                Motor.reverse();
-            }*/
-        }
-    },
     init: function(){
         Serial.sp.on('open', function() {
-            Toolbox.printDebugMsg('Serial connection open.');
+            Log.log.info('Serial', 'Serial connection open.', false);
             Serial.sp.on('data', function(data) {
                 Serial.receiveData(data);
             });
         });
         RoboFeeder.status.serial = true;
+    },
+    receiveData: function(data){
+        var buff = new Buffer(data, 'utf8');
+        var encoded_hex = buff.toString('hex');
+        var encoded_int = parseInt(encoded_hex, 16);
+        Serial.checkCode(encoded_int, RoboFeeder.status.open);
+    },
+    checkCode: function(code, rechecking){
+        var zerofilled_code = Toolbox.zeroFill(code, 8);
+        var codeIndex = null;
+        for(var i=0; i < Rfid.allowedTags.length; i++){
+            if(Rfid.allowedTags[i] == zerofilled_code){
+                codeIndex = i;
+                break;
+            }
+        }
+        if(codeIndex !== null){
+            if(!rechecking){
+                RoboFeeder.open();
+                Pir.monitor();
+            }
+            Log.log.info('Serial', 'RFID tag match: ' + zerofilled_code);
+            Rfid.setLastTrigger();
+            //example code for checking for a specific tag, left in for later
+            /* if(codeIndex === 0){
+                //white tag index 0
+            }
+            else if(codeIndex === 1){
+                //blue tag index 1
+            }*/
+        }
+        else{
+            Log.log.info('Serial', 'RFID tag not matched: ' + zerofilled_code);
+        }
     }
 };
 var Pir = {
     // Passive InfraRed Sensor
     enablePin: 11,
     sensorPin: 12,
-    lastTrigger: null,
+    lastTrigger: '',
     checkFrequency: 50,
+    init: function(){
+        async.parallel([
+            function(callback){
+                gpio.setup(Pir.enablePin, gpio.DIR_OUT, callback)
+            },
+            function(callback){
+                gpio.setup(Pir.sensorPin, gpio.DIR_IN, callback)
+            },
+        ], function(err, results){
+            Pir.enable();
+            Pir.read();
+            Pir.disable();
+            RoboFeeder.status.pir = true;
+            Log.log.info('Pir', 'PIR pins setup and sensor tested', false);
+        });
+    },
     enable: function(){
         gpio.write(Pir.enablePin, true, function(err) {
             if (err) throw err;
-            Toolbox.printDebugMsg('Pir.enablePin ' + Pir.enablePin + ' set HIGH');
+            Log.log.info('Pir', 'Pir.enablePin ' + Pir.enablePin + ' set HIGH', false);
         });
     },
     disable: function(){
         gpio.write(Pir.enablePin, false, function(err) {
             if (err) throw err;
-            Toolbox.printDebugMsg('Pir.enablePin ' + Pir.enablePin + ' set LOW');
+            Log.log.info('Pir', 'Pir.enablePin ' + Pir.enablePin + ' set LOW', false);
         });
     },
     read: function(){
         gpio.read(Pir.sensorPin, function(err, value) {
-            console.log('The Pir sensor pin value is ' + value);
+            Log.log.info('Pir', 'The Pir sensor pin value is ' + value, false);
             return value;
         });
     },
@@ -324,7 +314,7 @@ var Pir = {
             pinState;
 
         ee.on('stateChange', function(previousValue, value){
-            console.log('PIR sensor pin state changed from', previousValue, 'to', value);
+            Log.log.info('Pir', 'PIR sensor pin state changed from ' + previousValue + ' to ' + value, false);
             Pir.setLastTrigger();
         });
 
@@ -351,29 +341,14 @@ var Pir = {
         var date = new Date();
         var unix_secs = date.getTime();
         Pir.lastTrigger = unix_secs;
-        Toolbox.printDebugMsg('Pir.lastTrigger set: ' + unix_secs);
-    },
-    init: function(){
-        async.parallel([
-            function(callback){
-                gpio.setup(Pir.enablePin, gpio.DIR_OUT, callback)
-            },
-            function(callback){
-                gpio.setup(Pir.sensorPin, gpio.DIR_IN, callback)
-            },
-        ], function(err, results){
-            Pir.enable();
-            Pir.read();
-            Pir.disable();
-            RoboFeeder.status.pir = true;
-            Log.log.info('Pir', 'PIR pins setup and sensor tested');
-        });
+        Log.log.info('Pir', 'Pir.lastTrigger set: ' + unix_secs, false);
     }
 };
 var Output = {
     // Status indication LEDs, etc.
     init: function(){
         // TODO
+        Log.log.info('Output', 'Output init run', false);
     }
 };
 var Log = {
@@ -382,33 +357,30 @@ var Log = {
     init: function(){
         // setup event listener to save our npmlog events to the db log
         Log.log.on('log', function(stream){
-            Log.saveItem(stream);
+            //if extra args not set or !== false then save log item to db log
+            if(typeof stream.messageRaw[1] == "undefined" || (typeof stream.messageRaw[1] != "undefined" && stream.messageRaw[1] !== false)){
+                Log.saveItem(stream);
+            }
         });
         Log.load();
-        Log.log.info('Log', 'Log initialized and log items loaded');
+        Log.log.info('Log', 'Log initialized and log items loaded', false);
     },
     saveItem: function(stream){
-        console.log(stream);
         var date = new Date();
         var unix_secs = date.getTime();
         var logItem = {
             type: 'log',
             level: stream.level,
             category: stream.prefix,
-            message: stream.message,
+            message: stream.messageRaw[0],
             timestamp: unix_secs
         };
-        Database.datastore.insert(logItem, function (err, newDoc) {   // Callback is optional
-            // DO NOT log this to the npmlog because it will trigger a loop...
-            // newDoc is the newly inserted document, including its _id
-            console.log('Log.saveItem - newDoc');
-            console.log(newDoc);
+        Database.datastore.insert(logItem, function (err, newDoc) {
+            Log.log.info('Log', 'Log.saveItem success', false);
         });
     },
     load: function(){
         Database.datastore.find({type: 'log'}, function (err, docs) {
-            //console.log('Log.load');
-            //console.log(docs);
             if(typeof docs[0] != "undefined"){
                 for (var i=0; i < docs.length; i++) {
                     logItem = {
@@ -426,10 +398,8 @@ var Log = {
     reset: function(){
         // Remove multiple documents
         Database.datastore.remove({ type: 'log' }, { multi: true }, function (err, numRemoved) {
-            // DO NOT log this to the npmlog because it will trigger a loop...
             // newDoc is the newly inserted document, including its _id
-            console.log('Log.reset - numRemoved');
-            console.log(numRemoved);
+            Log.log.info('Log', 'Log.reset - number of log items removed: ' + numRemoved, false);
             Log.items = [];
             return Log.items;
         });
@@ -458,10 +428,25 @@ var RoboFeeder = {
     intervalTimer: '',
     openTimer: '',
     checkFrequency: 100,
+    init: function(){
+        Log.init();
+        Database.init();
+        RoboFeeder.loadSettings();
+        Rfid.init();
+        Serial.init();
+        Gpio.init();
+        Motor.init();
+        Pir.init();
+        Output.init();
+        WebServer.init();
+    },
     open: function(enable){
+        //boolean `enable` is for enabling the pir sensor and log of the event being saved to the db log
+        // `enable` is false during boot
         if(enable !== false){
             enable = true;
         }
+        Log.log.info('RoboFeeder', 'Opening Tray', enable);
         Motor.reverse();
         RoboFeeder.status.open = true;
         RoboFeeder.openTimer = setTimeout(
@@ -476,7 +461,13 @@ var RoboFeeder = {
             RoboFeeder.monitor();
         }
     },
-    close: function(){
+    close: function(enable){
+        //boolean `enable` is for enabling the log of the event being saved to the db log
+        // `enable` is false during boot, defaults to true after
+        if(enable !== false){
+            enable = true;
+        }
+        Log.log.info('RoboFeeder', 'Closing Tray', enable);
         Motor.forward();
         RoboFeeder.status.open = false;
         RoboFeeder.openTimer = setTimeout(
@@ -493,7 +484,7 @@ var RoboFeeder = {
         }
         RoboFeeder.open(enable);
         setTimeout(
-            RoboFeeder.close,
+            function(){RoboFeeder.close(enable)},
             Motor.waitTime
         );
     },
@@ -503,8 +494,6 @@ var RoboFeeder = {
                 var count = 0;
                 for (var setting in RoboFeeder.settings) {
                     RoboFeeder.settings[setting] = docs[count]['value'];
-                    //console.log('RoboFeeder.settings.' + docs[count]['name']);
-                    //console.log(RoboFeeder.settings[setting]);
                     count++;
                 }
             }
@@ -512,15 +501,25 @@ var RoboFeeder = {
                 // if cannot get settings from db use default settings
                 RoboFeeder.settings = RoboFeeder.defaultSettings;
             }
+            Log.log.info('RoboFeeder', 'Settings loaded', false);
         });
+    },
+    saveSettings: function(req){
+        RoboFeeder.settings = req.body.roboFeederSettings;
+        for(var roboFeederSetting in RoboFeeder.settings){
+            Database.datastore.update({ name: roboFeederSetting }, { $set: { value: RoboFeeder.settings[roboFeederSetting] } }, {}, function (err, numReplaced) {
+                Log.log.info('WebServer', 'Setting ' + roboFeederSetting + ' saved', false);
+            });
+        }
+        Log.log.info('WebServer', 'Settings saved');
     },
     monitor: function(){
         var ee = new process.EventEmitter(),
             rfid = false,
             pir = false;
 
-            ee.on('stateChange', function(event_name){
-            Toolbox.printDebugMsg('roboFeeder monitor event emitter triggered: ' + event_name);
+        ee.on('stateChange', function(event_name){
+            Log.log.info('RoboFeeder', 'roboFeeder monitor event emitter triggered: ' + event_name, false);
         });
 
         RoboFeeder.intervalTimer = setInterval(function(){
@@ -528,7 +527,6 @@ var RoboFeeder = {
             var unix_secs = date.getTime();
 
             if(unix_secs - RoboFeeder.settings.pirThreshold >= Pir.lastTrigger){
-                //Toolbox.printDebugMsg('RoboFeeder.intervalTimer - Pir.lastTrigger: ' + Pir.lastTrigger);
                 if(!pir){
                     ee.emit('stateChange', 'PIR: past interval');
                     pir = true;
@@ -541,7 +539,6 @@ var RoboFeeder = {
                 }
             }
             if(unix_secs - RoboFeeder.settings.rfidThreshold >= Rfid.lastTrigger){
-                //Toolbox.printDebugMsg('RoboFeeder.intervalTimer - Rfid.lastTrigger: ' + Rfid.lastTrigger);
                 if(!rfid){
                     ee.emit('stateChange', 'RFID: past interval');
                     rfid = true;
@@ -565,31 +562,16 @@ var RoboFeeder = {
     },
     openTimerEnd: function(){
         clearInterval(RoboFeeder.openTimer);
-    },
-    init: function(){
-        Log.init();
-        Database.init();
-        RoboFeeder.loadSettings();
-        Rfid.init();
-        Serial.init();
-        Gpio.init();
-        Motor.init();
-        Pir.init();
-        Output.init();
-        WebServer.init();
     }
 };
 var WebServer = {
     init: function(){
         app.set('views', File.applicationPath + '/views');
         app.set('view engine', 'jade');
-        app.use(morgan('dev'));
         app.use(bodyParser.urlencoded({ extended: true }));
         app.use(bodyParser.json());
-        app.use(methodOverride());
         app.use(express.static(path.join(__dirname, 'public')));
 
-        //WebServer.setupEnvironment();
         /** Routes */
         // serve index and view partials
         app.get('/', routes.index);
@@ -660,16 +642,7 @@ var WebServer = {
         });
         app.post('/api/settings/save', function(req, res){
             if(typeof req.body.roboFeederSettings != "undefined"){
-                RoboFeeder.settings = req.body.roboFeederSettings;
-                for(var roboFeederSetting in RoboFeeder.settings){
-                    // Set an existing field's value
-                    Database.datastore.update({ name: roboFeederSetting }, { $set: { value: RoboFeeder.settings[roboFeederSetting] } }, {}, function (err, numReplaced) {
-                        console.log('Database.datastore.update - ' + roboFeederSetting);
-                        console.log('numReplaced: ' + numReplaced);
-                    });
-                }
-                console.log('app.post(\'/api/settings/save\' - RoboFeeder.settings');
-                console.log(RoboFeeder.settings);
+                RoboFeeder.saveSettings(req);
             }
             return res.json({ roboFeederSettings: RoboFeeder.settings });
         });
@@ -687,23 +660,11 @@ var WebServer = {
         });
 
     },
-    setupEnvironment: function(){
-        /* TODO - decide if needed: not sure if I want this - leaving it for now
-         var env = process.env.NODE_ENV || 'development';
-         // development only
-         if (env === 'development') {
-         app.use(express.errorHandler());
-         }
-         // production only
-         if (env === 'production') {
-         // noting setup for production
-         }*/
-    },
     create: function(){
         var server = app.listen(port, ip, function () {
             var host = server.address().address;
             var port = server.address().port;
-            console.log('RoboFeeder app listening at http://%s:%s', host, port);
+            Log.log.info('WebServer', 'RoboFeeder app listening at http://' + host + ':' + port, false);
         });
     }
 };
