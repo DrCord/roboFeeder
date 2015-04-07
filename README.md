@@ -49,7 +49,7 @@ Parts List:
 Setup Instructions
 * setup wifi credentials //TODO: update wifi file location
 * disable shell and kernel messages via serial in the raspi-config utility
-* connect to the pi via ssh, make sure you are in the pi user's home directory (/home/pi/) and run git clone https://github.com/DrCord/roboFeeder.git
+* connect to the pi via ssh, make sure you are in the pi user's home directory (/home/pi/) and run `git clone https://github.com/DrCord/roboFeeder.git`
 * `cd roboFeeder` then `sudo npm install`
 * add this code to the `/etc/rc.local` file before the `exit 0` line
 
