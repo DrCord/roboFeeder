@@ -382,6 +382,7 @@ var Log = {
     load: function(){
         Database.datastore.find({type: 'log'}, function (err, docs) {
             if(typeof docs[0] != "undefined"){
+                Log.items = [];
                 for (var i=0; i < docs.length; i++) {
                     logItem = {
                         message: docs[i]['message'],
@@ -392,7 +393,6 @@ var Log = {
                     Log.items.push(logItem);
                 }
             }
-            return Log.items;
         });
     },
     reset: function(){
@@ -429,16 +429,45 @@ var RoboFeeder = {
     openTimer: '',
     checkFrequency: 100,
     init: function(){
-        Log.init();
-        Database.init();
-        RoboFeeder.loadSettings();
-        Rfid.init();
-        Serial.init();
-        Gpio.init();
-        Motor.init();
-        Pir.init();
-        Output.init();
-        WebServer.init();
+        async.parallel([
+            function(){ Log.init(); },
+            function(){ Gpio.init(); }
+        ]);
+        async.series({
+            database_init: function (callback) {
+                Database.init();
+                callback(null, true);
+            },
+            roboFeeder_loadSetings: function(callback){
+                RoboFeeder.loadSettings();
+                callback(null, true);
+            },
+            rfid_init: function(callback){
+                Rfid.init();
+                callback(null, true);
+            },
+            serial_init: function(callback){
+                Serial.init();
+                callback(null, true);
+            },
+            pir_init: function(callback){
+                Pir.init();
+                callback(null, true);
+            },
+            motor_init: function(callback){
+                Motor.init();
+                callback(null, true);
+            },
+            output_init: function(callback){
+                Output.init();
+                callback(null, true);
+            }
+        }, function(err, results){
+            if(!err){
+                WebServer.init();
+                Log.log.info('RoboFeeder', 'All startup processes initialized', true);
+            }
+        });
     },
     open: function(enable){
         //boolean `enable` is for enabling the pir sensor and log of the event being saved to the db log
@@ -613,7 +642,7 @@ var WebServer = {
         // manual close
         app.get('/api/close', function(req, res){
             RoboFeeder.openTimerEnd();
-            RoboFeeder.close();
+            RoboFeeder.close(false);
             RoboFeeder.openTimerEnd();
             setTimeout(
                 function(){ return res.json({ status: RoboFeeder.status.open }); },
@@ -636,6 +665,9 @@ var WebServer = {
         app.get('/api/status/serial', function(req, res){
             return res.json({ status: RoboFeeder.status.serial });
         });
+        app.get('/api/status/load', function(req, res){
+            return res.json({ statuses: RoboFeeder.status });
+        });
         // settings
         app.get('/api/settings/get', function(req, res){
             return res.json({ roboFeederSettings: RoboFeeder.settings });
@@ -652,6 +684,10 @@ var WebServer = {
         });
         //log
         app.get('/api/log/get', function(req, res){
+            return res.json({ log: Log.items });
+        });
+        app.get('/api/log/load', function(req, res){
+            Log.load();
             return res.json({ log: Log.items });
         });
         app.get('/api/log/reset', function(req, res){

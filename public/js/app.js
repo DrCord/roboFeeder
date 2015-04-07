@@ -3,6 +3,9 @@
 // Declare app level module which depends on filters, and services
 
 angular.module('roboFeeder', [
+  'ngRoute',
+  'ngResource',
+  'emguo.poller',
   'roboFeeder.controllers',
   'roboFeeder.filters',
   'roboFeeder.services',
