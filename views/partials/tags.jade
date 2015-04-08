@@ -9,9 +9,10 @@
                 h3 Authorize New Tag
                     span.help-text (8 digit numeric code)
                 form(name="authorizeTagForm", ng-submit="authorizeTag()")
-                    input(type="text", name="newTagInput", ng-model="newTag", ng-pattern="/^[0-9]{8}$/")
+                    input(type="text", name="newTagInput", ng-model="newTag", ng-pattern="/^[0-9]{8}$/" ng-change="msgs.alreadyAllowed = false")
                     input(type="submit", value="Authorize Tag" class="btn btn-sm btn-success")
                     span(ng-show="authorizeTagForm.newTagInput.$error.pattern").error Not a valid code
+                    span(ng-show="msgs.alreadyAllowed").error Tag already allowed
             div#remove
                 h3 Remove Existing Tag
                 select(id="removeTag", name="removeTag-select", ng-model="removeTagSelect", ng-options="allowedTag as allowedTag for allowedTag in allowedTags")
