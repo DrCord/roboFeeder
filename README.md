@@ -22,10 +22,10 @@ TODO LIST
 
 Parts List:
 * Raspberry Pi ([B+](http://www.adafruit.com/products/1914), [Pi 2](http://www.adafruit.com/products/2358))
-* Micro SD card (8GB+) compatible with Raspberry Pi with Raspbian installed ([Adafruit](https://www.adafruit.com/products/1562))
+* Micro SD card (8GB+) compatible with Raspberry Pi with Raspbian installed ([Adafruit](http://www.amazon.com/s/?ie=UTF8&keywords=8gb+sd+mini))
 * Wireless network dongle compatible with Raspberry Pi with a decent antenna ([Adafruit](http://www.adafruit.com/products/1012))
 * PIR Sensor ([SparkFun](https://www.sparkfun.com/products/8630))
-* RFID Sensor with serial output (9600 bps to use codebase without changing) ([AliExpress](http://www.aliexpress.com/store/product/Free-Shipping-RFID-module-HZ-1050-Kits-125KHZ-Serial-port-UART-output-for-arduino-uno-2560/1026060_1780057192.html))
+* RFID Sensor with serial output (9600 bps to use codebase without changing) ([AliExpress](http://www.amazon.com/Anti-Jamming-Capability-HZ-1050-Module-Reader/dp/B00NJCB8NO))
 * Logic Level Converter 5v - 3.3V (bi-directional) ([SparkFun](https://www.sparkfun.com/products/12009))
 * L293D Chip - Dual H-Bridge Motor Driver ([Adafruit](https://www.adafruit.com/products/807))
 * AdaFruit Half-size Perma-proto Raspberry Pi ([Adafruit](http://www.adafruit.com/products/1148))
