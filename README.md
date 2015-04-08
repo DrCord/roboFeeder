@@ -2,6 +2,7 @@
 ##nodejs code to run RFID pet feeder using a Raspberry Pi
 
 [github repository](https://github.com/DrCord/roboFeeder)
+
 [project website](http://robofeeder.cordslatton.com)
 
 Dependencies:
@@ -15,6 +16,7 @@ Dependencies:
 * serialport https://www.npmjs.com/package/serialport
 
 TODO LIST
+* improve look of the web app pages
 * add picture(s) to website and git readme display on github
 * allowed tags - complex programs via ui for allowed times, max time, etc.
 
