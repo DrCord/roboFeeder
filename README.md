@@ -13,11 +13,9 @@ Dependencies:
 * npmlog https://github.com/npm/npmlog
 * rpi-gpio https://www.npmjs.com/package/rpi-gpio
 * serialport https://www.npmjs.com/package/serialport
-* xml2js https://www.npmjs.com/package/xml2js
 
 TODO LIST
 * add picture(s) to website and git readme display on github
-* switch allowed tags to use db instead of xml, remove xml functions and xml2js package dependency
 * allowed tags - complex programs via ui for allowed times, max time, etc.
 
 Parts List:

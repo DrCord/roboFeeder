@@ -1,4 +1,4 @@
-//setup node web server
+/** setup node web server */
 // require needed modules
 var api = require('./routes/api'),
     async = require('async'), //allow better formatting for asynchronous calls - https://github.com/caolan/async
@@ -12,54 +12,35 @@ var api = require('./routes/api'),
     path = require('path'),
     routes = require('./routes'),
     serialport = require('serialport'),
-    url = require('url'),
-    xml2js = require('xml2js');
+    url = require('url');
 // setup ip and port
-var ip = process.argv[2] || '192.168.1.116', // has to be actual ip of device
+var applicationPath = '/home/pi/roboFeeder',
+    ip = process.argv[2] || '192.168.1.116', // has to be actual ip of device
     port = process.argv[3] || 8080;
 
 var app = module.exports = express();
-// sets port 8080 to default unless otherwise specified via script init argument
+// sets port to default(8080) unless otherwise specified via script init argument
 app.set('port', port);
 // localize serialport object constructor
 var SerialPort = serialport.SerialPort;
 
 // object for each part of application
-var File = {
-    readOptions : {
-        encoding: 'utf8'
-    },
-    watchOptions: {
-        persistent: true
-    },
-    applicationPath: '/home/pi/roboFeeder'
-};
 var Database = {
-    datastore: new datastore({ filename: File.applicationPath + '/db/roboFeeder.db', autoload: true }),
+    datastore: new datastore({ filename: applicationPath + '/db/roboFeeder.db', autoload: true }),
     init: function(){
         // do nothing currently
         Log.log.info('Database', 'Database initialized', false);
     }
 };
 var Rfid = {
-    allowedTagsFileName: 'allowedTags.xml',
-    //allowedTags uses strings to preserve leading zeros
+    // allowedTags uses strings to preserve leading zeros
     allowedTags: [],
     lastTrigger: null,
-    parseXMLString : require('xml2js').parseString,
-    xmlBuilder : new xml2js.Builder({rootName: 'codes'}),
-    getAllowedTags: function(){
-        fs.readFile(File.applicationPath + '/' + Rfid.allowedTagsFileName, File.readOptions, function (err, data) {
-            if (err) throw err;
-            Rfid.parseXMLString(data, function (err, result) {
-                Rfid.allowedTags = result['codes']['code'] || [];
-            });
-        });
-    },
-    watchAllowedTagsFile: function(){
-        fs.watch(File.applicationPath + '/' + Rfid.allowedTagsFileName, File.watchOptions, function(event, filename) {
-            Log.log.info('Rfid', 'watchAllowedTagsFile: ' + event + " event occurred on " + filename, false);
-        });
+    init: function(){
+        //read allowed tags from file
+        Rfid.getAllowedTags();
+        RoboFeeder.status.rfid = true;
+        Log.log.info('Rfid', 'RFID initialized', false);
     },
     setLastTrigger: function(){
         var date = new Date();
@@ -67,46 +48,55 @@ var Rfid = {
         Rfid.lastTrigger = unix_secs;
         Log.log.info('Rfid', 'Rfid.lastTrigger set: ' + unix_secs, false);
     },
-    saveAllowedTags: function(xml){
-        fs.writeFile(
-            File.applicationPath + '/' + Rfid.allowedTagsFileName,
-            xml,
-            function(err) {
-                if(err) {
-                    Log.log.error('Rfid', err);
+    getAllowedTags: function(){
+        Database.datastore.find(
+            {
+                type: 'tag',
+                allowed: true
+            },
+            function (err, docs) {
+                Rfid.allowedTags = [];
+                if(typeof docs[0] != "undefined"){
+                    for(var i=0; i < docs.length; i++){
+                        Rfid.allowedTags.push(docs[i]['tag']);
+                    }
+                    Log.log.info('Rfid', 'Allowed tags loaded', false);
                 }
-                Log.log.info('Rfid', 'The allowed tags XML file was saved.', false);
-            }
-        );
+                else{
+                    // if no allowed tags loaded
+                    Log.log.info('Rfid', 'No allowed tags loaded', false);
+                }
+            });
     },
     saveAllowedTag: function(tag){
-        Rfid.allowedTags.push(tag);
-        Rfid.allowedTags = Toolbox.uniq(Rfid.allowedTags);
-        var xml = Rfid.allowedTagsToXML();
-        Rfid.saveAllowedTags(xml);
-        Log.log.info('Rfid', 'The new allowed tag ' + tag + ' was saved.');
+        if(Rfid.allowedTags.indexOf(tag) === -1){
+            Rfid.allowedTags.push(tag);
+            allowedTagDoc = {
+                type: 'tag',
+                allowed: true,
+                tag: tag
+            };
+            Database.datastore.insert(
+                allowedTagDoc,
+                function (err, newDoc) {   // Callback is optional
+                    Log.log.info('Rfid', 'The new allowed tag ' + tag + ' was saved.');
+                });
+        }
+        Log.log.warn('Rfid', 'The tag "' + tag + '" was already in the allowed tag list.');
     },
     removeAllowedTag: function(tag){
         var tagIndex = Rfid.allowedTags.indexOf(tag);
         if (tagIndex > -1) {
             Rfid.allowedTags.splice(tagIndex, 1);
+            Database.datastore.remove(
+                { tag: tag },
+                {},
+                function (err, numRemoved) {
+                    Log.log.info('Rfid', 'The allowed tag ' + tag + ' was removed.');
+                }
+            );
         }
-        var xml = Rfid.allowedTagsToXML();
-        Log.log.info('Rfid', 'The allowed tag ' + tag + ' was removed.');
-        Rfid.saveAllowedTags(xml);
-    },
-    allowedTagsToXML: function(){
-        var obj = {code: Rfid.allowedTags};
-        var xml = Rfid.xmlBuilder.buildObject(obj);
-        return xml;
-    },
-    init: function(){
-        //read allowed tags from file
-        Rfid.getAllowedTags();
-        //setup watch on file to get changes
-        Rfid.watchAllowedTagsFile();
-        RoboFeeder.status.rfid = true;
-        Log.log.info('Rfid', 'RFID initialized', false);
+        Log.log.warn('Rfid', 'The tag ' + tag + ' was not in the allowed tags list to be removed.');
     }
 };
 var Motor = {
@@ -206,17 +196,6 @@ var Toolbox = {
             return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
         }
         return number + ""; // always return a string
-    },
-    uniq: function(a) {
-        var prims = {"boolean":{}, "number":{}, "string":{}}, objs = [];
-
-        return a.filter(function(item) {
-            var type = typeof item;
-            if(type in prims)
-                return prims[type].hasOwnProperty(item) ? false : (prims[type][item] = true);
-            else
-                return objs.indexOf(item) >= 0 ? false : objs.push(item);
-        });
     }
 };
 var Serial = {
@@ -399,7 +378,7 @@ var Log = {
         // Remove multiple documents
         Database.datastore.remove({ type: 'log' }, { multi: true }, function (err, numRemoved) {
             // newDoc is the newly inserted document, including its _id
-            Log.log.info('Log', 'Log.reset - number of log items removed: ' + numRemoved, false);
+            Log.log.info('Log', 'Log.reset - number of log items removed: ' + numRemoved, true);
             Log.items = [];
             return Log.items;
         });
@@ -536,9 +515,14 @@ var RoboFeeder = {
     saveSettings: function(req){
         RoboFeeder.settings = req.body.roboFeederSettings;
         for(var roboFeederSetting in RoboFeeder.settings){
-            Database.datastore.update({ name: roboFeederSetting }, { $set: { value: RoboFeeder.settings[roboFeederSetting] } }, {}, function (err, numReplaced) {
+            Database.datastore.update(
+                { name: roboFeederSetting },
+                { $set: { value: RoboFeeder.settings[roboFeederSetting] } },
+                {},
+                function (err, numReplaced) {
                 Log.log.info('WebServer', 'Setting ' + roboFeederSetting + ' saved', false);
-            });
+            }
+            );
         }
         Log.log.info('WebServer', 'Settings saved');
     },
@@ -595,7 +579,7 @@ var RoboFeeder = {
 };
 var WebServer = {
     init: function(){
-        app.set('views', File.applicationPath + '/views');
+        app.set('views', applicationPath + '/views');
         app.set('view engine', 'jade');
         app.use(bodyParser.urlencoded({ extended: true }));
         app.use(bodyParser.json());
@@ -612,7 +596,7 @@ var WebServer = {
         WebServer.create();
     },
     setupApi: function(){
-        // JSON API allows requests from front end to accomplish tasks
+        /** JSON API allows requests from front end to accomplish tasks */
         // tags
         app.get('/api/tags/allowed/get', function(req, res){
             return res.json({ allowedTags: Rfid.allowedTags });
@@ -629,7 +613,7 @@ var WebServer = {
             }
             return res.json({ allowedTags: Rfid.allowedTags });
         });
-        // manual open
+        // manual open/close
         app.get('/api/open', function(req, res){
             RoboFeeder.openTimerEnd();
             RoboFeeder.open(false);
@@ -639,7 +623,6 @@ var WebServer = {
                 Motor.runTime
             );
         });
-        // manual close
         app.get('/api/close', function(req, res){
             RoboFeeder.openTimerEnd();
             RoboFeeder.close(false);
@@ -682,7 +665,7 @@ var WebServer = {
             RoboFeeder.settings = RoboFeeder.defaultSettings;
             return res.json({ roboFeederSettings: RoboFeeder.settings });
         });
-        //log
+        // log
         app.get('/api/log/get', function(req, res){
             return res.json({ log: Log.items });
         });
@@ -694,7 +677,6 @@ var WebServer = {
             Log.reset();
             return res.json({ log: Log.items });
         });
-
     },
     create: function(){
         var server = app.listen(port, ip, function () {
@@ -704,6 +686,5 @@ var WebServer = {
         });
     }
 };
-
 // -- DO STUFF --
 RoboFeeder.init();

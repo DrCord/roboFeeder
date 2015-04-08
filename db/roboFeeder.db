@@ -1,14 +1,11 @@
-{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 34567890 was saved.","timestamp":1428374011639,"_id":"ENGf4oo2K2gjnMHa"}
-{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 87654321 was saved.","timestamp":1428372780427,"_id":"HkLmvUygu0joRLOV"}
-{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 23456789 was saved.","timestamp":1428373832811,"_id":"MsvM4Iw06cQhzLcN"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428374259893,"_id":"OJxdasp4a51xl0h0"}
-{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 87654321 was removed.","timestamp":1428373631921,"_id":"QHsWLPeToN1ryqn7"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized: RoboFeeder Ready","timestamp":1428375732388,"_id":"XusIARhRwzvOGm08"}
-{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 14545555 was removed.","timestamp":1428372704285,"_id":"blrSyciaeHazZI2n"}
+{"type":"tag","allowed":true,"tag":"02150427","_id":"87bICwKBy9LmBSwN"}
 {"type":"setting","name":"rfidThreshold","value":"8000","_id":"n0IK3g0Lo8KXXPX0"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized: RoboFeeder Ready","timestamp":1428375590294,"_id":"ngqMMnBpVKzeMjcF"}
+{"type":"tag","allowed":true,"tag":"98765432","_id":"npB9t4AMah81fHZ1"}
 {"type":"setting","name":"pirThreshold","value":"12000","_id":"wuMDQthYhDwGNW46"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428376155410,"_id":"vx28LLT4ifoRjdIF"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"Opening Tray","timestamp":1428376194866,"_id":"H96Db5CUjw2yA5iC"}
-{"type":"log","level":"info","category":"Serial","message":"RFID tag match: 02150427","timestamp":1428376194913,"_id":"7P9t9VEnth0glBCm"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"Closing Tray","timestamp":1428376213966,"_id":"Bo3USCQnr5fVQ7Om"}
+{"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 33","timestamp":1428465963981,"_id":"x93bk1vucmbIYbK1"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428466017407,"_id":"z97Ge5fKdwIu4GpG"}
+{"type":"tag","allowed":true,"tag":"45678945","_id":"R8RDUjW6R28WFoFz"}
+{"type":"log","level":"warn","category":"Rfid","message":"The tag \"45678945\" was already in the allowed tag list.","timestamp":1428466034134,"_id":"9PrdVpnwlrNaIfhR"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 45678945 was saved.","timestamp":1428466034185,"_id":"GHmoCSM56hnq2LIw"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Opening Tray","timestamp":1428466036611,"_id":"rvmfE2z0cLwc0CdB"}
+{"type":"log","level":"info","category":"Serial","message":"RFID tag match: 02150427","timestamp":1428466036641,"_id":"YlpJZ5wGAWqk67cW"}

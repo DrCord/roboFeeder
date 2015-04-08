@@ -71,6 +71,7 @@ angular.module('roboFeeder.controllers', []).
         };
         $scope.authorizeTag = function(){
             if(typeof $scope.newTag != "undefined" && $scope.newTag.length == 8){
+                //check if tag already in allowedTags
                 if($scope.allowedTags.indexOf($scope.newTag) === -1){
                     $http.post('/api/tags/allowed/add', {tag: $scope.newTag}).
                         success(function( data ) {
@@ -79,6 +80,7 @@ angular.module('roboFeeder.controllers', []).
                         });
                 }
                 else{
+                    //show message stating tag is already allowed
                     $scope.msgs.alreadyAllowed = true;
                 }
             }
