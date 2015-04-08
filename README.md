@@ -5,7 +5,7 @@
 
 [project website](http://robofeeder.cordslatton.com)
 
-![RoboFeeder](http://robofeeder.cordslatton.com/wp-content/uploads/2015/04/IMG_20150408_065949.jpg)
+![RoboFeeder](http://robofeeder.cordslatton.com/wp-content/uploads/2015/04/IMG_20150408_065949-e1428503008805.jpg)
 
 Dependencies:
 * NodeJS
