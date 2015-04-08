@@ -5,6 +5,8 @@
 
 [project website](http://robofeeder.cordslatton.com)
 
+![RoboFeeder](http://robofeeder.cordslatton.com/wp-content/uploads/2015/04/IMG_20150408_065949.jpg)
+
 Dependencies:
 * NodeJS
 * async https://github.com/caolan/async
@@ -17,8 +19,8 @@ Dependencies:
 
 TODO LIST
 * improve look of the web app pages
-* add picture(s) to website and git readme display on github
 * allowed tags - complex programs via ui for allowed times, max time, etc.
+* logo and favicon
 
 Parts List:
 * Raspberry Pi ([B+](http://www.adafruit.com/products/1914), [Pi 2](http://www.adafruit.com/products/2358))
