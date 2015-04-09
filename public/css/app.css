@@ -2,7 +2,12 @@
 body{
     padding: 0 20px;
 }
-span button{
+.navbar{
+    display: inline-block;
+}
+span button,
+#tags button,
+#tags input[type="submit"]{
     margin: 0 10px;
 }
 .help-text{
@@ -10,6 +15,16 @@ span button{
     font-weight: normal;
     font-style: italic;
     padding-left: 6px;
+}
+ul{
+    list-style-type: none;
+    padding-left: 20px;
+}
+#status ul li{
+    padding: 5px 0;
+}
+#status button.btn-sm{
+    padding: 5px 7px;
 }
 #log table{
     border: 1px solid #333;
@@ -21,4 +36,11 @@ span button{
 #log table td{
     border: 1px solid #333;
     padding: 3px 10px;
+}
+#log button,
+#settings input[type="submit"]{
+    margin: 10px 0;
+}
+#settings button{
+    margin: 10px;
 }
