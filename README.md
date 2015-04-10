@@ -9,20 +9,21 @@
 
 Dependencies:
 * NodeJS
-* async https://github.com/caolan/async
-* body-parser https://www.npmjs.com/package/body-parser
-* express http://expressjs.com
-* nedb https://github.com/louischatriot/nedb
-* npmlog https://github.com/npm/npmlog
-* rpi-gpio https://www.npmjs.com/package/rpi-gpio
-* serialport https://www.npmjs.com/package/serialport
+  * async https://github.com/caolan/async
+  * body-parser https://www.npmjs.com/package/body-parser
+  * express http://expressjs.com
+  * nedb https://github.com/louischatriot/nedb
+  * npmlog https://github.com/npm/npmlog
+  * rpi-gpio https://www.npmjs.com/package/rpi-gpio
+  * serialport https://www.npmjs.com/package/serialport
+* AngularJS
+  * angular-poller https://github.com/emmaguo/angular-poller
 
 TODO LIST
 * improve look of the web app pages
 * allowed tags - complex programs via ui for allowed times, max time, etc.
 * logo and favicon
 * add nicknames for each allowed tag
-* make angular-poller library have local version to use
 
 Parts List:
 * Raspberry Pi ([B+](http://www.adafruit.com/products/1914), [Pi 2](http://www.adafruit.com/products/2358))
