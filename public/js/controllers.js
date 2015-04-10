@@ -1,7 +1,7 @@
 'use strict';
 /* Controllers */
 angular.module('roboFeeder.controllers', []).
-    controller('AppCtrl', function ($scope, $http, $resource, poller) {
+    controller('AppCtrl', function ($scope, $http, $resource, poller, $route, $routeParams, $location) {
         $scope.status = {};
         $scope.errors = [];
         $scope.newTag = '';
@@ -11,6 +11,10 @@ angular.module('roboFeeder.controllers', []).
         $scope.msgs = {
             alreadyAllowed: false
         };
+        $scope.$route = $route;
+        $scope.$location = $location;
+        $scope.$routeParams = $routeParams;
+
         $scope.getAllowedTags = function(){
             $http.get('/api/tags/allowed/get').success(function( data ) {
                 $scope.allowedTags = data.allowedTags;
