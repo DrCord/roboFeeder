@@ -44,3 +44,21 @@ ul{
 #settings button{
     margin: 10px;
 }
+.selected{
+    font-weight: bold;
+}
+.navbar-nav,
+.navbar-nav>li{
+    float: left;
+    margin: 0;
+}
+.navbar-collapse {
+    width: auto;
+    border-top: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.navbar-nav>li>a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
