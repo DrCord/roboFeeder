@@ -25,6 +25,7 @@ TODO LIST
 * logo
 * add nicknames for each allowed tag
 * update hardware purchase links
+* get hardware remaining specifications (wire lengths, wood sizes, etc.)
 
 Parts List:
 * Raspberry Pi ([B+](http://www.adafruit.com/products/1914), [Pi 2](http://www.adafruit.com/products/2358))
