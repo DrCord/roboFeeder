@@ -22,8 +22,9 @@ Dependencies:
 TODO LIST
 * improve look of the web app pages
 * allowed tags - complex programs via ui for allowed times, max time, etc.
-* logo and favicon
+* logo
 * add nicknames for each allowed tag
+* update hardware purchase links
 
 Parts List:
 * Raspberry Pi ([B+](http://www.adafruit.com/products/1914), [Pi 2](http://www.adafruit.com/products/2358))
