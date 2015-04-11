@@ -24,7 +24,6 @@ TODO LIST
 * allowed tags - complex programs via ui for allowed times, max time, etc.
 * logo
 * add nicknames for each allowed tag
-* update hardware purchase links
 * get hardware remaining specifications (wire lengths, wood sizes, etc.)
 
 Parts List:
