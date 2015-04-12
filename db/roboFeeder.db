@@ -13,6 +13,7 @@
 {"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428621901477,"_id":"OGP8Vh2xDmbX6Ykz"}
 {"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428590136721,"_id":"OwNyPoYFTiZ7dR2Z"}
 {"type":"tag","allowed":true,"tag":"45678945","_id":"R8RDUjW6R28WFoFz"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428625024893,"_id":"TNUyvNnb5irbLCsp"}
 {"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428622041184,"_id":"Xv36DRH4QS0hmmCr"}
 {"type":"log","level":"info","category":"Serial","message":"RFID tag match: 02150427","timestamp":1428466036641,"_id":"YlpJZ5wGAWqk67cW"}
 {"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428621197721,"_id":"cN3rhnNY8FMDGj7l"}
@@ -30,4 +31,4 @@
 {"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428621787022,"_id":"xxgkHmWSJ4evTJTA"}
 {"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428466017407,"_id":"z97Ge5fKdwIu4GpG"}
 {"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428622238930,"_id":"zrFHFINFDz20EDyu"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428625024893,"_id":"TNUyvNnb5irbLCsp"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428801393960,"_id":"eqMkFjE4C2p5jlm0"}

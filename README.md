@@ -28,7 +28,7 @@ TODO LIST
 
 Parts List:
 * Raspberry Pi ([B+](http://www.adafruit.com/products/1914), [Pi 2](http://www.adafruit.com/products/2358))
-* Micro SD card (8GB+) compatible with Raspberry Pi with Raspbian installed ([Adafruit](http://www.amazon.com/s/?ie=UTF8&keywords=8gb+sd+mini))
+* Micro SD card (8GB+) compatible with Raspberry Pi with Raspbian installed ([Amazon](http://www.amazon.com/s/?ie=UTF8&keywords=8gb+sd+mini))
 * Wireless network dongle compatible with Raspberry Pi with a decent antenna ([Adafruit](http://www.adafruit.com/products/1012))
 * PIR Sensor ([SparkFun](https://www.sparkfun.com/products/8630))
 * RFID Sensor with serial output (9600 bps to use codebase without changing) ([Amazon](http://www.amazon.com/Anti-Jamming-Capability-HZ-1050-Module-Reader/dp/B00NJCB8NO))
