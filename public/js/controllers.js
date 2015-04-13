@@ -1,20 +1,20 @@
 'use strict';
 /* Controllers */
 angular.module('roboFeeder.controllers', []).
-    controller('AppCtrl', function ($scope, $http, $resource, poller, $route, $routeParams, $location) {
+    controller('AppCtrl', function ($scope, $http, $resource, poller) {
         $scope.status = {};
         $scope.errors = [];
         $scope.newTag = '';
+        $scope.newTagName = '';
         $scope.log = [];
         $scope.removeTagSelect = {};
         $scope.roboFeederSettings = {};
+        $scope.allowedTags = [];
         $scope.msgs = {
-            alreadyAllowed: false
+            alreadyAllowed: false,
+            removeSelectTag: false,
+            notValidCode: false
         };
-        $scope.$route = $route;
-        $scope.$location = $location;
-        $scope.$routeParams = $routeParams;
-
         $scope.getAllowedTags = function(){
             $http.get('/api/tags/allowed/get').success(function( data ) {
                 $scope.allowedTags = data.allowedTags;
@@ -76,24 +76,42 @@ angular.module('roboFeeder.controllers', []).
         $scope.authorizeTag = function(){
             if(typeof $scope.newTag != "undefined" && $scope.newTag.length == 8){
                 //check if tag already in allowedTags
-                if($scope.allowedTags.indexOf($scope.newTag) === -1){
-                    $http.post('/api/tags/allowed/add', {tag: $scope.newTag}).
+                var filterObj = $scope.filterAllowedTags($scope.newTag);
+                if(typeof filterObj.tagObj == "undefined"){
+                    var tagObj = {
+                        tag: $scope.newTag,
+                        name: $scope.newTagName
+                    };
+                    $http.post('/api/tags/allowed/add', {tagObj: tagObj}).
                         success(function( data ) {
                             $scope.allowedTags = data.allowedTags;
                             $scope.newTag = '';
+                            $scope.newTagName = '';
                         });
                 }
                 else{
-                    //show message stating tag is already allowed
+                    //show message
                     $scope.msgs.alreadyAllowed = true;
                 }
             }
+            else{
+                //show message
+                $scope.msgs.notValidCode = true;
+            }
         };
         $scope.removeTag = function(tag){
-            $http.post('/api/tags/allowed/remove', {tag: tag}).
-                success(function( data ) {
-                    $scope.allowedTags = data.allowedTags;
-            });
+            var filterObj = $scope.filterAllowedTags(tag);
+            if(typeof filterObj.tagObj != "undefined"){
+                $http.post('/api/tags/allowed/remove', {tag: tag}).
+                    success(function( data ) {
+                        $scope.allowedTags = data.allowedTags;
+                        $scope.removeTagSelect = {};
+                    });
+            }
+            else{
+                //show message
+                $scope.msgs.removeSelectTag = true;
+            }
         };
         $scope.getSettings = function(){
             $http.get('/api/settings/get').success(function( data ) {
@@ -141,6 +159,22 @@ angular.module('roboFeeder.controllers', []).
                     poller.stopAll();
                 }
             }
+        };
+        $scope.filterAllowedTags = function(tag){
+            var tagIndex = null;
+            var tagObj = $scope.allowedTags.filter(function ( obj, index ) {
+                if(obj.tag === tag){
+                    tagIndex = index;
+                }
+                return obj.tag === tag;
+            })[0];
+            return {tagIndex: tagIndex, tagObj: tagObj};
+        };
+        $scope.tagObjName = function(tagObj){
+            if(typeof tagObj.name == "undefined" || tagObj.name == ''){
+                return tagObj.tag;
+            }
+            return tagObj.name + ' : ' + tagObj.tag;
         };
         $scope.init = function(){
             $scope.getStatuses();

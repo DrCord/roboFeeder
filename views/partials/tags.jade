@@ -1,21 +1,31 @@
 -var page = 'Tags';
 include ../includes/menu.jade
 #content
-    h2 Tags
     section#tags
-        h3 Allowed Tags
-        ul
-            li(ng-repeat="allowedTag in allowedTags") {{allowedTag}}
+        h2 Tags
+        section#allowedTags
+            h3 Allowed Tags
+            ul
+                li(ng-repeat="allowedTag in allowedTags | toArray | orderBy:['name', 'tag']")
+                    span(ng-show="allowedTag.name != ''") {{allowedTag.name}} :&nbsp;
+                    span {{allowedTag.tag}}
+                li(ng-show="allowedTags.length == 0") No allowed tags
         section#actions
             div#authorize
                 h3 Authorize New Tag
-                    span.help-text (8 digit numeric code)
                 form(name="authorizeTagForm", ng-submit="authorizeTag()")
-                    input(type="text", name="newTagInput", ng-model="newTag", ng-pattern="/^[0-9]{8}$/" ng-change="msgs.alreadyAllowed = false")
+                    div.required
+                        label(id="newTagInput") Tag
+                        input(type="text", name="newTagInput", ng-model="newTag", ng-pattern="/^[0-9]{8}$/" ng-change="msgs.alreadyAllowed = false; msgs.notValidCode = false;", placeholder="8 digit unique code")
+                        span(ng-show="authorizeTagForm.newTagInput.$error.pattern || msgs.notValidCode").error Not a valid code
+                        span(ng-show="msgs.alreadyAllowed").error Tag already allowed
+                    div
+                        label(id="newTagNameInput") Name
+                        input(type="text", name="newTagNameInput", ng-model="newTagName")
                     input(type="submit", value="Authorize Tag" class="btn btn-sm btn-success")
-                    span(ng-show="authorizeTagForm.newTagInput.$error.pattern").error Not a valid code
-                    span(ng-show="msgs.alreadyAllowed").error Tag already allowed
             div#remove
                 h3 Remove Existing Tag
-                select(id="removeTag", name="removeTag-select", ng-model="removeTagSelect", ng-options="allowedTag as allowedTag for allowedTag in allowedTags")
+                select(id="removeTag", name="removeTag-select", ng-model="removeTagSelect" ng-change="msgs.removeSelectTag = false")
+                    option(ng-repeat="allowedTag in allowedTags | toArray | orderBy:['name', 'tag']" value="{{allowedTag.tag}}")  {{tagObjName(allowedTag)}}
+                span(ng-show="msgs.removeSelectTag").error Select a tag to remove
                 button(ng-click="removeTag(removeTagSelect)" class="btn btn-sm btn-danger") Remove Tag

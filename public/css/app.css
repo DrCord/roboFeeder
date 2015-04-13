@@ -5,10 +5,19 @@ body{
 .navbar{
     display: inline-block;
 }
-span button,
-#tags button,
-#tags input[type="submit"]{
+span button{
     margin: 0 10px;
+}
+#tags #authorize label{
+    width: 80px;
+}
+#tags #authorize input[type="submit"],
+#tags #remove button{
+    display: block;
+    margin-top: 10px;
+}
+#removeTag{
+    min-width: 150px;
 }
 .help-text{
     font-size: 12px;
@@ -61,4 +70,23 @@ ul{
 .navbar-nav>li>a {
     padding-top: 15px;
     padding-bottom: 15px;
+}
+.required label {
+    font-weight: bold;
+}
+.required label:after {
+    color: #e32;
+    content: ' *';
+    display: inline;
+}
+.error{
+    color: #e32;
+    font-weight: bold;
+    padding-left: 10px;
+}
+#content section h2{
+    margin-top: 0;
+}
+#settings label{
+    padding-right: 10px;
 }

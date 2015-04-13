@@ -1,36 +1,181 @@
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428587573891,"_id":"0SCDsO3kFiOEbbXN"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428590379853,"_id":"6xiHgHJJ2torV9qU"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428588748534,"_id":"7D5JDt0aNXtvzm9r"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428550241350,"_id":"7rrrvJjF6RoUjbbY"}
-{"type":"tag","allowed":true,"tag":"02150427","_id":"87bICwKBy9LmBSwN"}
-{"type":"log","level":"warn","category":"Rfid","message":"The tag \"45678945\" was already in the allowed tag list.","timestamp":1428466034134,"_id":"9PrdVpnwlrNaIfhR"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428501556393,"_id":"BqOdKyEx8B25Qw1U"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428589760303,"_id":"D1UIw9BewZTppLNU"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428553437570,"_id":"FWCb7HcYtK27W5Fp"}
-{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 45678945 was saved.","timestamp":1428466034185,"_id":"GHmoCSM56hnq2LIw"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428801546502,"_id":"GHya8Tt3eHlkvNPQ"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428588282899,"_id":"JoFB46Q1pNPfTZGf"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428589321730,"_id":"NzlsDmNyr1ZVZcFq"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428621901477,"_id":"OGP8Vh2xDmbX6Ykz"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428590136721,"_id":"OwNyPoYFTiZ7dR2Z"}
-{"type":"tag","allowed":true,"tag":"45678945","_id":"R8RDUjW6R28WFoFz"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428625024893,"_id":"TNUyvNnb5irbLCsp"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428622041184,"_id":"Xv36DRH4QS0hmmCr"}
-{"type":"log","level":"info","category":"Serial","message":"RFID tag match: 02150427","timestamp":1428466036641,"_id":"YlpJZ5wGAWqk67cW"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428621197721,"_id":"cN3rhnNY8FMDGj7l"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428801393960,"_id":"eqMkFjE4C2p5jlm0"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428589225209,"_id":"gaH1T82VEWA5pNrl"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428621590335,"_id":"lOfsTJS5vKYcWtuK"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 54545455 was saved.","timestamp":1428884930015,"_id":"0r1lCp162ogqlWBv"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 56554447 was removed.","timestamp":1428883052542,"_id":"1OQPEqQJLDDELidG"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 45454544 was removed.","timestamp":1428883067016,"_id":"1hxpvIE4XtYdofo2"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 34455667 was saved.","timestamp":1428881484752,"_id":"21vxGFv9bFckst1n"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 56554447 was saved.","timestamp":1428882398955,"_id":"23bSzVKpHwnetJWq"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 45645544 was removed.","timestamp":1428882971650,"_id":"2QxaFmxjFCmDUtup"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 32323232 was saved.","timestamp":1428879849413,"_id":"4oKrBz3e3vYOTse6"}
+{"type":"tag","allowed":true,"tag":"54545455","name":"test3","_id":"6ITZhrHD6yRzkZDn"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 45456454 was removed.","timestamp":1428882290968,"_id":"7GdpjmgPmkNiD270"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 12212121 was removed.","timestamp":1428879787114,"_id":"9Nxmsc43qqJuETnh"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428879656387,"_id":"9stEK8drNYaecxQq"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428882374423,"_id":"B3pLD4hlzPWOm1wH"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 45454545 was removed.","timestamp":1428883054099,"_id":"BkZkJGwBoyBj0wJC"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 12135554 was saved.","timestamp":1428879693828,"_id":"BnxwkTj4LLfadXSv"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 33344555 was removed.","timestamp":1428881413691,"_id":"G2kgkFBJt3Ce6p37"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428881996074,"_id":"GHFVIQIbaPUBfuUe"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428879593650,"_id":"HR7ngH0fFVBOTgR1"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 45456454 was saved.","timestamp":1428882230310,"_id":"HZEkI6tGY5ac5DGJ"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428881698212,"_id":"HheoFAnTDWsxSr0F"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 32323232 was removed.","timestamp":1428879860739,"_id":"I7JbjGQpEVurGAfB"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 23333333 was saved.","timestamp":1428879430287,"_id":"KZ9WpgV5QBc1GfMh"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 21345566 was saved.","timestamp":1428881130399,"_id":"L1xbSebFc6DLaoYz"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 22225584 was saved.","timestamp":1428882151494,"_id":"LGqZM3deQiEsK0Lf"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 32333345 was removed.","timestamp":1428881478310,"_id":"Lc7x9EMQHGnmjOYd"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428882112855,"_id":"NzgMXkAxpaRTq8nN"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 33344555 was saved.","timestamp":1428880145665,"_id":"Q6ctZGjMhEgr1UsZ"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428881793686,"_id":"QGXll0c4yyYdqANe"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 32333345 was saved.","timestamp":1428880453854,"_id":"RJDqhuXQODXRVI8I"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 23333333 was removed.","timestamp":1428879855888,"_id":"SGqePWi9KEA6cPra"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428879746582,"_id":"Vg6AInFjP6KQnmxr"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 12135554 was removed.","timestamp":1428879779975,"_id":"WTWkT7pStHLwtd3J"}
+{"type":"log","level":"warn","category":"Rfid","message":"The tag [object Object] was not in the allowed tags list to be removed.","timestamp":1428879697523,"_id":"WdeSI8VJRbczvYHd"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 45488888 was saved.","timestamp":1428884936966,"_id":"aG4ndcwbO1TF6JP7"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 87845454 was saved.","timestamp":1428882299651,"_id":"bCSIO0eB3WgOHuEe"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428882999338,"_id":"bWE4ipKLTberczRb"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 34455667 was removed.","timestamp":1428882223161,"_id":"criOb4pcWsUwMaH0"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 22225584 was removed.","timestamp":1428882220655,"_id":"hpf93a7vitQmMzTw"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 45454545 was saved.","timestamp":1428883046254,"_id":"i4l8GZkoo7Raic2l"}
+{"type":"tag","allowed":true,"tag":"45488888","name":"test1","_id":"ibKfw5ZfmBCm5F3k"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 87845454 was removed.","timestamp":1428883049530,"_id":"kTVFpMMOCxdx6eMc"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428881587677,"_id":"mXq4p720CYQS4QO0"}
 {"type":"setting","name":"rfidThreshold","value":"8000","_id":"n0IK3g0Lo8KXXPX0"}
-{"type":"tag","allowed":true,"tag":"98765432","_id":"npB9t4AMah81fHZ1"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428589925063,"_id":"rChFPrCukoLxV8VD"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428589639435,"_id":"rirbGbeA5t2lhFuw"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"Opening Tray","timestamp":1428466036611,"_id":"rvmfE2z0cLwc0CdB"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428621700700,"_id":"ucGtVEGAsyTNrkcS"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 12212121 was saved.","timestamp":1428879375955,"_id":"nfkTaPFscEeA8i8x"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428882192138,"_id":"oDjnecqAIVTHTQoH"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 21345566 was removed.","timestamp":1428881410956,"_id":"oFyy3QrcH6qiZfQs"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 21345564 was removed.","timestamp":1428882226108,"_id":"oK107paE5eZre5lt"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428881643494,"_id":"ppMOA7TmH2UAL029"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428879355608,"_id":"q3MJLmxLcKL7WDcO"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 45454544 was saved.","timestamp":1428883058863,"_id":"rVXjDAHWMiehkdFS"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 77322222 was saved.","timestamp":1428883064279,"_id":"rYH28wE4sl2AThR5"}
+{"type":"tag","allowed":true,"tag":"77322222","name":"test2","_id":"sJKwRw7SFzqeyXia"}
+{"type":"log","level":"warn","category":"Rfid","message":"The tag [object Object] was not in the allowed tags list to be removed.","timestamp":1428879258068,"_id":"smFnxWmhtxsZKaMp"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 22222222 was saved.","timestamp":1428879873215,"_id":"uE6jHQHomGP2bruZ"}
+{"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 36","timestamp":1428878939687,"_id":"vR6UZUHDrLBpOgYf"}
 {"type":"setting","name":"pirThreshold","value":"12000","_id":"wuMDQthYhDwGNW46"}
-{"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 33","timestamp":1428465963981,"_id":"x93bk1vucmbIYbK1"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428590205220,"_id":"xGnZVghXkLtTagJf"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428621787022,"_id":"xxgkHmWSJ4evTJTA"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428466017407,"_id":"z97Ge5fKdwIu4GpG"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428622238930,"_id":"zrFHFINFDz20EDyu"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428801665298,"_id":"zSf76Y9pt0Vo7bht"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 21345564 was saved.","timestamp":1428881117687,"_id":"yZ5JAztR0uEeYe5T"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 45645544 was saved.","timestamp":1428882348988,"_id":"z9A1bn7A2V6ThfmQ"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 22222222 was removed.","timestamp":1428880155357,"_id":"zlLEz6rstqobwU0q"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428884966655,"_id":"paWRUB4Kb2PzLWhE"}
+{"type":"tag","allowed":true,"tag":"45454545","name":"","_id":"p1t7Q6dc1h1BiHDn"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 45454545 was saved.","timestamp":1428885409456,"_id":"PHgbLCwWGn7MeMK3"}
+{"type":"tag","allowed":true,"tag":"77788544","name":"","_id":"jPzr4F6g8UpUxtAZ"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 77788544 was saved.","timestamp":1428885414411,"_id":"2z3AUr5GGYvOfyET"}
+{"type":"tag","allowed":true,"tag":"42311444","name":"","_id":"3X6vCTr1zANWN0pv"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 42311444 was saved.","timestamp":1428885419199,"_id":"80udWciKzJJYB39H"}
+{"type":"tag","allowed":true,"tag":"45448876","name":"","_id":"yrMmIr8HdDjBe4On"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 45448876 was saved.","timestamp":1428885447783,"_id":"WpnmmvmCuXitqMxR"}
+{"type":"tag","allowed":true,"tag":"44444555","name":"8888888888","_id":"Ilg3X7N29DFRGHXq"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 44444555 was saved.","timestamp":1428885457516,"_id":"Si1KkrY3nMklYF4s"}
+{"type":"tag","allowed":true,"tag":"11111545","name":"","_id":"0L8ZI2uhbNR3COKr"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 11111545 was saved.","timestamp":1428885498733,"_id":"ckFqFuVizPCFhb23"}
+{"type":"tag","allowed":true,"tag":"78738783","name":"asjjooo","_id":"oCAIoSYBOcShPUvt"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 78738783 was saved.","timestamp":1428885509242,"_id":"PVTaySIMpxpcMIKa"}
+{"type":"tag","allowed":true,"tag":"04654545","name":"","_id":"QjHkZM6y5ql83jF3"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 04654545 was saved.","timestamp":1428885570331,"_id":"M0ldbDxAhXCew9f0"}
+{"type":"tag","allowed":true,"tag":"45454541","name":"hhsggs;'","_id":"pIxbWJpawG0WlUfj"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 45454541 was saved.","timestamp":1428885576150,"_id":"FaNWXxWLXLfpoDal"}
+{"$$deleted":true,"_id":"0r1lCp162ogqlWBv"}
+{"$$deleted":true,"_id":"1OQPEqQJLDDELidG"}
+{"$$deleted":true,"_id":"1hxpvIE4XtYdofo2"}
+{"$$deleted":true,"_id":"21vxGFv9bFckst1n"}
+{"$$deleted":true,"_id":"23bSzVKpHwnetJWq"}
+{"$$deleted":true,"_id":"2QxaFmxjFCmDUtup"}
+{"$$deleted":true,"_id":"2z3AUr5GGYvOfyET"}
+{"$$deleted":true,"_id":"4oKrBz3e3vYOTse6"}
+{"$$deleted":true,"_id":"7GdpjmgPmkNiD270"}
+{"$$deleted":true,"_id":"80udWciKzJJYB39H"}
+{"$$deleted":true,"_id":"9Nxmsc43qqJuETnh"}
+{"$$deleted":true,"_id":"9stEK8drNYaecxQq"}
+{"$$deleted":true,"_id":"B3pLD4hlzPWOm1wH"}
+{"$$deleted":true,"_id":"BkZkJGwBoyBj0wJC"}
+{"$$deleted":true,"_id":"BnxwkTj4LLfadXSv"}
+{"$$deleted":true,"_id":"FaNWXxWLXLfpoDal"}
+{"$$deleted":true,"_id":"G2kgkFBJt3Ce6p37"}
+{"$$deleted":true,"_id":"GHFVIQIbaPUBfuUe"}
+{"$$deleted":true,"_id":"HR7ngH0fFVBOTgR1"}
+{"$$deleted":true,"_id":"HZEkI6tGY5ac5DGJ"}
+{"$$deleted":true,"_id":"HheoFAnTDWsxSr0F"}
+{"$$deleted":true,"_id":"I7JbjGQpEVurGAfB"}
+{"$$deleted":true,"_id":"KZ9WpgV5QBc1GfMh"}
+{"$$deleted":true,"_id":"L1xbSebFc6DLaoYz"}
+{"$$deleted":true,"_id":"LGqZM3deQiEsK0Lf"}
+{"$$deleted":true,"_id":"Lc7x9EMQHGnmjOYd"}
+{"$$deleted":true,"_id":"M0ldbDxAhXCew9f0"}
+{"$$deleted":true,"_id":"NzgMXkAxpaRTq8nN"}
+{"$$deleted":true,"_id":"PHgbLCwWGn7MeMK3"}
+{"$$deleted":true,"_id":"PVTaySIMpxpcMIKa"}
+{"$$deleted":true,"_id":"Q6ctZGjMhEgr1UsZ"}
+{"$$deleted":true,"_id":"QGXll0c4yyYdqANe"}
+{"$$deleted":true,"_id":"RJDqhuXQODXRVI8I"}
+{"$$deleted":true,"_id":"SGqePWi9KEA6cPra"}
+{"$$deleted":true,"_id":"Si1KkrY3nMklYF4s"}
+{"$$deleted":true,"_id":"Vg6AInFjP6KQnmxr"}
+{"$$deleted":true,"_id":"WTWkT7pStHLwtd3J"}
+{"$$deleted":true,"_id":"WdeSI8VJRbczvYHd"}
+{"$$deleted":true,"_id":"WpnmmvmCuXitqMxR"}
+{"$$deleted":true,"_id":"aG4ndcwbO1TF6JP7"}
+{"$$deleted":true,"_id":"bCSIO0eB3WgOHuEe"}
+{"$$deleted":true,"_id":"bWE4ipKLTberczRb"}
+{"$$deleted":true,"_id":"ckFqFuVizPCFhb23"}
+{"$$deleted":true,"_id":"criOb4pcWsUwMaH0"}
+{"$$deleted":true,"_id":"hpf93a7vitQmMzTw"}
+{"$$deleted":true,"_id":"i4l8GZkoo7Raic2l"}
+{"$$deleted":true,"_id":"kTVFpMMOCxdx6eMc"}
+{"$$deleted":true,"_id":"mXq4p720CYQS4QO0"}
+{"$$deleted":true,"_id":"nfkTaPFscEeA8i8x"}
+{"$$deleted":true,"_id":"oDjnecqAIVTHTQoH"}
+{"$$deleted":true,"_id":"oFyy3QrcH6qiZfQs"}
+{"$$deleted":true,"_id":"oK107paE5eZre5lt"}
+{"$$deleted":true,"_id":"paWRUB4Kb2PzLWhE"}
+{"$$deleted":true,"_id":"ppMOA7TmH2UAL029"}
+{"$$deleted":true,"_id":"q3MJLmxLcKL7WDcO"}
+{"$$deleted":true,"_id":"rVXjDAHWMiehkdFS"}
+{"$$deleted":true,"_id":"rYH28wE4sl2AThR5"}
+{"$$deleted":true,"_id":"smFnxWmhtxsZKaMp"}
+{"$$deleted":true,"_id":"uE6jHQHomGP2bruZ"}
+{"$$deleted":true,"_id":"vR6UZUHDrLBpOgYf"}
+{"$$deleted":true,"_id":"yZ5JAztR0uEeYe5T"}
+{"$$deleted":true,"_id":"z9A1bn7A2V6ThfmQ"}
+{"$$deleted":true,"_id":"zlLEz6rstqobwU0q"}
+{"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 63","timestamp":1428885836427,"_id":"NaUSoVctIIap6A6f"}
+{"$$deleted":true,"_id":"QjHkZM6y5ql83jF3"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 04654545 was removed.","timestamp":1428885843828,"_id":"T12buN9bV6Xq2fIJ"}
+{"$$deleted":true,"_id":"0L8ZI2uhbNR3COKr"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 11111545 was removed.","timestamp":1428885845605,"_id":"YEJjU2nA8WT0BZqY"}
+{"$$deleted":true,"_id":"yrMmIr8HdDjBe4On"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 45448876 was removed.","timestamp":1428885847301,"_id":"jOJAFR0u8GJbdIJ9"}
+{"$$deleted":true,"_id":"3X6vCTr1zANWN0pv"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 42311444 was removed.","timestamp":1428885849034,"_id":"wIPYd6FOq7tHOZZj"}
+{"$$deleted":true,"_id":"jPzr4F6g8UpUxtAZ"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 77788544 was removed.","timestamp":1428885851073,"_id":"Z2TVjxTFq86Kkr4L"}
+{"$$deleted":true,"_id":"Ilg3X7N29DFRGHXq"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 44444555 was removed.","timestamp":1428885852844,"_id":"qncT9uqQcXFOHMl4"}
+{"$$deleted":true,"_id":"p1t7Q6dc1h1BiHDn"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 45454545 was removed.","timestamp":1428885857353,"_id":"v6s5Yuq6bMBGh56C"}
+{"$$deleted":true,"_id":"sJKwRw7SFzqeyXia"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 77322222 was removed.","timestamp":1428885859535,"_id":"rZuQ6BRR4ZlCTOc1"}
+{"$$deleted":true,"_id":"ibKfw5ZfmBCm5F3k"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 45488888 was removed.","timestamp":1428885861606,"_id":"UpNAAlGnWBx8WQjJ"}
+{"$$deleted":true,"_id":"pIxbWJpawG0WlUfj"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 45454541 was removed.","timestamp":1428885863411,"_id":"iRQmZfpUYfzZOcE9"}
+{"$$deleted":true,"_id":"oCAIoSYBOcShPUvt"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 78738783 was removed.","timestamp":1428885890097,"_id":"vidkIj2dTbww6ldW"}
+{"$$deleted":true,"_id":"6ITZhrHD6yRzkZDn"}
+{"type":"log","level":"info","category":"Rfid","message":"The allowed tag 54545455 was removed.","timestamp":1428885892313,"_id":"IrqkGAQtxzjA56HA"}
+{"$$deleted":true,"_id":"IrqkGAQtxzjA56HA"}
+{"$$deleted":true,"_id":"NaUSoVctIIap6A6f"}
+{"$$deleted":true,"_id":"T12buN9bV6Xq2fIJ"}
+{"$$deleted":true,"_id":"UpNAAlGnWBx8WQjJ"}
+{"$$deleted":true,"_id":"YEJjU2nA8WT0BZqY"}
+{"$$deleted":true,"_id":"Z2TVjxTFq86Kkr4L"}
+{"$$deleted":true,"_id":"iRQmZfpUYfzZOcE9"}
+{"$$deleted":true,"_id":"jOJAFR0u8GJbdIJ9"}
+{"$$deleted":true,"_id":"qncT9uqQcXFOHMl4"}
+{"$$deleted":true,"_id":"rZuQ6BRR4ZlCTOc1"}
+{"$$deleted":true,"_id":"v6s5Yuq6bMBGh56C"}
+{"$$deleted":true,"_id":"vidkIj2dTbww6ldW"}
+{"$$deleted":true,"_id":"wIPYd6FOq7tHOZZj"}
+{"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 13","timestamp":1428885899329,"_id":"hqEmqYKAVCybu4nb"}
+{"$$deleted":true,"_id":"hqEmqYKAVCybu4nb"}
+{"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 1","timestamp":1428886002091,"_id":"BNxkWfC3BsdqzhPj"}

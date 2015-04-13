@@ -6,6 +6,6 @@ include ../includes/menu.jade
         form(name="settingsForm", ng-submit="saveSettings()")
             div(ng-repeat="(name, value) in roboFeederSettings")
                 label {{name}}
-                    input(type="text", name="setting-{{name}}", ng-model="roboFeederSettings[name]", value="{{value}}")
+                input(type="text", name="setting-{{name}}", ng-model="roboFeederSettings[name]", value="{{value}}")
             input(type="submit", value="Save Settings", class="btn btn-sm btn-success")
             button(ng-click="resetSettings()", class="btn btn-sm btn-danger") Reset Settings to Default

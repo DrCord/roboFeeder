@@ -49,45 +49,67 @@ var Rfid = {
         Log.log.info('Rfid', 'Rfid.lastTrigger set: ' + unix_secs, false);
     },
     getAllowedTags: function(){
-        Database.datastore.find(
-            {
-                type: 'tag',
-                allowed: true
+        async.forever(
+            function(next) {
+                // next is suitable for passing to things that need a callback(err [, whatever]);
+                // it will result in this function being called again.
+                Database.datastore.find(
+                    {
+                        type: 'tag',
+                        allowed: true
+                    },
+                    function (err, docs) {
+                        Rfid.allowedTags = [];
+                        if(typeof docs[0] != "undefined"){
+                            for(var i=0; i < docs.length; i++){
+                                var tag = {
+                                    tag: docs[i]['tag'],
+                                    name: docs[i]['name']
+                                };
+                                Rfid.allowedTags.push(tag);
+                            }
+                            Log.log.info('Rfid', 'Allowed tags loaded', false);
+                        }
+                        else{
+                            // if no allowed tags loaded
+                            Log.log.info('Rfid', 'No allowed tags loaded', false);
+                        }
+                    });
             },
-            function (err, docs) {
-                Rfid.allowedTags = [];
-                if(typeof docs[0] != "undefined"){
-                    for(var i=0; i < docs.length; i++){
-                        Rfid.allowedTags.push(docs[i]['tag']);
-                    }
-                    Log.log.info('Rfid', 'Allowed tags loaded', false);
-                }
-                else{
-                    // if no allowed tags loaded
-                    Log.log.info('Rfid', 'No allowed tags loaded', false);
-                }
-            });
+            function(err) {
+                // if next is called with a value in its first parameter, it will appear
+                // in here as 'err', and execution will stop.
+            }
+        );
     },
-    saveAllowedTag: function(tag){
-        if(Rfid.allowedTags.indexOf(tag) === -1){
-            Rfid.allowedTags.push(tag);
-            allowedTagDoc = {
+    saveAllowedTag: function(tagObj){
+        var tag = tagObj.tag;
+        var filterObj = Rfid.filterAllowedTags(tagObj.tag);
+        if(typeof filterObj.tagObj == "undefined"){
+            var allowedTagDoc = {
                 type: 'tag',
                 allowed: true,
-                tag: tag
+                tag: tagObj.tag,
+                name: tagObj.name
             };
-            Database.datastore.insert(
+            Rfid.allowedTags.push({tag: tagObj.tag, name: tagObj.name});
+            Database.datastore.update(
+                {tag: tagObj.tag},
                 allowedTagDoc,
+                {upsert: true},
                 function (err, newDoc) {   // Callback is optional
                     Log.log.info('Rfid', 'The new allowed tag ' + tag + ' was saved.');
-                });
+                }
+            );
         }
-        Log.log.warn('Rfid', 'The tag "' + tag + '" was already in the allowed tag list.');
+        else{
+            Log.log.warn('Rfid', 'The tag "' + tag + '" was already in the allowed tag list.');
+        }
     },
     removeAllowedTag: function(tag){
-        var tagIndex = Rfid.allowedTags.indexOf(tag);
-        if (tagIndex > -1) {
-            Rfid.allowedTags.splice(tagIndex, 1);
+        var filterObj = Rfid.filterAllowedTags(tag);
+        if (typeof filterObj.tagObj != "undefined") {
+            Rfid.allowedTags.splice(filterObj.tagIndex, 1);
             Database.datastore.remove(
                 { tag: tag },
                 {},
@@ -96,7 +118,23 @@ var Rfid = {
                 }
             );
         }
-        Log.log.warn('Rfid', 'The tag ' + tag + ' was not in the allowed tags list to be removed.');
+        else{
+            Log.log.warn('Rfid', 'The tag ' + tag + ' was not in the allowed tags list to be removed.');
+        }
+    },
+    loadTag: function(tag){
+        var filterObj = Rfid.filterAllowedTags(tag);
+        return filterObj.tagObj;
+    },
+    filterAllowedTags: function(tag){
+        var tagIndex = null;
+        var tagObj = Rfid.allowedTags.filter(function ( obj, index ) {
+            if(obj.tag === tag){
+                tagIndex = index;
+            }
+            return obj.tag === tag;
+        })[0];
+        return {tagIndex: tagIndex, tagObj: tagObj};
     }
 };
 var Motor = {
@@ -454,6 +492,8 @@ var RoboFeeder = {
         if(enable !== false){
             enable = true;
         }
+        // make sure to kill any previous timer
+        RoboFeeder.openTimerEnd();
         Log.log.info('RoboFeeder', 'Opening Tray', enable);
         Motor.reverse();
         RoboFeeder.status.open = true;
@@ -475,6 +515,8 @@ var RoboFeeder = {
         if(enable !== false){
             enable = true;
         }
+        // make sure to kill any previous timer
+        RoboFeeder.openTimerEnd();
         Log.log.info('RoboFeeder', 'Closing Tray', enable);
         Motor.forward();
         RoboFeeder.status.open = false;
@@ -602,8 +644,8 @@ var WebServer = {
             return res.json({ allowedTags: Rfid.allowedTags });
         });
         app.post('/api/tags/allowed/add', function(req, res){
-            if(typeof req.body.tag != "undefined"){
-                Rfid.saveAllowedTag(req.body.tag);
+            if(typeof req.body.tagObj != "undefined"){
+                Rfid.saveAllowedTag(req.body.tagObj);
             }
             return res.json({ allowedTags: Rfid.allowedTags });
         });
@@ -613,9 +655,12 @@ var WebServer = {
             }
             return res.json({ allowedTags: Rfid.allowedTags });
         });
+        app.post('/api/tags/name/get', function(req, res){
+            var tagObj = Rfid.loadTag(req.body.tag);
+            return res.json({ name: tagObj.name });
+        });
         // manual open/close
         app.get('/api/open', function(req, res){
-            RoboFeeder.openTimerEnd();
             RoboFeeder.open(false);
             RoboFeeder.openTimerEnd();
             setTimeout(
@@ -624,7 +669,6 @@ var WebServer = {
             );
         });
         app.get('/api/close', function(req, res){
-            RoboFeeder.openTimerEnd();
             RoboFeeder.close(false);
             RoboFeeder.openTimerEnd();
             setTimeout(
