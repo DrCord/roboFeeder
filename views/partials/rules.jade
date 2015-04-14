@@ -1,0 +1,53 @@
+-var page = 'Rules';
+include ../includes/menu.jade
+#content
+    section#rules
+        h2 Rules
+        section#existing
+            h3 Existing Rules
+            table(ng-show="rules.length > 0")
+                tr
+                    th Name
+                    th Weight
+                    th Status
+                    th Tag
+                    th Start
+                    th End
+                    th Activate
+                    th Expire
+                    th Actions
+                tr(ng-repeat="rule in rules | toArray | orderBy:'weight'")
+                    td {{rule.name}}
+                    td {{rule.weight}}
+                    td {{rule.active}}
+                    td {{rule.rule.tag}}
+                    td {{rule.rule.start | date : 'short'}}
+                    td {{rule.rule.end| date : 'short'}}
+                    td {{rule.rule.activate| date : 'short'}}
+                    td {{rule.rule.expire| date : 'short'}}
+                    td
+                        button(ng-click="editRule(rule)", class="btn btn-sm btn-info edit") Edit
+                        button(ng-click="removeRule(rule)", class="btn btn-sm btn-danger remove") X
+            p(ng-show="rules.length == 0") No rules
+        section#actions
+            div#create
+                h3 Create a Rule
+                form(name="createRuleForm", ng-submit="createRule()")
+                    div.required
+                        label(id="newRuleName") Name
+                        input(type="text", name="newRuleName", ng-model="newRule.name" ng-change="msgs.ruleSameName = false;", placeholder="unique string")
+                        span(ng-show="msgs.ruleSameName").error Identically named rule already exists
+                    div
+                        label(id="newRuleWeight") Weight
+                        input(type="number", name="newRuleWeight", ng-model="newRule.weight")
+                    div
+                        label(id="newRuleStatus") Status
+                        input(type="checkbox", name="newRuleStatus", ng-model="newRule.status")
+                    div
+                        label(id="newRuleTag") Tag
+                        select(name="newRuleTag", ng-model="newRule.tag" ng-change="msgs.removeSelectTag = false")
+                            option(ng-repeat="allowedTag in allowedTags | toArray | orderBy:['name', 'tag']" value="{{allowedTag.tag}}")  {{tagObjName(allowedTag)}}
+                        span(ng-show="msgs.removeSelectTag").error Select a tag to remove
+                    div
+                        // TODO - implement ui.bootstrap.datepicker for remaining elements
+                    input(type="submit", value="Create Rule" class="btn btn-sm btn-success")

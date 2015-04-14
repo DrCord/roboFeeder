@@ -21,9 +21,10 @@ Dependencies:
 
 TODO LIST
 * improve look of the web app pages
-* allowed tags - complex programs via ui for allowed times, max time, etc.
+* allowed tags - complex rules via ui for allowed times, max time, etc. {in progress}
 * logo
 * get hardware remaining specifications (wire lengths, wood sizes, etc.)
+* setting/rule for timestamp to start program on
 
 Parts List:
 * Raspberry Pi ([B+](http://www.adafruit.com/products/1914), [Pi 2](http://www.adafruit.com/products/2358))
@@ -36,7 +37,7 @@ Parts List:
 * AdaFruit Half-size Perma-proto Raspberry Pi ([Adafruit](http://www.adafruit.com/products/1148))
 * Downgrade GPIO Ribbon Cable for Pi A+/B+/Pi 2 - 40p to 26p ([Adafruit](https://www.adafruit.com/products/1986))
 * Resistors (220, 1K, 10K)
-* Wire (ideally of various colors) //TODO: estimate total length and optimal number of colors
+* Wire (ideally of various colors) //TODO: estimate total length, gauge and optimal number of colors
 * Momentary Push Button Switch x2 ([Adafruit](https://www.adafruit.com/products/1119))
 * CD/DVD-ROM Drive (Up-cycled - as long as the drive tray and motor work, the older the better, older drives are more robust)
 * Hinge (1-2 inch) //TODO: measure
