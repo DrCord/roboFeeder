@@ -35,7 +35,7 @@ Parts List:
 * L293D Chip - Dual H-Bridge Motor Driver ([Adafruit](https://www.adafruit.com/products/807))
 * AdaFruit Half-size Perma-proto Raspberry Pi ([Adafruit](http://www.adafruit.com/products/1148))
 * Downgrade GPIO Ribbon Cable for Pi A+/B+/Pi 2 - 40p to 26p ([Adafruit](https://www.adafruit.com/products/1986))
-* Resistors (220, 1K, 10K, Other) //TODO: Note other resistor resistance
+* Resistors (220, 1K, 10K)
 * Wire (ideally of various colors) //TODO: estimate total length and optimal number of colors
 * Momentary Push Button Switch x2 ([Adafruit](https://www.adafruit.com/products/1119))
 * CD/DVD-ROM Drive (Up-cycled - as long as the drive tray and motor work, the older the better, older drives are more robust)
