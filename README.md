@@ -24,7 +24,6 @@ TODO LIST
 * allowed tags - complex programs via ui for allowed times, max time, etc.
 * logo
 * get hardware remaining specifications (wire lengths, wood sizes, etc.)
-* tags page - sort on allowed tags list is slightly wrong, is not considering initial zero(s)
 
 Parts List:
 * Raspberry Pi ([B+](http://www.adafruit.com/products/1914), [Pi 2](http://www.adafruit.com/products/2358))
