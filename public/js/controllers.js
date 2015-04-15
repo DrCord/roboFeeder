@@ -72,6 +72,7 @@ angular.module('roboFeeder.controllers', []).
             notValidCode: false,
             ruleSameName: false
         };
+        // functions
         $scope.getAllowedTags = function(){
             $http.get('/api/tags/allowed/get').success(function( data ) {
                 $scope.allowedTags = data.allowedTags;
@@ -255,42 +256,62 @@ angular.module('roboFeeder.controllers', []).
             }
             return tagObj.name + ' : ' + tagObj.tag;
         };
-        $scope.now = function() {
-            // TODO - setup polling this function to refresh dt for status page
-            // current datetime on init, used on status page
-            $scope.dt = new Date();
+
+        /** https://angular-ui.github.io/bootstrap */
+        $scope.datetime = {
+            examplePlaceholder: '4/15/15 7:17 PM',
+            datepicker: { // ui.bootstrap.datepicker
+                datepickers: { //opened
+                    start: false,
+                    end: false,
+                    activate: false,
+                    expire: false
+                },
+                toggle: function($event, picker){
+                    $event.preventDefault();
+                    $event.stopPropagation();
+                    $scope.datetime.datepicker.datepickers[picker] = !$scope.datetime.datepicker.datepickers[picker];
+                    $scope.datetime.timepicker.timepickers[picker] = !$scope.datetime.timepicker.timepickers[picker];
+                }
+            },
+            timepicker: { // ui.bootstrap.timepicker
+                timepickers: { //opened
+                    start: false,
+                    end: false,
+                    activate: false,
+                    expire: false
+                },
+                hstep: 1,
+                mstep: 15,
+                options: {
+                    hstep: [1, 2, 3],
+                    mstep: [1, 5, 10, 15, 25, 30]
+                },
+                ismeridian: true,
+                toggleMode: function() {
+                    $scope.datetime.timepicker.ismeridian = !$scope.datetime.timepicker.ismeridian;
+                    if($scope.datetime.timepicker.ismeridian){
+                        $scope.datetime.examplePlaceholder = '4/15/15 7:17 PM';
+                    }
+                    else{
+                        $scope.datetime.examplePlaceholder = '4/15/15 19:17';
+                    }
+                }
+            },
+            now: function() {
+                // TODO - setup polling this function to refresh dt for status page
+                // current datetime on init, used on status page
+                $scope.dt = new Date();
+            }
         };
+
         $scope.init = function(){
             $scope.getStatuses();
             $scope.getAllowedTags();
             $scope.logPoller();
             $scope.statusPoller();
             $scope.getSettings();
-            $scope.now();
-        };
-
-        /** https://angular-ui.github.io/bootstrap */
-        // ui.bootstrap.datepicker
-        $scope.datepicker = {
-            opened: false,
-            toggle: function($event){
-                $event.preventDefault();
-                $event.stopPropagation();
-                $scope.datepicker.opened = !$scope.datepicker.opened;
-            }
-        };
-        // ui.bootstrap.timepicker
-        $scope.timepicker = {
-            hstep: 1,
-            mstep: 15,
-            options: {
-                hstep: [1, 2, 3],
-                mstep: [1, 5, 10, 15, 25, 30]
-            },
-            ismeridian: true,
-            toggleMode: function() {
-                $scope.timepicker.ismeridian = !$scope.timepicker.ismeridian;
-            }
+            $scope.datetime.now();
         };
 
         // do stuff

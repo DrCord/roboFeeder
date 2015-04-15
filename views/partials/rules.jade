@@ -42,7 +42,7 @@ include ../includes/menu.jade
                         input.form-control(type="number", name="newRuleWeight", ng-model="newRule.weight")
                     div
                         label(id="newRuleStatus") Status
-                        input.form-control(type="checkbox", name="newRuleStatus", ng-model="newRule.status")
+                        input.form-control(type="checkbox", name="newRuleStatus", ng-model="newRule.active")
                     div
                         label(id="newRuleTag") Tag
                         select.form-control(name="newRuleTag", ng-model="newRule.rule.tag" ng-change="msgs.removeSelectTag = false")
@@ -51,15 +51,15 @@ include ../includes/menu.jade
                     div#start
                         div
                             label(id="newRuleStatus") Start datetime
-                            input.form-control.datetime(type="text", ng-model="newRule.rule.start", ng-required="true", close-text="Close")
+                            input.form-control.datetime(type="text", ng-required="true", close-text="Close", value="{{newRule.rule.start | date : 'short'}}", placeholder="Example: {{datetime.examplePlaceholder}}")
                             span.input-group-btn
-                                button(type="button", class="btn btn-sm btn-default", ng-click="(datepicker.toggle($event))")
+                                button(type="button", class="btn btn-sm btn-default", ng-click="(datetime.datepicker.toggle($event, 'start'))")
                                     i.glyphicon.glyphicon-calendar
                         div.row
                             div.datepicker.col-sm-6
-                                datepicker.well.well-sm(ng-model="newRule.rule.start", close-text="Close", ng-show="datepicker.opened")
+                                datepicker.well.well-sm(ng-model="newRule.rule.start", close-text="Close", ng-show="datetime.datepicker.datepickers.start")
                             div.timepicker.col-sm-6
-                                timepicker(ng-model="newRule.rule.start", hour-step="timepicker.hstep", minute-step="timepicker.mstep", show-meridian="timepicker.ismeridian", ng-show="datepicker.opened")
+                                timepicker(ng-model="newRule.rule.start", hour-step="datetime.timepicker.hstep", minute-step="datetime.timepicker.mstep", show-meridian="datetime.timepicker.ismeridian", ng-show="datetime.timepicker.timepickers.start")
 
                     input(type="submit", value="Create Rule" class="btn btn-sm btn-success")
                 pre {{newRule}}
@@ -70,9 +70,9 @@ include ../includes/menu.jade
                         div.row
                             div.col-sm-4
                                 label Hours step is:
-                                select.form-control(ng-model="timepicker.hstep", ng-options="opt for opt in timepicker.options.hstep")
+                                select.form-control(ng-model="datetime.timepicker.hstep", ng-options="opt for opt in datetime.timepicker.options.hstep")
                             div.col-sm-4
                                 label Minutes step is:
-                                select.form-control(ng-model="timepicker.mstep", ng-options="opt for opt in timepicker.options.mstep")
+                                select.form-control(ng-model="datetime.timepicker.mstep", ng-options="opt for opt in datetime.timepicker.options.mstep")
                             div.col-sm-4
-                                button.btn.btn-info(ng-click="timepicker.toggleMode()") 12H / 24H
+                                button.btn.btn-info(ng-click="datetime.timepicker.toggleMode()") 12H / 24H
