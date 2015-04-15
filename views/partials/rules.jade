@@ -50,7 +50,7 @@ include ../includes/menu.jade
                         span(ng-show="msgs.removeSelectTag").error Select a tag to remove
                     div#start
                         div
-                            label(id="newRuleStatus") Start datetime
+                            label(id="newRuleStart") Start datetime
                             input.form-control.datetime(type="text", ng-required="true", close-text="Close", value="{{newRule.rule.start | date : 'short'}}", placeholder="Example: {{datetime.examplePlaceholder}}")
                             span.input-group-btn
                                 button(type="button", class="btn btn-sm btn-default", ng-click="(datetime.datepicker.toggle($event, 'start'))")
@@ -60,9 +60,46 @@ include ../includes/menu.jade
                                 datepicker.well.well-sm(ng-model="newRule.rule.start", close-text="Close", ng-show="datetime.datepicker.datepickers.start")
                             div.timepicker.col-sm-6
                                 timepicker(ng-model="newRule.rule.start", hour-step="datetime.timepicker.hstep", minute-step="datetime.timepicker.mstep", show-meridian="datetime.timepicker.ismeridian", ng-show="datetime.timepicker.timepickers.start")
+                    div#end
+                        div
+                            label(id="newRuleEnd") End datetime
+                            input.form-control.datetime(type="text", ng-required="true", close-text="Close", value="{{newRule.rule.end | date : 'short'}}", placeholder="Example: {{datetime.examplePlaceholder}}")
+                            span.input-group-btn
+                                button(type="button", class="btn btn-sm btn-default", ng-click="(datetime.datepicker.toggle($event, 'end'))")
+                                    i.glyphicon.glyphicon-calendar
+                        div.row
+                            div.datepicker.col-sm-6
+                                datepicker.well.well-sm(ng-model="newRule.rule.end", close-text="Close", ng-show="datetime.datepicker.datepickers.end")
+                            div.timepicker.col-sm-6
+                                timepicker(ng-model="newRule.rule.end", hour-step="datetime.timepicker.hstep", minute-step="datetime.timepicker.mstep", show-meridian="datetime.timepicker.ismeridian", ng-show="datetime.timepicker.timepickers.end")
+                    div#activate
+                        div
+                            label(id="newRuleActivate") Activate datetime
+                            input.form-control.datetime(type="text", ng-required="true", close-text="Close", value="{{newRule.rule.activate | date : 'short'}}", placeholder="Example: {{datetime.examplePlaceholder}}")
+                            span.input-group-btn
+                                button(type="button", class="btn btn-sm btn-default", ng-click="(datetime.datepicker.toggle($event, 'activate'))")
+                                    i.glyphicon.glyphicon-calendar
+                        div.row
+                            div.datepicker.col-sm-6
+                                datepicker.well.well-sm(ng-model="newRule.rule.activate", close-text="Close", ng-show="datetime.datepicker.datepickers.activate")
+                            div.timepicker.col-sm-6
+                                timepicker(ng-model="newRule.rule.activate", hour-step="datetime.timepicker.hstep", minute-step="datetime.timepicker.mstep", show-meridian="datetime.timepicker.ismeridian", ng-show="datetime.timepicker.timepickers.activate")
+
+                    div#expire
+                        div
+                            label(id="newRuleExpire") Expiration datetime
+                            input.form-control.datetime(type="text", ng-required="true", close-text="Close", value="{{newRule.rule.expire | date : 'short'}}", placeholder="Example: {{datetime.examplePlaceholder}}")
+                            span.input-group-btn
+                                button(type="button", class="btn btn-sm btn-default", ng-click="(datetime.datepicker.toggle($event, 'expire'))")
+                                    i.glyphicon.glyphicon-calendar
+                        div.row
+                            div.datepicker.col-sm-6
+                                datepicker.well.well-sm(ng-model="newRule.rule.expire", close-text="Close", ng-show="datetime.datepicker.datepickers.expire")
+                            div.timepicker.col-sm-6
+                                timepicker(ng-model="newRule.rule.expire", hour-step="datetime.timepicker.hstep", minute-step="datetime.timepicker.mstep", show-meridian="datetime.timepicker.ismeridian", ng-show="datetime.timepicker.timepickers.expire")
 
                     input(type="submit", value="Create Rule" class="btn btn-sm btn-success")
-                pre {{newRule}}
+                // pre {{newRule}}
                 div.options
                     h3 Options
                     div.datetime

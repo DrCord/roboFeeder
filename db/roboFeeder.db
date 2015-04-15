@@ -10,5 +10,6 @@
 {"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429043984101,"_id":"qZohLXmPjqx6zxK5"}
 {"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 32323222 was saved.","timestamp":1428976668746,"_id":"svxoMsEfIyHez9wk"}
 {"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428977216109,"_id":"vBNfDcnnyp4NXuMy"}
-{"type":"setting","name":"pirThreshold","value":"12000","_id":"wuMDQthYhDwGNW46"}
 {"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429105738963,"_id":"wgArRXRylYjuphxj"}
+{"type":"setting","name":"pirThreshold","value":"12000","_id":"wuMDQthYhDwGNW46"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429108046311,"_id":"J7Z4pzUXDXvzOyPI"}

@@ -124,7 +124,7 @@ ul{
 #create form{
     padding: 10px 20px;
 }
-label#newRuleStatus{
+label[id$="newRule"]{
     padding-right: 5px;
 }
 input[type=checkbox].form-control{
