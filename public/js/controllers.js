@@ -1,5 +1,5 @@
 'use strict';
-/* Controllers */
+/** Controllers */
 angular.module('roboFeeder.controllers', []).
     controller('AppCtrl', function ($scope, $http, $resource, poller) {
         $scope.status = {};
@@ -10,10 +10,67 @@ angular.module('roboFeeder.controllers', []).
         $scope.removeTagSelect = {};
         $scope.roboFeederSettings = {};
         $scope.allowedTags = [];
+        $scope.rules = [
+            // test rules
+            {
+                type: 'rule',
+                name: 'test rule 1',
+                weight: 2,
+                active: true,
+                rule: {
+                    tag: 12345678,
+                    start: 1428981715000,
+                    end: 1428981715000,
+                    activate: 1428981715000,
+                    expire: 1428981715000
+                }
+            },
+            {
+                type: 'rule',
+                name: 'test rule 2',
+                weight: 3,
+                active: true,
+                rule: {
+                    tag: 55547454,
+                    start: 1428981715000,
+                    end: 1428981715000,
+                    activate: 1428981715000,
+                    expire: 1428981715000
+                }
+            },
+            {
+                type: 'rule',
+                name: 'test rule 3',
+                weight: 1,
+                active: false,
+                rule: {
+                    tag: 87654321,
+                    start: 1428981795000,
+                    end: 1428981795000,
+                    activate: 1428981795000,
+                    expire: 1428981795000
+                }
+            }
+        ];
+        $scope.newRule = {
+            type: 'rule',
+            name: '',
+            weight: 0,
+            active: true,
+            rule: {
+                tag: '',
+                start: null,
+                end: null,
+                activate: null,
+                expire: null
+            }
+        };
+        $scope.selectedRule = {};
         $scope.msgs = {
             alreadyAllowed: false,
             removeSelectTag: false,
-            notValidCode: false
+            notValidCode: false,
+            ruleSameName: false
         };
         $scope.getAllowedTags = function(){
             $http.get('/api/tags/allowed/get').success(function( data ) {
@@ -160,6 +217,28 @@ angular.module('roboFeeder.controllers', []).
                 }
             }
         };
+        $scope.getRules = function(){
+            $http.get('/api/rules/get').success(function( data ) {
+                $scope.rules = data.rules;
+            });
+        };
+        $scope.saveRule = function(){
+            $http.post('/api/rules/save', {rule: $scope.newRule}).
+                success(function( data ) {
+                    $scope.rules = data.rules;
+                });
+        };
+        $scope.removeRule = function(){
+            $http.post('/api/rules/remove', {rule: $scope.selectedRule}).
+                success(function( data ) {
+                    $scope.rules = data.rules;
+                });
+        };
+        $scope.resetRules = function(){
+            $http.get('/api/rules/reset').success(function( data ) {
+                $scope.rules = data.rules;
+            });
+        };
         $scope.filterAllowedTags = function(tag){
             var tagIndex = null;
             var tagObj = $scope.allowedTags.filter(function ( obj, index ) {
@@ -176,13 +255,44 @@ angular.module('roboFeeder.controllers', []).
             }
             return tagObj.name + ' : ' + tagObj.tag;
         };
+        $scope.now = function() {
+            // TODO - setup polling this function to refresh dt for status page
+            // current datetime on init, used on status page
+            $scope.dt = new Date();
+        };
         $scope.init = function(){
             $scope.getStatuses();
             $scope.getAllowedTags();
             $scope.logPoller();
             $scope.statusPoller();
             $scope.getSettings();
+            $scope.now();
         };
+
+        /** https://angular-ui.github.io/bootstrap */
+        // ui.bootstrap.datepicker
+        $scope.datepicker = {
+            opened: false,
+            toggle: function($event){
+                $event.preventDefault();
+                $event.stopPropagation();
+                $scope.datepicker.opened = !$scope.datepicker.opened;
+            }
+        };
+        // ui.bootstrap.timepicker
+        $scope.timepicker = {
+            hstep: 1,
+            mstep: 15,
+            options: {
+                hstep: [1, 2, 3],
+                mstep: [1, 5, 10, 15, 25, 30]
+            },
+            ismeridian: true,
+            toggleMode: function() {
+                $scope.timepicker.ismeridian = !$scope.timepicker.ismeridian;
+            }
+        };
+
         // do stuff
         $scope.init();
     });

@@ -3,6 +3,7 @@ include ../includes/menu.jade
 #content
     section#status
         h2 Status
+        p Current Date and Time: {{dt | date : 'short'}}
         ul
             li.tray Tray
               span.open(ng-show="status.open")  open

@@ -5,7 +5,7 @@ include ../includes/menu.jade
         h2 Rules
         section#existing
             h3 Existing Rules
-            table(ng-show="rules.length > 0")
+            table#rules-table(ng-show="rules.length > 0")
                 tr
                     th Name
                     th Weight
@@ -16,7 +16,7 @@ include ../includes/menu.jade
                     th Activate
                     th Expire
                     th Actions
-                tr(ng-repeat="rule in rules | toArray | orderBy:'weight'")
+                tr.rule(ng-repeat="rule in rules | toArray | orderBy:'weight'")
                     td {{rule.name}}
                     td {{rule.weight}}
                     td {{rule.active}}
@@ -35,19 +35,44 @@ include ../includes/menu.jade
                 form(name="createRuleForm", ng-submit="createRule()")
                     div.required
                         label(id="newRuleName") Name
-                        input(type="text", name="newRuleName", ng-model="newRule.name" ng-change="msgs.ruleSameName = false;", placeholder="unique string")
+                        input.form-control(type="text", name="newRuleName", ng-model="newRule.name" ng-change="msgs.ruleSameName = false;", placeholder="unique string", ng-required="true")
                         span(ng-show="msgs.ruleSameName").error Identically named rule already exists
                     div
                         label(id="newRuleWeight") Weight
-                        input(type="number", name="newRuleWeight", ng-model="newRule.weight")
+                        input.form-control(type="number", name="newRuleWeight", ng-model="newRule.weight")
                     div
                         label(id="newRuleStatus") Status
-                        input(type="checkbox", name="newRuleStatus", ng-model="newRule.status")
+                        input.form-control(type="checkbox", name="newRuleStatus", ng-model="newRule.status")
                     div
                         label(id="newRuleTag") Tag
-                        select(name="newRuleTag", ng-model="newRule.tag" ng-change="msgs.removeSelectTag = false")
+                        select.form-control(name="newRuleTag", ng-model="newRule.rule.tag" ng-change="msgs.removeSelectTag = false")
                             option(ng-repeat="allowedTag in allowedTags | toArray | orderBy:['name', 'tag']" value="{{allowedTag.tag}}")  {{tagObjName(allowedTag)}}
                         span(ng-show="msgs.removeSelectTag").error Select a tag to remove
-                    div
-                        // TODO - implement ui.bootstrap.datepicker for remaining elements
+                    div#start
+                        div
+                            label(id="newRuleStatus") Start datetime
+                            input.form-control.datetime(type="text", ng-model="newRule.rule.start", ng-required="true", close-text="Close")
+                            span.input-group-btn
+                                button(type="button", class="btn btn-sm btn-default", ng-click="(datepicker.toggle($event))")
+                                    i.glyphicon.glyphicon-calendar
+                        div.row
+                            div.datepicker.col-sm-6
+                                datepicker.well.well-sm(ng-model="newRule.rule.start", close-text="Close", ng-show="datepicker.opened")
+                            div.timepicker.col-sm-6
+                                timepicker(ng-model="newRule.rule.start", hour-step="timepicker.hstep", minute-step="timepicker.mstep", show-meridian="timepicker.ismeridian", ng-show="datepicker.opened")
+
                     input(type="submit", value="Create Rule" class="btn btn-sm btn-success")
+                pre {{newRule}}
+                div.options
+                    h3 Options
+                    div.datetime
+                        h4 Datetime
+                        div.row
+                            div.col-sm-4
+                                label Hours step is:
+                                select.form-control(ng-model="timepicker.hstep", ng-options="opt for opt in timepicker.options.hstep")
+                            div.col-sm-4
+                                label Minutes step is:
+                                select.form-control(ng-model="timepicker.mstep", ng-options="opt for opt in timepicker.options.mstep")
+                            div.col-sm-4
+                                button.btn.btn-info(ng-click="timepicker.toggleMode()") 12H / 24H

@@ -5,6 +5,7 @@
 angular.module('roboFeeder', [
   'ngRoute',
   'ngResource',
+  'ui.bootstrap',
   'emguo.poller',
   'roboFeeder.controllers',
   'roboFeeder.filters',
@@ -19,6 +20,10 @@ config(function ($routeProvider, $locationProvider) {
     }).
     when('/tags', {
       templateUrl: 'partials/tags',
+      controller: 'AppCtrl'
+    }).
+    when('/rules', {
+      templateUrl: 'partials/rules',
       controller: 'AppCtrl'
     }).
     when('/settings', {

@@ -413,13 +413,85 @@ var Log = {
         });
     },
     reset: function(){
-        // Remove multiple documents
         Database.datastore.remove({ type: 'log' }, { multi: true }, function (err, numRemoved) {
             // newDoc is the newly inserted document, including its _id
             Log.log.info('Log', 'Log.reset - number of log items removed: ' + numRemoved, true);
             Log.items = [];
             return Log.items;
         });
+    }
+};
+var Rules = {
+    /** rules object definition
+     *  {
+            type: string 'rule',
+            name: unique string *user input*,
+            weight: int,
+            active: boolean,
+            rule: {
+                    tag: int 8,
+                    start: int timestamp,
+                    end: int timestamp,
+                    activate: int timestamp,
+                    expire: int timestamp
+                }
+        }
+     */
+    rules: [],
+    init: function(){
+        Rules.load();
+        Log.log.info('Rules', 'Rules initialized and rule items loaded', false);
+    },
+    load: function(){
+        Database.datastore.find({type: 'rule'}, function (err, docs) {
+            if(typeof docs[0] != "undefined"){
+                Rules.rules = docs;
+            }
+        });
+    },
+    get: function(){
+        return Rules.rules;
+    },
+    save: function(rule){
+        Rules.rules.push(rule);
+    },
+    remove: function(rule){
+        // TODO - filter and remove
+        var filterObj = Rfid.filterAllowedTags(rule);
+        if (typeof filterObj.ruleObj != "undefined") {
+            Rules.rules.splice(filterObj.ruleIndex, 1);
+            Database.datastore.remove(
+                {
+                    type: 'rule',
+                    name: rule.name
+                },
+                {},
+                function (err, numRemoved) {
+                    Log.log.info('Rules', 'The rule "' + rule.name + '" was removed.');
+                }
+            );
+        }
+        else{
+            Log.log.warn('Rules', 'The rule "' + rule.name + '" was not in the rules list to be removed.');
+        }
+    },
+    reset: function(){
+        Database.datastore.remove({ type: 'rule' }, { multi: true }, function (err, numRemoved) {
+            // newDoc is the newly inserted document, including its _id
+            Log.log.info('Rules', 'Rules.reset - number of rule items removed: ' + numRemoved, true);
+            Rules.rules = [];
+            return Rules.rules;
+        });
+    },
+    filterRules: function(rule){
+        var ruleIndex = null;
+        var ruleObj = Rules.rules.filter(function ( obj, index ) {
+            if(obj.name === rule.name){
+                ruleIndex = index;
+            }
+            return obj.name === rule.name;
+        })[0];
+        return {ruleIndex: ruleIndex, ruleObj: ruleObj};
     }
 };
 var RoboFeeder = {
@@ -473,6 +545,10 @@ var RoboFeeder = {
             },
             motor_init: function(callback){
                 Motor.init();
+                callback(null, true);
+            },
+            rules_init: function(callback){
+                Rules.init();
                 callback(null, true);
             },
             output_init: function(callback){
@@ -720,6 +796,26 @@ var WebServer = {
         app.get('/api/log/reset', function(req, res){
             Log.reset();
             return res.json({ log: Log.items });
+        });
+        // rules
+        app.get('/api/rules/get', function(req, res){
+            return res.json({ rules: Rules.rules });
+        });
+        app.post('/api/rules/save', function(req, res){
+            if(typeof req.body.roboFeederSettings != "undefined"){
+                RoboFeeder.saveSettings(req);
+            }
+            return res.json({ roboFeederSettings: RoboFeeder.settings });
+        });
+        app.post('/api/rules/remove', function(req, res){
+            if(typeof req.body.roboFeederSettings != "undefined"){
+                RoboFeeder.saveSettings(req);
+            }
+            return res.json({ roboFeederSettings: RoboFeeder.settings });
+        });
+        app.get('/api/rules/reset', function(req, res){
+            RoboFeeder.settings = RoboFeeder.defaultSettings;
+            return res.json({ roboFeederSettings: RoboFeeder.settings });
         });
     },
     create: function(){

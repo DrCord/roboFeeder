@@ -1,6 +1,12 @@
 /* app css stylesheet */
+.nav,
+.pagination,
+.carousel,
+.panel-title a{
+    cursor: pointer;
+}
 body{
-    padding: 0 20px;
+    padding: 0 20px 20px;
 }
 .navbar{
     display: inline-block;
@@ -35,17 +41,25 @@ ul{
 #status button.btn-sm{
     padding: 5px 7px;
 }
+#rules table#rules-table,
 #log table{
     border: 1px solid #333;
 }
+#rules table th,
 #log table th{
     text-align: center;
 }
+#rules table#rules-table th,
+#rules table#rules-table tr.rule td,
 #log table th,
 #log table td{
     border: 1px solid #333;
     padding: 3px 10px;
 }
+#rules button.edit{
+    margin: 0 10px 0 0;
+}
+#rules input[type="submit"],
 #log button,
 #settings input[type="submit"]{
     margin: 10px 0;
@@ -89,4 +103,24 @@ ul{
 }
 #settings label{
     padding-right: 10px;
+}
+.form-control{
+    display: inline-block;
+    margin: 3px 5px;
+    width: auto;
+}
+.input-group-btn{
+    display: inline-block;
+}
+.datepicker{
+    display: inline-block;
+}
+.timepicker input{
+    width: 50px;
+}
+#start input.datetime{
+    min-width: 200px;
+}
+#create form{
+    padding: 10px 20px;
 }
