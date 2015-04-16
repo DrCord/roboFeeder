@@ -131,3 +131,17 @@ input[type=checkbox].form-control{
     vertical-align: bottom;
     height: 30px;
 }
+
+.animate-show {
+    opacity: 1;
+}
+
+.animate-show.ng-hide-add.ng-hide-add-active,
+.animate-show.ng-hide-remove.ng-hide-remove-active {
+    -webkit-transition: all linear 0.5s;
+    transition: all linear 0.5s;
+}
+
+.animate-show.ng-hide {
+    opacity: 0;
+}

@@ -7,15 +7,7 @@ include ../includes/menu.jade
             h3 Existing Rules
             table#rules-table(ng-show="rules.length > 0")
                 tr
-                    th Name
-                    th Weight
-                    th Status
-                    th Tag
-                    th Start
-                    th End
-                    th Activate
-                    th Expire
-                    th Actions
+                    th(ng-repeat="headerTitle in ruleTableHeaders") {{headerTitle}}
                 tr.rule(ng-repeat="rule in rules | toArray | orderBy:'weight'")
                     td {{rule.name}}
                     td {{rule.weight}}
@@ -48,58 +40,21 @@ include ../includes/menu.jade
                         select.form-control(name="newRuleTag", ng-model="newRule.rule.tag" ng-change="msgs.removeSelectTag = false")
                             option(ng-repeat="allowedTag in allowedTags | toArray | orderBy:['name', 'tag']" value="{{allowedTag.tag}}")  {{tagObjName(allowedTag)}}
                         span(ng-show="msgs.removeSelectTag").error Select a tag to remove
-                    div#start
-                        div
-                            label(id="newRuleStart") Start datetime
-                            input.form-control.datetime(type="text", ng-required="true", close-text="Close", value="{{newRule.rule.start | date : 'short'}}", placeholder="Example: {{datetime.examplePlaceholder}}")
-                            span.input-group-btn
-                                button(type="button", class="btn btn-sm btn-default", ng-click="(datetime.datepicker.toggle($event, 'start'))")
-                                    i.glyphicon.glyphicon-calendar
-                        div.row
-                            div.datepicker.col-sm-6
-                                datepicker.well.well-sm(ng-model="newRule.rule.start", close-text="Close", ng-show="datetime.datepicker.datepickers.start")
-                            div.timepicker.col-sm-6
-                                timepicker(ng-model="newRule.rule.start", hour-step="datetime.timepicker.hstep", minute-step="datetime.timepicker.mstep", show-meridian="datetime.timepicker.ismeridian", ng-show="datetime.timepicker.timepickers.start")
-                    div#end
-                        div
-                            label(id="newRuleEnd") End datetime
-                            input.form-control.datetime(type="text", ng-required="true", close-text="Close", value="{{newRule.rule.end | date : 'short'}}", placeholder="Example: {{datetime.examplePlaceholder}}")
-                            span.input-group-btn
-                                button(type="button", class="btn btn-sm btn-default", ng-click="(datetime.datepicker.toggle($event, 'end'))")
-                                    i.glyphicon.glyphicon-calendar
-                        div.row
-                            div.datepicker.col-sm-6
-                                datepicker.well.well-sm(ng-model="newRule.rule.end", close-text="Close", ng-show="datetime.datepicker.datepickers.end")
-                            div.timepicker.col-sm-6
-                                timepicker(ng-model="newRule.rule.end", hour-step="datetime.timepicker.hstep", minute-step="datetime.timepicker.mstep", show-meridian="datetime.timepicker.ismeridian", ng-show="datetime.timepicker.timepickers.end")
-                    div#activate
-                        div
-                            label(id="newRuleActivate") Activate datetime
-                            input.form-control.datetime(type="text", ng-required="true", close-text="Close", value="{{newRule.rule.activate | date : 'short'}}", placeholder="Example: {{datetime.examplePlaceholder}}")
-                            span.input-group-btn
-                                button(type="button", class="btn btn-sm btn-default", ng-click="(datetime.datepicker.toggle($event, 'activate'))")
-                                    i.glyphicon.glyphicon-calendar
-                        div.row
-                            div.datepicker.col-sm-6
-                                datepicker.well.well-sm(ng-model="newRule.rule.activate", close-text="Close", ng-show="datetime.datepicker.datepickers.activate")
-                            div.timepicker.col-sm-6
-                                timepicker(ng-model="newRule.rule.activate", hour-step="datetime.timepicker.hstep", minute-step="datetime.timepicker.mstep", show-meridian="datetime.timepicker.ismeridian", ng-show="datetime.timepicker.timepickers.activate")
 
-                    div#expire
+                    div(ng-repeat="fieldName in datetime.fields", id="{{fieldName}}")
                         div
-                            label(id="newRuleExpire") Expiration datetime
-                            input.form-control.datetime(type="text", ng-required="true", close-text="Close", value="{{newRule.rule.expire | date : 'short'}}", placeholder="Example: {{datetime.examplePlaceholder}}")
+                            label(id="newRule{{fieldName | capitalize}}") {{fieldName | capitalize}}
+                            input.form-control.datetime(type="text", ng-required="true", close-text="Close", value="{{ruleTypeValue(fieldName) | date : 'short'}}", placeholder="Example: {{datetime.examplePlaceholder}}", ng-click="datetime.datepicker.toggle($event, fieldName)", readonly="readonly")
                             span.input-group-btn
-                                button(type="button", class="btn btn-sm btn-default", ng-click="(datetime.datepicker.toggle($event, 'expire'))")
+                                button(type="button", class="btn btn-sm btn-default", ng-click="datetime.datepicker.toggle($event, fieldName)")
                                     i.glyphicon.glyphicon-calendar
                         div.row
-                            div.datepicker.col-sm-6
-                                datepicker.well.well-sm(ng-model="newRule.rule.expire", close-text="Close", ng-show="datetime.datepicker.datepickers.expire")
-                            div.timepicker.col-sm-6
-                                timepicker(ng-model="newRule.rule.expire", hour-step="datetime.timepicker.hstep", minute-step="datetime.timepicker.mstep", show-meridian="datetime.timepicker.ismeridian", ng-show="datetime.timepicker.timepickers.expire")
+                            div.datepicker.col-sm-6.animate-show(ng-show="datetime.datepicker.datepickers[fieldName]")
+                                datepicker.well.well-sm(ng-model="newRule.rule[fieldName]", close-text="Close")
+                            div.timepicker.col-sm-6.animate-show(ng-show="datetime.timepicker.timepickers[fieldName]")
+                                timepicker(ng-model="newRule.rule[fieldName]", hour-step="datetime.timepicker.hstep", minute-step="datetime.timepicker.mstep", show-meridian="datetime.timepicker.ismeridian")
 
                     input(type="submit", value="Create Rule" class="btn btn-sm btn-success")
-                // pre {{newRule}}
                 div.options
                     h3 Options
                     div.datetime

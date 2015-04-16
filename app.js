@@ -452,12 +452,22 @@ var Rules = {
     get: function(){
         return Rules.rules;
     },
-    save: function(rule){
-        Rules.rules.push(rule);
+    save: function(ruleObj){
+        Rules.rules.push(ruleObj);
+        Database.datastore.update(
+            {
+                type: 'rule',
+                name: ruleObj.name
+            },
+            ruleObj,
+            {upsert: true},
+            function (err, newDoc) {   // Callback is optional
+                Log.log.info('Rules', 'Rules.save - rule ' + ruleObj.name + ' saved.', true);
+            }
+        );
     },
     remove: function(rule){
-        // TODO - filter and remove
-        var filterObj = Rfid.filterAllowedTags(rule);
+        var filterObj = Rules.filterRules(rule);
         if (typeof filterObj.ruleObj != "undefined") {
             Rules.rules.splice(filterObj.ruleIndex, 1);
             Database.datastore.remove(
@@ -802,20 +812,20 @@ var WebServer = {
             return res.json({ rules: Rules.rules });
         });
         app.post('/api/rules/save', function(req, res){
-            if(typeof req.body.roboFeederSettings != "undefined"){
-                RoboFeeder.saveSettings(req);
+            if(typeof req.body.newRule != "undefined"){
+                Rules.save(req.body.newRule);
             }
-            return res.json({ roboFeederSettings: RoboFeeder.settings });
+            return res.json({ rules: Rules.rules });
         });
         app.post('/api/rules/remove', function(req, res){
-            if(typeof req.body.roboFeederSettings != "undefined"){
-                RoboFeeder.saveSettings(req);
+            if(typeof req.body.rule != "undefined"){
+                Rules.remove(req.body.rule);
             }
-            return res.json({ roboFeederSettings: RoboFeeder.settings });
+            return res.json({ rules: Rules.rules });
         });
         app.get('/api/rules/reset', function(req, res){
-            RoboFeeder.settings = RoboFeeder.defaultSettings;
-            return res.json({ roboFeederSettings: RoboFeeder.settings });
+            Rules.reset();
+            return res.json({ rules: Rules.rules });
         });
     },
     create: function(){

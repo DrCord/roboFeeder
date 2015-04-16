@@ -5,6 +5,7 @@
 angular.module('roboFeeder', [
   'ngRoute',
   'ngResource',
+  'ngAnimate',
   'ui.bootstrap',
   'emguo.poller',
   'roboFeeder.controllers',

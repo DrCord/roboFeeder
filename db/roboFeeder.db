@@ -1,15 +1,16 @@
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429020663651,"_id":"5YT3wzsigvlYlMNb"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule test rule 1 saved.","timestamp":1429154848338,"_id":"2f5aSFZWaJTdCE2W"}
+{"type":"log","level":"info","category":"Rules","message":"The rule \"test rule 1\" was removed.","timestamp":1429154573892,"_id":"2nlLEY22i6RNTADu"}
 {"type":"tag","allowed":true,"tag":"32323222","name":"fssssss","_id":"9ESqtZU0aEbaQJR2"}
-{"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 1","timestamp":1428886002091,"_id":"BNxkWfC3BsdqzhPj"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428983966258,"_id":"BmxJxBeGqGoXzEMl"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429055784092,"_id":"IlLoulLv0Xhhjqmz"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428984263923,"_id":"P917ulNEIbgQnyqj"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428976635841,"_id":"Q5ps3CiBMSacwvUA"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428981238156,"_id":"S14kJk88XF4RHPDo"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule test rule 3 saved.","timestamp":1429154726054,"_id":"BXl7hD2PtB6Qafcy"}
+{"type":"rule","name":"test rule 2","weight":3,"active":true,"rule":{"tag":"32323222","start":"2015-04-25T05:22:53.481Z","end":"2015-04-12T20:15:00.000Z","activate":"2015-05-01T18:15:00.000Z","expire":"2015-04-19T08:00:00.000Z"},"_id":"BkMzOOTfKceAsxhY"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429155957173,"_id":"FCIU4tMnjjpdWjkG"}
+{"type":"rule","name":"test rule 1","weight":5,"active":true,"rule":{"tag":"32323222","start":"2015-04-09T07:00:00.000Z","end":"2015-04-05T10:00:00.000Z","activate":"2015-04-23T07:00:00.000Z","expire":"2015-03-29T07:00:00.000Z"},"_id":"HudxYlOWONW17al1"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429154260073,"_id":"PO6UncpQl4oUDuGf"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 44557456 was saved.","timestamp":1429154694262,"_id":"PeQaZhf6VGQW062I"}
+{"type":"tag","allowed":true,"tag":"44557456","name":"test tag 2","_id":"ZhtlU3PPRwSJet1B"}
+{"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 21","timestamp":1429154211509,"_id":"huHLPZ25AvfqF1SA"}
+{"type":"rule","name":"test rule 3","weight":0,"active":true,"rule":{"tag":"44557456","start":"2015-04-16T07:00:00.000Z","end":"2015-04-02T07:00:00.000Z","activate":"2015-04-07T07:00:00.000Z","expire":null},"_id":"j1HrDLUTiRUgiCpP"}
 {"type":"setting","name":"rfidThreshold","value":"8000","_id":"n0IK3g0Lo8KXXPX0"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429043984101,"_id":"qZohLXmPjqx6zxK5"}
-{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 32323222 was saved.","timestamp":1428976668746,"_id":"svxoMsEfIyHez9wk"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1428977216109,"_id":"vBNfDcnnyp4NXuMy"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429105738963,"_id":"wgArRXRylYjuphxj"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule test rule 2 saved.","timestamp":1429154612001,"_id":"oHUW9cFY5nCmBe4k"}
 {"type":"setting","name":"pirThreshold","value":"12000","_id":"wuMDQthYhDwGNW46"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429108046311,"_id":"J7Z4pzUXDXvzOyPI"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429157884547,"_id":"WSWbesjhj1SqE2Me"}

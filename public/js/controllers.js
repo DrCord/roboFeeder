@@ -1,6 +1,6 @@
 'use strict';
 /** Controllers */
-angular.module('roboFeeder.controllers', []).
+angular.module('roboFeeder.controllers', ['ngAnimate']).
     controller('AppCtrl', function ($scope, $http, $resource, poller) {
         $scope.status = {};
         $scope.errors = [];
@@ -12,7 +12,7 @@ angular.module('roboFeeder.controllers', []).
         $scope.allowedTags = [];
         $scope.rules = [
             // test rules
-            {
+            /*{
                 type: 'rule',
                 name: 'test rule 1',
                 weight: 2,
@@ -50,7 +50,7 @@ angular.module('roboFeeder.controllers', []).
                     activate: 1428981795000,
                     expire: 1428981795000
                 }
-            }
+            }*/
         ];
         $scope.newRule = {
             type: 'rule',
@@ -72,7 +72,71 @@ angular.module('roboFeeder.controllers', []).
             notValidCode: false,
             ruleSameName: false
         };
-        // functions
+        $scope.ruleTableHeaders = [
+            'Name',
+            'Weight',
+            'Status',
+            'Tag',
+            'Start',
+            'End',
+            'Activate',
+            'Expire',
+            'Actions'
+        ];
+
+        $scope.datetime = {
+            fields: [
+                'start',
+                'end',
+                'activate',
+                'expire'
+            ],
+            examplePlaceholder: '4/15/15 7:17 PM',
+            datepicker: { // ui.bootstrap.datepicker
+                datepickers: { // true == opened
+                    start: false,
+                    end: false,
+                    activate: false,
+                    expire: false
+                },
+                toggle: function($event, picker){
+                    $event.preventDefault();
+                    $event.stopPropagation();
+                    $scope.datetime.datepicker.datepickers[picker] = !$scope.datetime.datepicker.datepickers[picker];
+                    $scope.datetime.timepicker.timepickers[picker] = !$scope.datetime.timepicker.timepickers[picker];
+                }
+            },
+            timepicker: { // ui.bootstrap.timepicker
+                timepickers: { // true == opened
+                    start: false,
+                    end: false,
+                    activate: false,
+                    expire: false
+                },
+                hstep: 1,
+                mstep: 15,
+                options: {
+                    hstep: [1, 2, 3],
+                    mstep: [1, 5, 10, 15, 25, 30]
+                },
+                ismeridian: true,
+                toggleMode: function() {
+                    $scope.datetime.timepicker.ismeridian = !$scope.datetime.timepicker.ismeridian;
+                    if($scope.datetime.timepicker.ismeridian){
+                        $scope.datetime.examplePlaceholder = '4/15/15 7:17 PM';
+                    }
+                    else{
+                        $scope.datetime.examplePlaceholder = '4/15/15 19:17';
+                    }
+                }
+            },
+            now: function() {
+                // TODO - setup polling this function to refresh dt for status page
+                // current datetime on init, used on status page
+                $scope.dt = new Date();
+            }
+        };
+
         $scope.getAllowedTags = function(){
             $http.get('/api/tags/allowed/get').success(function( data ) {
                 $scope.allowedTags = data.allowedTags;
@@ -229,11 +293,15 @@ angular.module('roboFeeder.controllers', []).
                     $scope.rules = data.rules;
                 });
         };
-        $scope.removeRule = function(){
-            $http.post('/api/rules/remove', {rule: $scope.selectedRule}).
+        $scope.removeRule = function(rule){
+            $http.post('/api/rules/remove', {rule: rule}).
                 success(function( data ) {
                     $scope.rules = data.rules;
                 });
+        };
+        $scope.editRule = function(rule){
+            // TODO - activate edit mode (whatever that is - likely either a modal or inline editing via fields turning into inputs)
+            // TODO after editing save or cancel
         };
         $scope.resetRules = function(){
             $http.get('/api/rules/reset').success(function( data ) {
@@ -256,53 +324,31 @@ angular.module('roboFeeder.controllers', []).
             }
             return tagObj.name + ' : ' + tagObj.tag;
         };
-
-        /** https://angular-ui.github.io/bootstrap */
-        $scope.datetime = {
-            examplePlaceholder: '4/15/15 7:17 PM',
-            datepicker: { // ui.bootstrap.datepicker
-                datepickers: { //opened
-                    start: false,
-                    end: false,
-                    activate: false,
-                    expire: false
-                },
-                toggle: function($event, picker){
-                    $event.preventDefault();
-                    $event.stopPropagation();
-                    $scope.datetime.datepicker.datepickers[picker] = !$scope.datetime.datepicker.datepickers[picker];
-                    $scope.datetime.timepicker.timepickers[picker] = !$scope.datetime.timepicker.timepickers[picker];
+        $scope.ruleTypeValue = function(ruleType){
+            return $scope.newRule.rule[ruleType];
+        };
+        $scope.createRule = function(){
+            // TODO ? - is all validation being handled on the page ? if not this needs validation
+            $http.post('/api/rules/save', {newRule: $scope.newRule}).
+                success(function( data ) {
+                    $scope.newRuleInitialize();
+                    $scope.rules = data.rules;
+                });
+        };
+        $scope.newRuleInitialize = function(){
+            $scope.newRule = {
+                type: 'rule',
+                name: '',
+                weight: 0,
+                active: true,
+                rule: {
+                    tag: '',
+                    start: null,
+                    end: null,
+                    activate: null,
+                    expire: null
                 }
-            },
-            timepicker: { // ui.bootstrap.timepicker
-                timepickers: { //opened
-                    start: false,
-                    end: false,
-                    activate: false,
-                    expire: false
-                },
-                hstep: 1,
-                mstep: 15,
-                options: {
-                    hstep: [1, 2, 3],
-                    mstep: [1, 5, 10, 15, 25, 30]
-                },
-                ismeridian: true,
-                toggleMode: function() {
-                    $scope.datetime.timepicker.ismeridian = !$scope.datetime.timepicker.ismeridian;
-                    if($scope.datetime.timepicker.ismeridian){
-                        $scope.datetime.examplePlaceholder = '4/15/15 7:17 PM';
-                    }
-                    else{
-                        $scope.datetime.examplePlaceholder = '4/15/15 19:17';
-                    }
-                }
-            },
-            now: function() {
-                // TODO - setup polling this function to refresh dt for status page
-                // current datetime on init, used on status page
-                $scope.dt = new Date();
-            }
+            };
         };
 
         $scope.init = function(){
@@ -311,9 +357,9 @@ angular.module('roboFeeder.controllers', []).
             $scope.logPoller();
             $scope.statusPoller();
             $scope.getSettings();
+            $scope.getRules();
             $scope.datetime.now();
         };
-
         // do stuff
         $scope.init();
     });
