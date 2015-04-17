@@ -228,6 +228,68 @@ var Gpio = {
     }
 };
 var Toolbox = {
+    datetime: {
+        dt: null,
+        now: function(){
+            return new Date();
+        },
+        newDT: function(){
+            Toolbox.datetime.dt = Toolbox.datetime.now();
+        },
+        convert: function(d){ // Source: http://stackoverflow.com/questions/497790
+            // Converts the date in d to a date-object. The input can be:
+            //   a date object: returned without modification
+            //  an array      : Interpreted as [year,month,day]. NOTE: month is 0-11.
+            //   a number     : Interpreted as number of milliseconds
+            //                  since 1 Jan 1970 (a timestamp)
+            //   a string     : Any format supported by the javascript engine, like
+            //                  "YYYY/MM/DD", "MM/DD/YYYY", "Jan 31 2009" etc.
+            //  an object     : Interpreted as an object with year, month and date
+            //                  attributes.  **NOTE** month is 0-11.
+            return (
+                d.constructor === Date ? d :
+                    d.constructor === Array ? new Date(d[0],d[1],d[2]) :
+                        d.constructor === Number ? new Date(d) :
+                            d.constructor === String ? new Date(d) :
+                                typeof d === "object" ? new Date(d.year,d.month,d.date) :
+                                    NaN
+            );
+        },
+        compare: function(a,b){ // Source: http://stackoverflow.com/questions/497790
+            // Compare two dates (could be of any type supported by the convert
+            // function above) and returns:
+            //  -1 : if a < b
+            //   0 : if a = b
+            //   1 : if a > b
+            // NaN : if a or b is an illegal date
+            // NOTE: The code inside isFinite does an assignment (=).
+            return (
+                isFinite(a=this.convert(a).valueOf()) &&
+                isFinite(b=this.convert(b).valueOf()) ?
+                (a>b)-(a<b) :
+                    NaN
+            );
+        },
+        inRange: function(d,start,end){ // Source: http://stackoverflow.com/questions/497790
+            // Checks if date in d is between dates in start and end.
+            // Returns a boolean or NaN:
+            //    true  : if d is between start and end (inclusive)
+            //    false : if d is before start or after end
+            //    NaN   : if one or more of the dates is illegal.
+            // NOTE: The code inside isFinite does an assignment (=).
+            return (
+                isFinite(d=this.convert(d).valueOf()) &&
+                isFinite(start=this.convert(start).valueOf()) &&
+                isFinite(end=this.convert(end).valueOf()) ?
+                start <= d && d <= end :
+                    NaN
+            );
+        }
+    },
+    init: function(){
+        Toolbox.datetime.newDT();
+        Log.log.info('Toolbox', 'Toolbox initialized and datetime created', false);
+    },
     zeroFill: function(number, width){
         width -= number.toString().length;
         if ( width > 0 )    {
@@ -245,7 +307,8 @@ var Serial = {
         Serial.sp.on('open', function() {
             Log.log.info('Serial', 'Serial connection open.', false);
             Serial.sp.on('data', function(data) {
-                Serial.receiveData(data);
+                var encoded_int = Serial.receiveData(data);
+                RoboFeeder.codeResponse(encoded_int);
             });
         });
         RoboFeeder.status.serial = true;
@@ -254,35 +317,7 @@ var Serial = {
         var buff = new Buffer(data, 'utf8');
         var encoded_hex = buff.toString('hex');
         var encoded_int = parseInt(encoded_hex, 16);
-        Serial.checkCode(encoded_int, RoboFeeder.status.open);
-    },
-    checkCode: function(code, rechecking){
-        var zerofilled_code = Toolbox.zeroFill(code, 8);
-        var codeIndex = null;
-        for(var i=0; i < Rfid.allowedTags.length; i++){
-            if(Rfid.allowedTags[i] == zerofilled_code){
-                codeIndex = i;
-                break;
-            }
-        }
-        if(codeIndex !== null){
-            if(!rechecking){
-                RoboFeeder.open();
-                Pir.monitor();
-            }
-            Log.log.info('Serial', 'RFID tag match: ' + zerofilled_code);
-            Rfid.setLastTrigger();
-            //example code for checking for a specific tag, left in for later
-            /* if(codeIndex === 0){
-                //white tag index 0
-            }
-            else if(codeIndex === 1){
-                //blue tag index 1
-            }*/
-        }
-        else{
-            Log.log.info('Serial', 'RFID tag not matched: ' + zerofilled_code);
-        }
+        return encoded_int;
     }
 };
 var Pir = {
@@ -467,7 +502,7 @@ var Rules = {
         );
     },
     remove: function(rule){
-        var filterObj = Rules.filterRules(rule);
+        var filterObj = Rules.filterRules(rule, 'name');
         if (typeof filterObj.ruleObj != "undefined") {
             Rules.rules.splice(filterObj.ruleIndex, 1);
             Database.datastore.remove(
@@ -493,15 +528,33 @@ var Rules = {
             return Rules.rules;
         });
     },
-    filterRules: function(rule){
+    filterRules: function(rule, field){
         var ruleIndex = null;
         var ruleObj = Rules.rules.filter(function ( obj, index ) {
-            if(obj.name === rule.name){
+            if(obj[field] === rule[field]){
                 ruleIndex = index;
             }
-            return obj.name === rule.name;
+            return obj[field] === rule[field];
         })[0];
         return {ruleIndex: ruleIndex, ruleObj: ruleObj};
+    },
+    isWithinActiveTimePeriod: function(ruleObj){
+        var now = Toolbox.datetime.now();
+        var activate = Toolbox.datetime.convert(new Date(ruleObj.rule.activate).getTime());
+        var expire = Toolbox.datetime.convert(new Date(ruleObj.rule.expire).getTime());
+        return Toolbox.datetime.inRange(now, activate, expire);
+    },
+    status: function(ruleObj){
+        return ruleObj.active;
+    },
+    codeRuleIndexes: function(codeIndex){
+        var ruleIndexes = [];
+        for(var i=0; i<Rules.rules.length; i++){
+            if(Rules.rules[i].rule.tag == Rfid.allowedTags[codeIndex].tag){
+                ruleIndexes.push(i);
+            }
+        }
+        return ruleIndexes;
     }
 };
 var RoboFeeder = {
@@ -563,6 +616,10 @@ var RoboFeeder = {
             },
             output_init: function(callback){
                 Output.init();
+                callback(null, true);
+            },
+            toolbox_init: function(callback){
+                Toolbox.init();
                 callback(null, true);
             }
         }, function(err, results){
@@ -703,6 +760,67 @@ var RoboFeeder = {
     },
     openTimerEnd: function(){
         clearInterval(RoboFeeder.openTimer);
+    },
+    checkCode: function(code){
+        // returns null if not found instead of zero, since 0 could be an index
+        // make sure to use codeIndex !== null when checking returned value to see if a code matched
+        var zerofilled_code = Toolbox.zeroFill(code, 8);
+        var codeIndex = null;
+        for(var i=0; i < Rfid.allowedTags.length; i++){
+            if(Rfid.allowedTags[i].tag == zerofilled_code){
+                codeIndex = i;
+                break;
+            }
+        }
+        return codeIndex;
+    },
+    codeResponse: function(code){
+        var codeIndex = RoboFeeder.checkCode(code);
+        // has allowed code
+        if(codeIndex !== null){
+            // check if has rule(s) for allowed code
+            var ruleIndexes = Rules.codeRuleIndexes(codeIndex);
+            if(ruleIndexes.length > 0){
+                console.log('Rules.rules - matching rule indexes: ');
+                console.log(ruleIndexes);
+                for(var j=0; j<ruleIndexes.length; j++){
+                    // check if rule is in valid period between activation and expiration
+                    if( Rules.isWithinActiveTimePeriod( Rules.rules[ruleIndexes[j]] )){
+                        console.log('Rule "' + Rules.rules[ruleIndexes[j]].name + '" is within active time period.');
+                    }
+                    else{
+                        console.log('Rule "' + Rules.rules[ruleIndexes[j]].name + '" is NOT within active time period.');
+                    }
+                    if(Rules.status( Rules.rules[ruleIndexes[j]] )){
+                        console.log('Rule "' + Rules.rules[ruleIndexes[j]].name + '" status is active.');
+                    }
+                    else{
+                        console.log('Rule "' + Rules.rules[ruleIndexes[j]].name + '" status is NOT active.');
+                    }
+                }
+            }
+            else{
+                // if no matching rules - open with allowed code at any time
+                RoboFeeder.tagMatch(codeIndex);
+                Log.log.info('RoboFeeder', 'RFID allowed tag has no rules, opening...');
+            }
+        }
+        else{
+            Log.log.info('RoboFeeder', 'RFID tag not matched: ' + Toolbox.zeroFill(code, 8));
+        }
+    },
+    tagMatch: function(codeIndex){
+        if(!RoboFeeder.status.open){
+            RoboFeeder.open();
+            Pir.monitor();
+        }
+        if(typeof Rfid.allowedTags[codeIndex].name != "undefined"){
+            Log.log.info('RoboFeeder', 'RFID tag match - ' + Rfid.allowedTags[codeIndex].name + ': ' + Rfid.allowedTags[codeIndex].tag);
+        }
+        else{
+            Log.log.info('RoboFeeder', 'RFID tag match: ' + Rfid.allowedTags[codeIndex].tag);
+        }
+        Rfid.setLastTrigger();
     }
 };
 var WebServer = {

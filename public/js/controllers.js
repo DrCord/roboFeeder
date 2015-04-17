@@ -10,48 +10,7 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
         $scope.removeTagSelect = {};
         $scope.roboFeederSettings = {};
         $scope.allowedTags = [];
-        $scope.rules = [
-            // test rules
-            /*{
-                type: 'rule',
-                name: 'test rule 1',
-                weight: 2,
-                active: true,
-                rule: {
-                    tag: 12345678,
-                    start: 1428981715000,
-                    end: 1428981715000,
-                    activate: 1428981715000,
-                    expire: 1428981715000
-                }
-            },
-            {
-                type: 'rule',
-                name: 'test rule 2',
-                weight: 3,
-                active: true,
-                rule: {
-                    tag: 55547454,
-                    start: 1428981715000,
-                    end: 1428981715000,
-                    activate: 1428981715000,
-                    expire: 1428981715000
-                }
-            },
-            {
-                type: 'rule',
-                name: 'test rule 3',
-                weight: 1,
-                active: false,
-                rule: {
-                    tag: 87654321,
-                    start: 1428981795000,
-                    end: 1428981795000,
-                    activate: 1428981795000,
-                    expire: 1428981795000
-                }
-            }*/
-        ];
+        $scope.rules = [];
         $scope.newRule = {
             type: 'rule',
             name: '',
@@ -65,7 +24,6 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                 expire: null
             }
         };
-        $scope.selectedRule = {};
         $scope.msgs = {
             alreadyAllowed: false,
             removeSelectTag: false,
@@ -77,10 +35,10 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
             'Weight',
             'Status',
             'Tag',
-            'Start',
-            'End',
-            'Activate',
-            'Expire',
+            'Start Time',
+            'End Time',
+            'Activate datetime',
+            'Expire datetime',
             'Actions'
         ];
 
@@ -91,7 +49,6 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                 'activate',
                 'expire'
             ],
-            examplePlaceholder: '4/15/15 7:17 PM',
             datepicker: { // ui.bootstrap.datepicker
                 datepickers: { // true == opened
                     start: false,
@@ -99,6 +56,7 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                     activate: false,
                     expire: false
                 },
+                examplePlaceholder: '4/15/15 7:17 PM',
                 toggle: function($event, picker){
                     $event.preventDefault();
                     $event.stopPropagation();
@@ -113,6 +71,7 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                     activate: false,
                     expire: false
                 },
+                examplePlaceholder: '7:17 PM',
                 hstep: 1,
                 mstep: 15,
                 options: {
@@ -123,10 +82,12 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                 toggleMode: function() {
                     $scope.datetime.timepicker.ismeridian = !$scope.datetime.timepicker.ismeridian;
                     if($scope.datetime.timepicker.ismeridian){
-                        $scope.datetime.examplePlaceholder = '4/15/15 7:17 PM';
+                        $scope.datetime.timepicker.examplePlaceholder = '7:17 PM';
+                        $scope.datetime.datepicker.examplePlaceholder = '4/15/15 7:17 PM';
                     }
                     else{
-                        $scope.datetime.examplePlaceholder = '4/15/15 19:17';
+                        $scope.datetime.timepicker.examplePlaceholder = '19:17';
+                        $scope.datetime.datepicker.examplePlaceholder = '4/15/15 19:17';
                     }
                 }
             },
