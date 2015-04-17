@@ -22,9 +22,12 @@ Dependencies:
 TODO LIST
 * improve look of the web app pages
 * allowed tags - complex rules via ui for allowed times, max time, etc. {in progress}
+** rules - editing
+** rules - logic for using rules
 * logo
 * get hardware remaining specifications (wire lengths, wood sizes, etc.)
 * setting/rule for timestamp to start program on
+* update angular dependencies
 
 Parts List:
 * Raspberry Pi ([B+](http://www.adafruit.com/products/1914), [Pi 2](http://www.adafruit.com/products/2358))
