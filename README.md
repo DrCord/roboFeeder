@@ -20,14 +20,19 @@ Dependencies:
   * angular-poller https://github.com/emmaguo/angular-poller
 
 TODO LIST
-* improve look of the web app pages
-* allowed tags - complex rules via ui for allowed times, max time, etc. {in progress}
-** rules - editing
-** rules - logic for using rules
-* logo
-* get hardware remaining specifications (wire lengths, wood sizes, etc.)
-* setting/rule for timestamp to start program on
-* update angular dependencies
+* General
+  * get hardware remaining specifications (wire lengths, wood sizes, etc.)
+  * update angular dependencies
+* Rules {in progress}
+  * editing
+  * logic for using rules in backend of app {in progress}
+* UI
+  * logo
+  * improve look of the web app pages
+  * explain in UI that tags that are allowed but have no rules have unrestricted access
+  * add tooltips or notes to various pages, especially rule creation
+  * instructions for each page
+  * FAQ/help page
 
 Parts List:
 * Raspberry Pi ([B+](http://www.adafruit.com/products/1914), [Pi 2](http://www.adafruit.com/products/2358))
