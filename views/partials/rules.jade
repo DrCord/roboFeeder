@@ -8,7 +8,7 @@ include ../includes/menu.jade
             table#rules-table(ng-show="rules.length > 0")
                 tr
                     th(ng-repeat="headerTitle in ruleTableHeaders") {{headerTitle}}
-                tr.rule(ng-repeat="rule in rules | toArray | orderBy:'weight'")
+                tr.rule(ng-repeat="rule in rules | toArray | orderBy:['weight','name']")
                     td {{rule.name}}
                     td {{rule.weight}}
                     td {{rule.active}}
@@ -46,8 +46,8 @@ include ../includes/menu.jade
                             label(id="newRule{{fieldName | capitalize}}") {{fieldName | capitalize}}
                                 span(ng-if="fieldName == 'activate' || fieldName == 'expire'")  datetime
                                 span(ng-if="fieldName == 'start' || fieldName == 'end'")  time
-                            input.form-control.datetime(type="text", ng-required="true", close-text="Close", value="{{ruleTypeValue(fieldName) | date : 'shortTime'}}", placeholder="{{datetime.timepicker.examplePlaceholder}}", ng-click="datetime.datepicker.toggle($event, fieldName)", readonly="readonly", ng-if="fieldName == 'start' || fieldName == 'end'")
-                            input.form-control.datetime(type="text", ng-required="true", close-text="Close", value="{{ruleTypeValue(fieldName) | date : 'short'}}", placeholder="{{datetime.datepicker.examplePlaceholder}}", ng-click="datetime.datepicker.toggle($event, fieldName)", readonly="readonly", ng-if="fieldName == 'activate' || fieldName == 'expire'")
+                            input.form-control.datetime(type="text", ng-required="true", close-text="Close", value="{{ruleTypeValue(fieldName) | date : 'h:mm a'}}", placeholder="{{datetime.timepicker.examplePlaceholder}}", ng-click="datetime.datepicker.toggle($event, fieldName)", readonly="readonly", ng-if="fieldName == 'start' || fieldName == 'end'")
+                            input.form-control.datetime(type="text", ng-required="true", close-text="Close", value="{{ruleTypeValue(fieldName) | date : 'M/d/yy h:mm a'}}", placeholder="{{datetime.datepicker.examplePlaceholder}}", ng-click="datetime.datepicker.toggle($event, fieldName)", readonly="readonly", ng-if="fieldName == 'activate' || fieldName == 'expire'")
                             span.input-group-btn
                                 button(type="button", class="btn btn-sm btn-default", ng-click="datetime.datepicker.toggle($event, fieldName)")
                                     i.glyphicon.glyphicon-time(ng-if="fieldName == 'start' || fieldName == 'end'")
@@ -60,9 +60,11 @@ include ../includes/menu.jade
 
                     input(type="submit", value="Create Rule" class="btn btn-sm btn-success")
                 //pre {{newRule | json}}
+            script(type="text/ng-template", id="createRuleOptionsModal")
                 div.options
+                    div.modal-header
                     h3 Options
-                    div.datetime
+                    div.datetime.modal-body
                         h4 Datetime
                         div.row
                             div.col-sm-4
@@ -73,3 +75,7 @@ include ../includes/menu.jade
                                 select.form-control(ng-model="datetime.timepicker.mstep", ng-options="opt for opt in datetime.timepicker.options.mstep")
                             div.col-sm-4
                                 button.btn.btn-info(ng-click="datetime.timepicker.toggleMode()") 12H / 24H
+                    div.modal-footer
+                        button.btn.btn-primary(ng-click="ok()") OK
+                        button.btn.btn-warning(ng-click="cancel()") Cancel
+            button.btn.btn-default(ng-click="createRuleOptionsModal()") Options

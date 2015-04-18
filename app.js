@@ -9,6 +9,7 @@ var api = require('./routes/api'),
     gpio = require('rpi-gpio'), // allow use of gpio - https://www.npmjs.com/package/rpi-gpio
     http = require('http'),
     log = require('npmlog'),
+    moment = require('moment-timezone'),
     path = require('path'),
     routes = require('./routes'),
     serialport = require('serialport'),
@@ -270,7 +271,7 @@ var Toolbox = {
                     NaN
             );
         },
-        inRange: function(d,start,end){ // Source: http://stackoverflow.com/questions/497790
+        inDateRange: function(d, start, end){ // Source: http://stackoverflow.com/questions/497790
             // Checks if date in d is between dates in start and end.
             // Returns a boolean or NaN:
             //    true  : if d is between start and end (inclusive)
@@ -284,6 +285,39 @@ var Toolbox = {
                 start <= d && d <= end :
                     NaN
             );
+        },
+        inTimeRange: function(start, end, tz){
+            // Checks if current date's time (hours, minutes) is between dates in start and end time values
+            // ignores non-time portion of start and end datetimes.
+            // Returns a boolean
+
+            tz = tz || 'America/Los_Angeles';
+            // set all dates to the same timezone to allow calculations to not be insane
+            var d = moment(new Date()).tz(tz);
+            start = moment(this.convert(start)).tz(tz);
+            end = moment(this.convert(end)).tz(tz);
+
+            var d_hour = parseInt(d.format('H'));
+            var d_minute = parseInt(d.format('mm'));
+            var start_hour = parseInt(start.format('H'));
+            var start_minute = parseInt(start.format('mm'));
+            var end_hour = parseInt(end.format('H'));
+            var end_minute = parseInt(end.format('mm'));
+
+            if( (start_hour < d_hour) && (d_hour < end_hour) ){
+                return true;
+            }
+            else if(start_hour == d_hour){
+                if(start_minute <= d_minute){
+                    return true;
+                }
+            }
+            else if(end_hour == d_hour){
+                if(d_minute <= end_minute){
+                    return true;
+                }
+            }
+            return false;
         }
     },
     init: function(){
@@ -538,11 +572,12 @@ var Rules = {
         })[0];
         return {ruleIndex: ruleIndex, ruleObj: ruleObj};
     },
+    isWithinActiveDatePeriod: function(ruleObj){
+        return Toolbox.datetime.inDateRange(Toolbox.datetime.now(), ruleObj.rule.activate, ruleObj.rule.expire);
+    },
     isWithinActiveTimePeriod: function(ruleObj){
-        var now = Toolbox.datetime.now();
-        var activate = Toolbox.datetime.convert(new Date(ruleObj.rule.activate).getTime());
-        var expire = Toolbox.datetime.convert(new Date(ruleObj.rule.expire).getTime());
-        return Toolbox.datetime.inRange(now, activate, expire);
+        return Toolbox.datetime.inTimeRange(ruleObj.rule.start, ruleObj.rule.end, Toolbox.datetime.browserTZ);
+
     },
     status: function(ruleObj){
         return ruleObj.active;
@@ -555,6 +590,16 @@ var Rules = {
             }
         }
         return ruleIndexes;
+    },
+    isActive: function(ruleObj){
+        if(Rules.status( ruleObj )) {
+            if (Rules.isWithinActiveDatePeriod(ruleObj)) {
+                if (Rules.isWithinActiveTimePeriod(ruleObj)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 };
 var RoboFeeder = {
@@ -781,28 +826,19 @@ var RoboFeeder = {
             // check if has rule(s) for allowed code
             var ruleIndexes = Rules.codeRuleIndexes(codeIndex);
             if(ruleIndexes.length > 0){
-                console.log('Rules.rules - matching rule indexes: ');
-                console.log(ruleIndexes);
                 for(var j=0; j<ruleIndexes.length; j++){
-                    // check if rule is in valid period between activation and expiration
-                    if( Rules.isWithinActiveTimePeriod( Rules.rules[ruleIndexes[j]] )){
-                        console.log('Rule "' + Rules.rules[ruleIndexes[j]].name + '" is within active time period.');
-                    }
-                    else{
-                        console.log('Rule "' + Rules.rules[ruleIndexes[j]].name + '" is NOT within active time period.');
-                    }
-                    if(Rules.status( Rules.rules[ruleIndexes[j]] )){
-                        console.log('Rule "' + Rules.rules[ruleIndexes[j]].name + '" status is active.');
-                    }
-                    else{
-                        console.log('Rule "' + Rules.rules[ruleIndexes[j]].name + '" status is NOT active.');
+                    // check if rule is in valid period between activation and expiration                    
+                    if(Rules.isActive( Rules.rules[ruleIndexes[j]] )){
+                        // if matching rule is fully active
+                        RoboFeeder.tagMatch(codeIndex);
+                        Log.log.info('RoboFeeder', 'RFID allowed tag rule "' + Rules.rules[ruleIndexes[j]].name + '" found and fully active, opening...', true);
                     }
                 }
             }
             else{
                 // if no matching rules - open with allowed code at any time
                 RoboFeeder.tagMatch(codeIndex);
-                Log.log.info('RoboFeeder', 'RFID allowed tag has no rules, opening...');
+                Log.log.info('RoboFeeder', 'RFID allowed tag has no rules, opening...', true);
             }
         }
         else{
@@ -821,7 +857,7 @@ var RoboFeeder = {
             Log.log.info('RoboFeeder', 'RFID tag match: ' + Rfid.allowedTags[codeIndex].tag);
         }
         Rfid.setLastTrigger();
-    }
+    },
 };
 var WebServer = {
     init: function(){

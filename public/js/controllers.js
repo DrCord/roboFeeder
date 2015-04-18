@@ -1,7 +1,7 @@
 'use strict';
 /** Controllers */
 angular.module('roboFeeder.controllers', ['ngAnimate']).
-    controller('AppCtrl', function ($scope, $http, $resource, poller) {
+    controller('AppCtrl', function ($scope, $http, $resource, poller, $modal, $log) {
         $scope.status = {};
         $scope.errors = [];
         $scope.newTag = '';
@@ -11,19 +11,7 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
         $scope.roboFeederSettings = {};
         $scope.allowedTags = [];
         $scope.rules = [];
-        $scope.newRule = {
-            type: 'rule',
-            name: '',
-            weight: 0,
-            active: true,
-            rule: {
-                tag: '',
-                start: null,
-                end: null,
-                activate: null,
-                expire: null
-            }
-        };
+        $scope.newRule = {};
         $scope.msgs = {
             alreadyAllowed: false,
             removeSelectTag: false,
@@ -41,8 +29,8 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
             'Expire datetime',
             'Actions'
         ];
-
         $scope.datetime = {
+            browserTZ: null,
             fields: [
                 'start',
                 'end',
@@ -91,13 +79,20 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                     }
                 }
             },
+            init: function(){
+                $scope.datetime.now();
+                $scope.datetime.browserTZ = $scope.datetime.getBrowserTimezone();
+            },
             now: function() {
                 // TODO - setup polling this function to refresh dt for status page
                 // current datetime on init, used on status page
                 $scope.dt = new Date();
+            },
+            getBrowserTimezone: function(){
+                var tz = jstz.determine(); // Determines the time zone of the browser client
+                return tz.name(); // Returns the name of the time zone eg "Europe/Berlin"
             }
         };
-
         $scope.getAllowedTags = function(){
             $http.get('/api/tags/allowed/get').success(function( data ) {
                 $scope.allowedTags = data.allowedTags;
@@ -249,6 +244,8 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
             });
         };
         $scope.saveRule = function(){
+            // TODO - check if start time is before end time and if activate datetime is before expire datetime
+            // either via on page validation or in this function before saving
             $http.post('/api/rules/save', {rule: $scope.newRule}).
                 success(function( data ) {
                     $scope.rules = data.rules;
@@ -302,6 +299,7 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                 name: '',
                 weight: 0,
                 active: true,
+                browserTZ: $scope.datetime.browserTZ,
                 rule: {
                     tag: '',
                     start: null,
@@ -312,15 +310,55 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
             };
         };
 
+        $scope.createRuleOptionsModal = function(size) {
+            var modalInstance = $modal.open({
+                templateUrl: 'createRuleOptionsModal',
+                controller: 'ModalInstanceCtrl',
+                size: size,
+                resolve: {
+                    datetime: function(){
+                        return $scope.datetime;
+                    }
+                }
+            });
+            modalInstance.result.then(function (selectedItem) {
+                $scope.selected = selectedItem;
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+
+
         $scope.init = function(){
             $scope.getStatuses();
             $scope.getAllowedTags();
             $scope.logPoller();
             $scope.statusPoller();
             $scope.getSettings();
+            $scope.datetime.init();
+            $scope.newRuleInitialize();
             $scope.getRules();
-            $scope.datetime.now();
         };
         // do stuff
         $scope.init();
+    }).
+    controller('ModalInstanceCtrl', function ($scope, $modalInstance, datetime) {
+        $scope.datetime = datetime;
+        $scope.ok = function () {
+            $modalInstance.close();
+        };
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+        $scope.toggleMode = function() {
+            $scope.datetime.timepicker.ismeridian = !$scope.datetime.timepicker.ismeridian;
+            if($scope.datetime.timepicker.ismeridian){
+                $scope.datetime.timepicker.examplePlaceholder = '7:17 PM';
+                $scope.datetime.datepicker.examplePlaceholder = '4/15/15 7:17 PM';
+            }
+            else{
+                $scope.datetime.timepicker.examplePlaceholder = '19:17';
+                $scope.datetime.datepicker.examplePlaceholder = '4/15/15 19:17';
+            }
+        }
     });
