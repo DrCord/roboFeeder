@@ -1,5 +1,5 @@
 # roboFeeder
-##nodejs code to run RFID pet feeder using a Raspberry Pi
+##nodejs code to run a RFID pet feeder using a Raspberry Pi
 
 [github repository](https://github.com/DrCord/roboFeeder)
 
@@ -9,20 +9,22 @@
 
 Dependencies:
 * NodeJS
-  * async https://github.com/caolan/async
-  * body-parser https://www.npmjs.com/package/body-parser
-  * express http://expressjs.com
-  * nedb https://github.com/louischatriot/nedb
-  * npmlog https://github.com/npm/npmlog
-  * rpi-gpio https://www.npmjs.com/package/rpi-gpio
-  * serialport https://www.npmjs.com/package/serialport
+  * [async](https://github.com/caolan/async)
+  * [body-parser](https://www.npmjs.com/package/body-parser)
+  * [express](http://expressjs.com)
+  * [moment-timezone](https://www.npmjs.com/package/moment-timezone)
+  * [nedb](https://github.com/louischatriot/nedb)
+  * [npmlog](https://github.com/npm/npmlog)
+  * [rpi-gpio](https://www.npmjs.com/package/rpi-gpio)
+  * [serialport](https://www.npmjs.com/package/serialport)
 * AngularJS
-  * angular-poller https://github.com/emmaguo/angular-poller
+  * [angular-poller](https://github.com/emmaguo/angular-poller)
+* Other
+  * [jstimezone](https://bitbucket.org/pellepim/jstimezonedetect/overview)
 
 TODO LIST
 * General
   * get hardware remaining specifications (wire lengths, wood sizes, etc.)
-  * update angular dependencies
 * Rules {in progress}
   * editing
   * logic for using rules in backend of app {in progress}
