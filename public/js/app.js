@@ -35,6 +35,10 @@ config(function ($routeProvider, $locationProvider) {
       templateUrl: 'partials/log',
       controller: 'AppCtrl'
     }).
+    when('/help', {
+      templateUrl: 'partials/help',
+      controller: 'AppCtrl'
+    }).
     otherwise({
       redirectTo: '/status'
     });

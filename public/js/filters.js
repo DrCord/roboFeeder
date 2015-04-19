@@ -12,7 +12,8 @@ angular.module('roboFeeder.filters', []).
         return function(items) {
             return items.slice().reverse();
         };
-  }).filter('toArray', function(){
+  }).
+  filter('toArray', function(){
         return function(obj) {
             var result = [];
             angular.forEach(obj, function(val, key) {
@@ -24,5 +25,5 @@ angular.module('roboFeeder.filters', []).
     return function(input, all) {
         return (!!input) ? input.replace(/([^\W_]+[^\s-]*) */g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();}) : '';
     }
-});
+  })
 ;

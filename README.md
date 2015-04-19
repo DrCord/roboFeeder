@@ -25,9 +25,9 @@ Dependencies:
 TODO LIST
 * General
   * get hardware remaining specifications (wire lengths, wood sizes, etc.)
-* Rules {in progress}
-  * editing
-  * logic for using rules in backend of app {in progress}
+* Rules
+  * edit an existing rule
+  * improve validation look: merge message types (low priority)
 * UI
   * logo
   * improve look of the web app pages

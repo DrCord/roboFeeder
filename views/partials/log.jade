@@ -4,7 +4,7 @@ include ../includes/menu.jade
     section#log
         h2 Log
         button(ng-click="resetLog()", class="btn btn-sm btn-danger") Reset
-        table
+        table.table.table-striped.table-bordered.table-condensed
             tr
                 th.message Message
                 th.level Level

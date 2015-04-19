@@ -1,9 +1,16 @@
 'use strict';
 /** Controllers */
+Object.size = function(obj) {
+    var size = 0, key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+};
 angular.module('roboFeeder.controllers', ['ngAnimate']).
-    controller('AppCtrl', function ($scope, $http, $resource, poller, $modal, $log) {
+    controller('AppCtrl', function ($scope, $http, $resource, poller, $modal, $log, $filter) {
         $scope.status = {};
-        $scope.errors = [];
+        $scope.errors = {};
         $scope.newTag = '';
         $scope.newTagName = '';
         $scope.log = [];
@@ -16,7 +23,12 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
             alreadyAllowed: false,
             removeSelectTag: false,
             notValidCode: false,
-            ruleSameName: false
+            newRule: {
+                sameName: false,
+                activateExpireDatetime: false,
+                startEndTime: false,
+                emptyField: false
+            }
         };
         $scope.ruleTableHeaders = [
             'Name',
@@ -37,6 +49,10 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                 'activate',
                 'expire'
             ],
+            formats: {
+                datetime: 'M/d/yy h:mm a',
+                time: 'h:mm a'
+            },
             datepicker: { // ui.bootstrap.datepicker
                 datepickers: { // true == opened
                     start: false,
@@ -48,6 +64,13 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                 toggle: function($event, picker){
                     $event.preventDefault();
                     $event.stopPropagation();
+                    if(picker == 'start' || picker == 'end'){
+                        $scope.msgs.newRule.startEndTime = false;
+                    }
+                    else if(picker == 'activate' || picker == 'expire'){
+                        $scope.msgs.newRule.activateExpireDatetime = false;
+                    }
+                    $scope.validateRule($scope.newRule);
                     $scope.datetime.datepicker.datepickers[picker] = !$scope.datetime.datepicker.datepickers[picker];
                     $scope.datetime.timepicker.timepickers[picker] = !$scope.datetime.timepicker.timepickers[picker];
                 }
@@ -72,25 +95,64 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                     if($scope.datetime.timepicker.ismeridian){
                         $scope.datetime.timepicker.examplePlaceholder = '7:17 PM';
                         $scope.datetime.datepicker.examplePlaceholder = '4/15/15 7:17 PM';
+                        $scope.datetime.formats.datetime = 'M/d/yy h:mm a';
+                        $scope.datetime.formats.time = 'h:mm a';
                     }
                     else{
                         $scope.datetime.timepicker.examplePlaceholder = '19:17';
                         $scope.datetime.datepicker.examplePlaceholder = '4/15/15 19:17';
+                        $scope.datetime.formats.datetime = 'M/d/yy H:mm';
+                        $scope.datetime.formats.time = 'H:mm';
                     }
                 }
             },
             init: function(){
-                $scope.datetime.now();
                 $scope.datetime.browserTZ = $scope.datetime.getBrowserTimezone();
-            },
-            now: function() {
-                // TODO - setup polling this function to refresh dt for status page
-                // current datetime on init, used on status page
-                $scope.dt = new Date();
             },
             getBrowserTimezone: function(){
                 var tz = jstz.determine(); // Determines the time zone of the browser client
                 return tz.name(); // Returns the name of the time zone eg "Europe/Berlin"
+            },
+            convert: function(d){ // Source: http://stackoverflow.com/questions/497790
+                // Converts the date in d to a date-object. The input can be:
+                //   a date object: returned without modification
+                //  an array      : Interpreted as [year,month,day]. NOTE: month is 0-11.
+                //   a number     : Interpreted as number of milliseconds
+                //                  since 1 Jan 1970 (a timestamp)
+                //   a string     : Any format supported by the javascript engine, like
+                //                  "YYYY/MM/DD", "MM/DD/YYYY", "Jan 31 2009" etc.
+                //  an object     : Interpreted as an object with year, month and date
+                //                  attributes.  **NOTE** month is 0-11.
+                return (
+                    d.constructor === Date ? d :
+                        d.constructor === Array ? new Date(d[0],d[1],d[2]) :
+                            d.constructor === Number ? new Date(d) :
+                                d.constructor === String ? new Date(d) :
+                                    typeof d === "object" ? new Date(d.year,d.month,d.date) :
+                                        NaN
+                );
+            },
+            compare: function(a,b){
+                // Source: http://stackoverflow.com/questions/497790
+                // Compare two dates (could be of any type supported by the convert
+                // function above) and returns:
+                //  -1 : if a < b
+                //   0 : if a = b
+                //   1 : if a > b
+                // NaN : if a or b is an illegal date
+                // NOTE: The code inside isFinite does an assignment (=).
+                return (
+                    isFinite(a=this.convert(a).valueOf()) &&
+                    isFinite(b=this.convert(b).valueOf()) ?
+                    (a>b)-(a<b) :
+                        NaN
+                );
+            },
+            dateFormatter: function(date){
+                return $scope.datetime.formats.datetime;
+            },
+            timeFormatter: function(time){
+                return $scope.datetime.formats.time;
             }
         };
         $scope.getAllowedTags = function(){
@@ -286,12 +348,110 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
             return $scope.newRule.rule[ruleType];
         };
         $scope.createRule = function(){
-            // TODO ? - is all validation being handled on the page ? if not this needs validation
-            $http.post('/api/rules/save', {newRule: $scope.newRule}).
-                success(function( data ) {
-                    $scope.newRuleInitialize();
-                    $scope.rules = data.rules;
-                });
+            if($scope.validateRule($scope.newRule)){
+                // page handles basic validation (is this filled in, correct data type)
+                $http.post('/api/rules/save', {newRule: $scope.newRule}).
+                    success(function( data ) {
+                        $scope.newRuleInitialize();
+                        $scope.rules = data.rules;
+                    });
+            }
+        };
+        $scope.validateRule = function(ruleObj){
+            $scope.msgs.newRule.emptyField = false;
+            $scope.errors = {};
+            // validates the date and time ranges in the rule
+            if(
+                ruleObj.rule.activate === null ||
+                ruleObj.rule.expire === null ||
+                ruleObj.rule.start === null ||
+                ruleObj.rule.end === null
+            ){
+                $scope.errors.empty = [];
+            }
+            if(ruleObj.rule.activate === null){
+                $scope.errors.empty.push('activate');
+            }
+            if(ruleObj.rule.expire === null){
+                $scope.errors.empty.push('expire');
+            }
+            if(ruleObj.rule.start === null){
+                $scope.errors.empty.push('start');
+            }
+            if(ruleObj.rule.end === null){
+                $scope.errors.empty.push('end');
+            }
+            // if datetimes not null check if range is valid
+            if(ruleObj.rule.activate !== null && ruleObj.rule.expire !== null){
+                if($scope.validateActivateExpireRange(ruleObj.rule.activate, ruleObj.rule.expire)){
+                    $scope.errors['activateExpireDatetime'] = true;
+                }
+            }
+            // if times not null check if range is valid
+            if(ruleObj.rule.start !== null && ruleObj.rule.end !== null){
+                var startEndTime = $scope.validateStartEndRange(ruleObj.rule.start, ruleObj.rule.end);
+                if(!startEndTime){
+                    $scope.errors['startEndTime'] = true;
+                }
+            }
+            // check if rule name is unique
+            if(ruleObj.name != ''){
+                for(var i=0; i<$scope.rules.length;i++){
+                    if ($scope.rules[i].name === ruleObj.name) {
+                        $scope.errors['sameName'] = true;
+                    }
+                }
+            }
+            // no errors
+            if($scope.errorsSize() === 0){
+                return true;
+            }
+            else{
+                // activate errors in DOM
+                for(var i=0; i<Object.size($scope.errors); i++){
+                    if(typeof $scope.errors['activateExpireDatetime'] != "undefined" && $scope.errors['activateExpireDatetime']){
+                        $scope.msgs.newRule.activateExpireDatetime = true;
+                    }
+                    if(typeof $scope.errors['startEndTime'] != "undefined" && $scope.errors['startEndTime']){
+                        $scope.msgs.newRule.startEndTime = true;
+                    }
+                    if(typeof $scope.errors['empty'] != "undefined" && $scope.errors['empty']){
+                        $scope.msgs.newRule.emptyField = true;
+                    }
+                    if(typeof $scope.errors['sameName'] != "undefined" && $scope.errors['sameName']){
+                        $scope.msgs.newRule.sameName = true;
+                    }
+                }
+            }
+            return false;
+        };
+        $scope.validateActivateExpireRange = function(activate, expire){
+            // validates datetimes: activate is <= expire
+            var compareReturnValue = $scope.datetime.compare(activate, expire);
+            if(compareReturnValue === 1){
+                return true;
+            }
+            return false;
+        };
+        $scope.validateStartEndRange = function(start, end){
+            // validates time only
+            // start is <= end returns true
+            start = new Date(start);
+            end = new Date(end);
+            var start_hour = start.getHours();
+            var end_hour = end.getHours();
+            var start_min = start.getMinutes();
+            var end_min = end.getMinutes();
+
+            if(start_hour < end_hour){
+                return true;
+            }
+            else if(start_hour == end_hour){
+                if(start_min <= end_min){
+                    return true;
+                }
+            }
+            return false;
         };
         $scope.newRuleInitialize = function(){
             $scope.newRule = {
@@ -309,7 +469,6 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                 }
             };
         };
-
         $scope.createRuleOptionsModal = function(size) {
             var modalInstance = $modal.open({
                 templateUrl: 'createRuleOptionsModal',
@@ -327,8 +486,10 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                 $log.info('Modal dismissed at: ' + new Date());
             });
         };
-
-
+        $scope.errorsSize = function(){
+            // returns boolean
+            return Object.size($scope.errors);
+        };
         $scope.init = function(){
             $scope.getStatuses();
             $scope.getAllowedTags();

@@ -41,20 +41,14 @@ ul{
 #status button.btn-sm{
     padding: 5px 7px;
 }
-#rules table#rules-table,
-#log table{
-    border: 1px solid #333;
-}
 #rules table th,
-#log table th{
-    text-align: center;
-}
-#rules table#rules-table th,
-#rules table#rules-table tr.rule td,
+#rules table td,
 #log table th,
 #log table td{
-    border: 1px solid #333;
-    padding: 3px 10px;
+    text-align: center;
+}
+#log table td.message{
+    text-align: left;
 }
 #rules button.edit{
     margin: 0 10px 0 0;
@@ -124,24 +118,28 @@ ul{
 #create form{
     padding: 10px 20px;
 }
-label[id$="newRule"]{
+label[id^="newRule"]{
     padding-right: 5px;
 }
 input[type=checkbox].form-control{
     vertical-align: bottom;
     height: 30px;
 }
-
 .animate-show {
     opacity: 1;
 }
-
 .animate-show.ng-hide-add.ng-hide-add-active,
 .animate-show.ng-hide-remove.ng-hide-remove-active {
     -webkit-transition: all linear 0.5s;
     transition: all linear 0.5s;
 }
-
 .animate-show.ng-hide {
     opacity: 0;
 }
+#rules button.options{
+    float: right;
+}
+#rules-table{
+    margin-top: 15px;
+}
+

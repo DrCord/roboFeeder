@@ -830,15 +830,15 @@ var RoboFeeder = {
                     // check if rule is in valid period between activation and expiration                    
                     if(Rules.isActive( Rules.rules[ruleIndexes[j]] )){
                         // if matching rule is fully active
+                        Log.log.info('RoboFeeder', 'RFID allowed tag rule "' + Rules.rules[ruleIndexes[j]].name + '" found and fully active: tag "' + Rfid.allowedTags[codeIndex].tag + '" authorized', true);
                         RoboFeeder.tagMatch(codeIndex);
-                        Log.log.info('RoboFeeder', 'RFID allowed tag rule "' + Rules.rules[ruleIndexes[j]].name + '" found and fully active, opening...', true);
                     }
                 }
             }
             else{
                 // if no matching rules - open with allowed code at any time
                 RoboFeeder.tagMatch(codeIndex);
-                Log.log.info('RoboFeeder', 'RFID allowed tag has no rules, opening...', true);
+                Log.log.info('RoboFeeder', 'RFID allowed tag has no rules: tag "' + Rfid.allowedTags[codeIndex].tag + '" authorized.', true);
             }
         }
         else{
@@ -857,7 +857,7 @@ var RoboFeeder = {
             Log.log.info('RoboFeeder', 'RFID tag match: ' + Rfid.allowedTags[codeIndex].tag);
         }
         Rfid.setLastTrigger();
-    },
+    }
 };
 var WebServer = {
     init: function(){

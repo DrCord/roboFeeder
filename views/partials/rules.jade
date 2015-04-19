@@ -4,8 +4,9 @@ include ../includes/menu.jade
     section#rules
         h2 Rules
         section#existing
+            button.btn.btn-info.options(ng-click="createRuleOptionsModal()") Options
             h3 Existing Rules
-            table#rules-table(ng-show="rules.length > 0")
+            table#rules-table(ng-show="rules.length > 0").table.table-striped.table-bordered.table-condensed
                 tr
                     th(ng-repeat="headerTitle in ruleTableHeaders") {{headerTitle}}
                 tr.rule(ng-repeat="rule in rules | toArray | orderBy:['weight','name']")
@@ -13,13 +14,13 @@ include ../includes/menu.jade
                     td {{rule.weight}}
                     td {{rule.active}}
                     td {{rule.rule.tag}}
-                    td {{rule.rule.start | date : 'shortTime'}}
-                    td {{rule.rule.end | date : 'shortTime'}}
-                    td {{rule.rule.activate| date : 'short'}}
-                    td {{rule.rule.expire| date : 'short'}}
+                    td {{rule.rule.start | date : datetime.timeFormatter(rule.rule.start)}}
+                    td {{rule.rule.end | date : datetime.timeFormatter(rule.rule.start)}}
+                    td {{rule.rule.activate | date : datetime.dateFormatter(rule.rule.activate)}}
+                    td {{rule.rule.expire | date : datetime.dateFormatter(rule.rule.expire)}}
                     td
-                        button(ng-click="editRule(rule)", class="btn btn-sm btn-info edit") Edit
-                        button(ng-click="removeRule(rule)", class="btn btn-sm btn-danger remove") X
+                        button.btn.btn-xs.btn-warning.edit(ng-click="editRule(rule)") Edit
+                        button.btn.btn-xs.btn-danger.remove(ng-click="removeRule(rule)") X
             p(ng-show="rules.length == 0") No rules
         section#actions
             div#create
@@ -27,55 +28,59 @@ include ../includes/menu.jade
                 form(name="createRuleForm", ng-submit="createRule()")
                     div.required
                         label(id="newRuleName") Name
-                        input.form-control(type="text", name="newRuleName", ng-model="newRule.name" ng-change="msgs.ruleSameName = false;", placeholder="unique string", ng-required="true")
-                        span(ng-show="msgs.ruleSameName").error Identically named rule already exists
-                    div
+                        input.form-control(type="text", name="newRuleName", ng-model="newRule.name", ng-change="msgs.newRule.sameName = false; validateRule(newRule);", placeholder="unique string", ng-required="true")
+                        span(ng-show="msgs.newRule.sameName").error Identically named rule already exists
+                    div.required
                         label(id="newRuleWeight") Weight
                         input.form-control(type="number", name="newRuleWeight", ng-model="newRule.weight")
-                    div
+                    div.required
                         label(id="newRuleStatus") Status
                         input.form-control(type="checkbox", name="newRuleStatus", ng-model="newRule.active")
-                    div
+                    div.required
                         label(id="newRuleTag") Tag
-                        select.form-control(name="newRuleTag", ng-model="newRule.rule.tag" ng-change="msgs.removeSelectTag = false")
+                        select.form-control(name="newRuleTag", ng-model="newRule.rule.tag" ng-change="msgs.removeSelectTag = false", ng-required="true")
+                            option(value="", disabled, selected) Select a tag
                             option(ng-repeat="allowedTag in allowedTags | toArray | orderBy:['name', 'tag']" value="{{allowedTag.tag}}")  {{tagObjName(allowedTag)}}
                         span(ng-show="msgs.removeSelectTag").error Select a tag to remove
 
-                    div(ng-repeat="fieldName in datetime.fields", id="{{fieldName}}")
+                    div.required(ng-repeat="fieldName in datetime.fields", id="{{fieldName}}")
                         div
                             label(id="newRule{{fieldName | capitalize}}") {{fieldName | capitalize}}
                                 span(ng-if="fieldName == 'activate' || fieldName == 'expire'")  datetime
                                 span(ng-if="fieldName == 'start' || fieldName == 'end'")  time
-                            input.form-control.datetime(type="text", ng-required="true", close-text="Close", value="{{ruleTypeValue(fieldName) | date : 'h:mm a'}}", placeholder="{{datetime.timepicker.examplePlaceholder}}", ng-click="datetime.datepicker.toggle($event, fieldName)", readonly="readonly", ng-if="fieldName == 'start' || fieldName == 'end'")
-                            input.form-control.datetime(type="text", ng-required="true", close-text="Close", value="{{ruleTypeValue(fieldName) | date : 'M/d/yy h:mm a'}}", placeholder="{{datetime.datepicker.examplePlaceholder}}", ng-click="datetime.datepicker.toggle($event, fieldName)", readonly="readonly", ng-if="fieldName == 'activate' || fieldName == 'expire'")
+                            input.form-control.datetime(type="text", value="{{ruleTypeValue(fieldName) | date : 'h:mm a'}}", placeholder="{{datetime.timepicker.examplePlaceholder}}", ng-click="datetime.datepicker.toggle($event, fieldName)", readonly="readonly", ng-if="fieldName == 'start' || fieldName == 'end'")
+                            input.form-control.datetime(type="text", value="{{ruleTypeValue(fieldName) | date : 'M/d/yy h:mm a'}}", placeholder="{{datetime.datepicker.examplePlaceholder}}", ng-click="datetime.datepicker.toggle($event, fieldName)", readonly="readonly", ng-if="fieldName == 'activate' || fieldName == 'expire'")
                             span.input-group-btn
-                                button(type="button", class="btn btn-sm btn-default", ng-click="datetime.datepicker.toggle($event, fieldName)")
+                                button.btn.btn-sm.btn-default(type="button", ng-click="datetime.datepicker.toggle($event, fieldName)")
                                     i.glyphicon.glyphicon-time(ng-if="fieldName == 'start' || fieldName == 'end'")
                                     i.glyphicon.glyphicon-calendar(ng-if="fieldName == 'activate' || fieldName == 'expire'")
+                        div
+                            span(ng-if="fieldName == 'end'", ng-show="msgs.newRule.startEndTime").error The start time is not before the end time
+                            span(ng-if="fieldName == 'expire'", ng-show="msgs.newRule.activateExpireDatetime").error The activate datetime is not before the expire datetime
                         div.row
                             div.datepicker.col-sm-6.animate-show(ng-show="datetime.datepicker.datepickers[fieldName]", ng-if="fieldName == 'activate' || fieldName == 'expire'")
                                 datepicker.well.well-sm(ng-model="newRule.rule[fieldName]", close-text="Close")
                             div.timepicker.col-sm-6.animate-show(ng-show="datetime.timepicker.timepickers[fieldName]")
                                 timepicker(ng-model="newRule.rule[fieldName]", hour-step="datetime.timepicker.hstep", minute-step="datetime.timepicker.mstep", show-meridian="datetime.timepicker.ismeridian")
+                    div.required
+                        span(ng-show="msgs.newRule.emptyField").error There is an empty field, all fields are required.
 
-                    input(type="submit", value="Create Rule" class="btn btn-sm btn-success")
-                //pre {{newRule | json}}
-            script(type="text/ng-template", id="createRuleOptionsModal")
-                div.options
-                    div.modal-header
-                    h3 Options
-                    div.datetime.modal-body
-                        h4 Datetime
-                        div.row
-                            div.col-sm-4
-                                label Hours step is:
-                                select.form-control(ng-model="datetime.timepicker.hstep", ng-options="opt for opt in datetime.timepicker.options.hstep")
-                            div.col-sm-4
-                                label Minutes step is:
-                                select.form-control(ng-model="datetime.timepicker.mstep", ng-options="opt for opt in datetime.timepicker.options.mstep")
-                            div.col-sm-4
-                                button.btn.btn-info(ng-click="datetime.timepicker.toggleMode()") 12H / 24H
-                    div.modal-footer
-                        button.btn.btn-primary(ng-click="ok()") OK
-                        button.btn.btn-warning(ng-click="cancel()") Cancel
-            button.btn.btn-default(ng-click="createRuleOptionsModal()") Options
+                    input.btn.btn-success(type="submit", value="Create Rule" ng-disabled="errorsSize() > 0")
+    script(type="text/ng-template", id="createRuleOptionsModal")
+        div.options
+            div.modal-header
+            h3 Options
+            div.datetime.modal-body
+                h4 Datetime
+                div.row
+                    div.col-sm-4
+                        label Hours step is:
+                        select.form-control(ng-model="datetime.timepicker.hstep", ng-options="opt for opt in datetime.timepicker.options.hstep")
+                    div.col-sm-4
+                        label Minutes step is:
+                        select.form-control(ng-model="datetime.timepicker.mstep", ng-options="opt for opt in datetime.timepicker.options.mstep")
+                    div.col-sm-4
+                        button.btn.btn-info(ng-click="datetime.timepicker.toggleMode()") 12H / 24H
+            div.modal-footer
+                button.btn.btn-primary(ng-click="ok()") OK
+                button.btn.btn-warning(ng-click="cancel()") Cancel
