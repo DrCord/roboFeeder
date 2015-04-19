@@ -535,6 +535,29 @@ var Rules = {
             }
         );
     },
+    edit: function(ruleObj){
+        var filterObj = Rules.filterRules(ruleObj, 'name');
+        var oldName = null;
+        if(typeof ruleObj.newName != "undefined"){
+            var oldName = ruleObj.name;
+            ruleObj.name = ruleObj.newName;
+            delete ruleObj.newName;
+        }
+        if(typeof filterObj.ruleIndex != "undefined"){
+            Rules.rules[filterObj.ruleIndex] = ruleObj;
+            Database.datastore.update(
+                {
+                    type: 'rule',
+                    name: (oldName === null ? ruleObj.name : oldName)
+                },
+                ruleObj,
+                {},
+                function (err, newDoc) {   // Callback is optional
+                    Log.log.info('Rules', 'Rules.edit - rule ' + ruleObj.name + ' saved.', true);
+                }
+            );
+        }
+    },
     remove: function(rule){
         var filterObj = Rules.filterRules(rule, 'name');
         if (typeof filterObj.ruleObj != "undefined") {
@@ -833,6 +856,10 @@ var RoboFeeder = {
                         Log.log.info('RoboFeeder', 'RFID allowed tag rule "' + Rules.rules[ruleIndexes[j]].name + '" found and fully active: tag "' + Rfid.allowedTags[codeIndex].tag + '" authorized', true);
                         RoboFeeder.tagMatch(codeIndex);
                     }
+                    else{
+                        // matching rules is not fully active
+                        Log.log.info('RoboFeeder', 'RFID allowed tag rule "' + Rules.rules[ruleIndexes[j]].name + '" found but NOT active: tag "' + Rfid.allowedTags[codeIndex].tag + '" NOT authorized', true);
+                    }
                 }
             }
             else{
@@ -968,6 +995,12 @@ var WebServer = {
         app.post('/api/rules/save', function(req, res){
             if(typeof req.body.newRule != "undefined"){
                 Rules.save(req.body.newRule);
+            }
+            return res.json({ rules: Rules.rules });
+        });
+        app.post('/api/rules/edit', function(req, res){
+            if(typeof req.body.ruleObj != "undefined"){
+                Rules.edit(req.body.ruleObj);
             }
             return res.json({ rules: Rules.rules });
         });

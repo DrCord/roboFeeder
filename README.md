@@ -25,15 +25,18 @@ Dependencies:
 TODO LIST
 * General
   * get hardware remaining specifications (wire lengths, wood sizes, etc.)
+  * build instructable with pictures while building next physical device
+  * setup instructions - wifi credentials location
 * Rules
-  * edit an existing rule
+  * edit
+     * cancel button on modal needs to revert changes
+     * validation testing
   * improve validation look: merge message types (low priority)
 * UI
   * logo
   * improve look of the web app pages
   * explain in UI that tags that are allowed but have no rules have unrestricted access
-  * add tooltips or notes to various pages, especially rule creation
-  * instructions for each page
+  * add tooltips or notes/instrcutions to various pages, especially rule creation
   * FAQ/help page
 
 Parts List:

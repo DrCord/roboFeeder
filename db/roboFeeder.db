@@ -1,134 +1,124 @@
-{"type":"log","level":"info","category":"RoboFeeder","message":"Opening Tray","timestamp":1429370332485,"_id":"1H6016NkJ7IWK83P"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule test rule 3 saved.","timestamp":1429375861609,"_id":"1K0fmUDpiCgxxrCS"}
-{"type":"log","level":"info","category":"Rules","message":"The rule \"test fdfd\" was removed.","timestamp":1429398303745,"_id":"1tPGBj3h4nSVwGEE"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag rule \"white card 3\" found and fully active: tag \"02150427\" authorized","timestamp":1429372676890,"_id":"3iayLwI4tUmBzNKb"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule test rule saved.","timestamp":1429371979184,"_id":"46looaeNb6EU3whh"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"Opening Tray","timestamp":1429370391126,"_id":"4yZk3etN5tfhX7KN"}
-{"type":"log","level":"info","category":"Rules","message":"The rule \"test ;k;skd'sklk\" was removed.","timestamp":1429388835782,"_id":"53e7tuepEEUTfH1Z"}
-{"type":"log","level":"info","category":"Rules","message":"The rule \"test rule alpha\" was removed.","timestamp":1429377535677,"_id":"66zZ6AfHMUfuVNkJ"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag match - white card: 02150427","timestamp":1429370332514,"_id":"6sumqEMxf5TVT1gt"}
-{"type":"log","level":"info","category":"Rules","message":"The rule \"test rule 2\" was removed.","timestamp":1429375739563,"_id":"7AGVtqCmFp3hLQLb"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag rule \"white card\" found and fully active: tag \"02150427\" authorized","timestamp":1429372676812,"_id":"8NfHIQKZg571N6N0"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule test fdfd saved.","timestamp":1429398203159,"_id":"8TbwEu5LKz0okZNT"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha saved.","timestamp":1429463342710,"_id":"1kAzNtGclDIn6u3y"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha - renamed saved.","timestamp":1429465739922,"_id":"2XqbsGZ61cqeRKS9"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card 2 saved.","timestamp":1429460033575,"_id":"2sw5LpbjqI6cnaA5"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429459299338,"_id":"33HIgTIJPBX8QWWb"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag rule \"white card alpha\" found but NOT active: tag \"02150427\" NOT authorized","timestamp":1429459825331,"_id":"4fNqtUK5DGX1AF0T"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card 2 saved.","timestamp":1429460077869,"_id":"5OARgs3JaOp05CLg"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag has no rules: tag \"04233951\" authorized.","timestamp":1429459784779,"_id":"5UZ0BsmYscw8QbdN"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429459211347,"_id":"7GgawIQltiBI0T8L"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag has no rules: tag \"04233951\" authorized.","timestamp":1429466523609,"_id":"7txfEaKKQ07WrJXJ"}
 {"type":"tag","allowed":true,"tag":"04233951","name":"ems tag","_id":"8bBuevDAUfch9QmJ"}
-{"type":"tag","allowed":true,"tag":"32323222","name":"fssssss","_id":"9ESqtZU0aEbaQJR2"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag match - white card: 02150427","timestamp":1429370332582,"_id":"9KzLvDulr7RjrWyg"}
-{"type":"log","level":"info","category":"Rules","message":"The rule \"white card\" was removed.","timestamp":1429375740454,"_id":"CBNkeeWqBXDDP4jg"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule test rule beta saved.","timestamp":1429377293729,"_id":"CkWnjrJgpRSgTQ9H"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"Closing Tray","timestamp":1429372701627,"_id":"DE0zJ7sIaLWhSxbr"}
-{"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 82","timestamp":1429329368054,"_id":"DQWrIuNPUk8yjamL"}
-{"type":"log","level":"info","category":"Rules","message":"The rule \"test rule gamma\" was removed.","timestamp":1429377536606,"_id":"Dr4wtsvwEgTZoRqD"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag match - white card: 02150427","timestamp":1429370097027,"_id":"EbEzcmQasceaOJU8"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag rule \"white card 3\" found and fully active, opening...","timestamp":1429370097131,"_id":"GKnljYRXTldKLMaW"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule test rule alpha saved.","timestamp":1429377133806,"_id":"GMne00d9Zt0mxW5v"}
-{"type":"rule","name":"white card 3","weight":0,"active":true,"browserTZ":"America/Los_Angeles","rule":{"tag":"44557456","start":"2015-04-18T12:53:24.527Z","end":"2015-04-18T23:53:24.532Z","activate":"2015-03-31T07:00:00.000Z","expire":"2015-04-17T07:00:00.000Z"},"_id":"Gh1HvSt072KzPB9H"}
-{"type":"log","level":"info","category":"Rules","message":"The rule \"test rule\" was removed.","timestamp":1429375411521,"_id":"HxWbzHdmiQcS1VeQ"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429370071674,"_id":"LiMfFev01ttOzoh6"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule test ;k;skd'sklk saved.","timestamp":1429379344723,"_id":"NCDYvSJ9kA1RNjF6"}
-{"type":"rule","name":"test kjdskjkj","weight":0,"active":true,"browserTZ":"America/Los_Angeles","rule":{"tag":"44557456","start":"2015-04-19T02:27:33.143Z","end":"2015-04-19T04:27:33.149Z","activate":"2015-04-02T07:00:00.000Z","expire":"2015-04-30T07:00:00.000Z"},"_id":"OI97JRnCpDK6dySX"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule test rule 21 saved.","timestamp":1429376282163,"_id":"PhpHMFJsw6gIDP9f"}
-{"type":"log","level":"info","category":"Rules","message":"The rule \"test kdsjhkjhk\" was removed.","timestamp":1429398304255,"_id":"QWbC3VBwvgXIxgPe"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"Closing Tray","timestamp":1429370133249,"_id":"QouJYOZyeauWXlT0"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag rule \"white card\" found and fully active: tag \"02150427\" authorized","timestamp":1429370391103,"_id":"RqsCIAlbWCaSLg9u"}
-{"type":"log","level":"info","category":"Rules","message":"The rule \"white card 3\" was removed.","timestamp":1429375752333,"_id":"TO6KQeRkqfjyzwXq"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag has no rules: tag \"04233951\" authorized.","timestamp":1429370923415,"_id":"TrkSHjIkXXqEvkBi"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"Opening Tray","timestamp":1429370923347,"_id":"W7JZrFEgM5qmoRrG"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule white card 3 saved.","timestamp":1429397668420,"_id":"WfgKXzCtz57sKotv"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule test kdsjhkjhk saved.","timestamp":1429396854946,"_id":"Y92TIBgWa4UyzusE"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"Closing Tray","timestamp":1429370935448,"_id":"YDrV3VvAQfKYSyEA"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429459610626,"_id":"8tB51aLeyxZ7cn0n"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule test rule - renamed saved.","timestamp":1429466355469,"_id":"9BNaN2MtSRbWnGQd"}
+{"type":"rule","name":"test rule 2","weight":-2,"active":true,"browserTZ":"America/Los_Angeles","rule":{"tag":"44557456","start":"2015-04-19T18:56:14.956Z","end":"2015-04-20T05:41:14.963Z","activate":"2015-03-29T07:00:00.000Z","expire":"2015-06-05T07:00:00.000Z"},"_id":"9MlyHR9JqspXseUE"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag rule \"white card 2\" found but NOT active: tag \"02150427\" NOT authorized","timestamp":1429459770547,"_id":"AbcN6B00CafAWdsJ"}
+{"type":"rule","name":"white card alpha - renamed","weight":1,"active":true,"browserTZ":"America/Los_Angeles","rule":{"tag":"02150427","start":"2015-04-18T14:53:24.527Z","end":"2015-04-18T23:53:24.532Z","activate":"2015-03-10T12:00:00.000Z","expire":"2015-04-20T07:00:00.000Z"},"_id":"Gh1HvSt072KzPB9H"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Closing Tray","timestamp":1429459878496,"_id":"IBbj0kbWEoXrhAex"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Opening Tray","timestamp":1429466523553,"_id":"IpQqmoGoFgTjo99O"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha - renamed saved.","timestamp":1429466202379,"_id":"J2bOJbzjqIn7Y0Ed"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag rule \"white card 2\" found but NOT active: tag \"02150427\" NOT authorized","timestamp":1429459861997,"_id":"J7KxgGbW0NQO2E1Q"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Closing Tray","timestamp":1429466565375,"_id":"JqDhe0W7QY0VmZGv"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Opening Tray","timestamp":1429459784716,"_id":"KIpNWvuzYXp00Vy4"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag rule \"white card alpha\" found but NOT active: tag \"02150427\" NOT authorized","timestamp":1429459770406,"_id":"M0hlB5b3Ouhmb22K"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag match - ems tag: 04233951","timestamp":1429459784746,"_id":"MD8iqO9Nt8HpsZkv"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429458607268,"_id":"NACYJUbZlInG7mKn"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Closing Tray","timestamp":1429466535646,"_id":"NFIHHO9vgOEFMgGx"}
+{"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 37","timestamp":1429457900448,"_id":"PTCQnyvHJimGQtvs"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha - renamed saved.","timestamp":1429464867199,"_id":"QF9pb7zI8CJ5kVrM"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha - renamed saved.","timestamp":1429466184892,"_id":"RI9SNC5EoyNrA7dQ"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha - renamed saved.","timestamp":1429463736685,"_id":"Rk42XFTzMZ5dRWXN"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha saved.","timestamp":1429463423461,"_id":"V5xaRknCeF25a6yQ"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha - renamed saved.","timestamp":1429464692471,"_id":"VwI4RVJkQ2ITcd3r"}
 {"type":"tag","allowed":true,"tag":"44557456","name":"test tag 2","_id":"ZhtlU3PPRwSJet1B"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"Closing Tray","timestamp":1429370419812,"_id":"bOhSwgkbS8cXoIzf"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"Opening Tray","timestamp":1429372676829,"_id":"cs9mnZf5sqcST4wB"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule test rule 2 saved.","timestamp":1429375454528,"_id":"duC0Izt3Pu2fKeQU"}
-{"type":"log","level":"info","category":"Rules","message":"The rule \"test rule beta\" was removed.","timestamp":1429377536108,"_id":"elbRjQAv3LdLqv39"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"Opening Tray","timestamp":1429370096995,"_id":"exiH3xfEpasMRFoS"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag match - white card: 02150427","timestamp":1429370391154,"_id":"g4b0y4FDIrj46RD5"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag match - ems tag: 04233951","timestamp":1429370923383,"_id":"grQ3JxFOE4FaMsWt"}
-{"type":"log","level":"info","category":"Rules","message":"The rule \"test rule\" was removed.","timestamp":1429388836872,"_id":"hLmrKA0AHuN8GmEK"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule test kjdskjkj saved.","timestamp":1429396111529,"_id":"hYxNFrYiOQlG8OMY"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag rule \"white card 3\" found and fully active: tag \"[object Object]\" authorized","timestamp":1429370332565,"_id":"iZ8WJUdBmFGNCZab"}
-{"type":"log","level":"info","category":"Rules","message":"The rule \"test rule 3\" was removed.","timestamp":1429375955190,"_id":"jgwDOg01DUQNyw16"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule test kdsjhkjhk saved.","timestamp":1429395845648,"_id":"k5DgZ53QYFL7CcBR"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429370381813,"_id":"lY6FIdO11qZUHdN7"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag rule \"white card 3\" found and fully active: tag \"02150427\" authorized","timestamp":1429370391205,"_id":"lZGZaatS6dApDB2F"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule test rule gamma saved.","timestamp":1429377458913,"_id":"mk6MgG6ApDZMHUKW"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag rule \"white card alpha - renamed\" found and fully active: tag \"02150427\" authorized","timestamp":1429466535856,"_id":"aoqtfR9QIob2TbJH"}
+{"type":"log","level":"info","category":"Rules","message":"The rule \"white card 1\" was removed.","timestamp":1429459743433,"_id":"bAFHxcr4pV64cImH"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha - renamed saved.","timestamp":1429465845133,"_id":"cayyxWNsOJ978Lhf"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card 2 saved.","timestamp":1429460931911,"_id":"fxK7B7ONKeMqdUf4"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha saved.","timestamp":1429459764711,"_id":"grjoMdjtvHfiTcu0"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha - renamed saved.","timestamp":1429465405001,"_id":"htac8uA3y8sY55Cf"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card 1 saved.","timestamp":1429459549745,"_id":"ilYyKmzowuOJTCpv"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag rule \"white card 2\" found but NOT active: tag \"02150427\" NOT authorized","timestamp":1429459771172,"_id":"jBZwuargeVpGuPOW"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule test rule 2 - blah saved.","timestamp":1429459255389,"_id":"ke9XztHZ3HsDW2H8"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag rule \"white card 2\" found but NOT active: tag \"02150427\" NOT authorized","timestamp":1429459825352,"_id":"lisxQOYp8axxKOPM"}
 {"type":"setting","name":"rfidThreshold","value":"8000","_id":"n0IK3g0Lo8KXXPX0"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule test rule saved.","timestamp":1429378725271,"_id":"ndQhQ7Vwdw8Gd70y"}
-{"type":"rule","name":"white card 2","weight":3,"active":true,"browserTZ":"America/Los_Angeles","rule":{"tag":"02150427","start":"2015-04-17T23:50:43.058Z","end":"2015-04-18T06:20:43.106Z","activate":"2015-04-01T07:00:00.000Z","expire":"2015-04-30T19:00:00.000Z"},"_id":"oqS9SXSR2uM2kfl1"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429377566389,"_id":"p8nx0zyWj3scRCBh"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag match - white card: 02150427","timestamp":1429372676849,"_id":"rdBVxHoCfGcglmHF"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag rule \"white card\" found and fully active: tag \"[object Object]\" authorized","timestamp":1429370332463,"_id":"rq9ITIfQEYjdhDlU"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Closing Tray","timestamp":1429459803282,"_id":"nKCMStKU1dOCkclr"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag rule \"white card alpha\" found but NOT active: tag \"02150427\" NOT authorized","timestamp":1429459771146,"_id":"oEnZmsDQZQavQowD"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha saved.","timestamp":1429459858379,"_id":"pLYLrmb3fL7c5UqU"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule test rule 2 saved.","timestamp":1429467196066,"_id":"pjWJuGPgOuRgyL3v"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Opening Tray","timestamp":1429466535873,"_id":"qo25fybZbteo76OR"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag match - white card: 02150427","timestamp":1429466535892,"_id":"qqIY3d5AcAoQv0HE"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag match - white card: 02150427","timestamp":1429459861960,"_id":"qx5inJYAtsx7AN9z"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card 2 saved.","timestamp":1429460317065,"_id":"rNjXDbWKdstEwxbt"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Opening Tray","timestamp":1429459861939,"_id":"rlboZexTdDB4sPbg"}
 {"type":"tag","allowed":true,"tag":"02150427","name":"white card","_id":"ryBImFbnvmcZNsBk"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag match - white card: 02150427","timestamp":1429370391222,"_id":"sOUwWxt6YhmhCLqr"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag rule \"white card\" found and fully active, opening...","timestamp":1429370097062,"_id":"uOqHnXlSRiKC40Jj"}
-{"type":"log","level":"info","category":"Rules","message":"The rule \"test rule 21\" was removed.","timestamp":1429377535238,"_id":"uqTNE18QYEiqP8Fe"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag match - white card: 02150427","timestamp":1429370097099,"_id":"vQfCsCtxvLYyaHap"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429370322917,"_id":"wLhyScGfxlL8Rmcc"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag match - ems tag: 04233951","timestamp":1429466523576,"_id":"vxRT8wrbkmwh5ll4"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha saved.","timestamp":1429463663704,"_id":"vxsdfvvp6XRiXFkJ"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag rule \"white card alpha\" found and fully active: tag \"02150427\" authorized","timestamp":1429459861922,"_id":"wKPXkkQFN4qRTrQ7"}
 {"type":"setting","name":"pirThreshold","value":"12000","_id":"wuMDQthYhDwGNW46"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag match - white card: 02150427","timestamp":1429372676906,"_id":"xmUPHVD6d6HCFzWN"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule test rule saved.","timestamp":1429375325183,"_id":"yvKSPeirPs2NBY8Y"}
-{"type":"log","level":"info","category":"Rules","message":"The rule \"test rule\" was removed.","timestamp":1429372016594,"_id":"zjKOeGaKzvIEJEwb"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429403190027,"_id":"T3hLL1sBfRs4WTJu"}
-{"$$deleted":true,"_id":"1H6016NkJ7IWK83P"}
-{"$$deleted":true,"_id":"1K0fmUDpiCgxxrCS"}
-{"$$deleted":true,"_id":"1tPGBj3h4nSVwGEE"}
-{"$$deleted":true,"_id":"3iayLwI4tUmBzNKb"}
-{"$$deleted":true,"_id":"46looaeNb6EU3whh"}
-{"$$deleted":true,"_id":"4yZk3etN5tfhX7KN"}
-{"$$deleted":true,"_id":"53e7tuepEEUTfH1Z"}
-{"$$deleted":true,"_id":"66zZ6AfHMUfuVNkJ"}
-{"$$deleted":true,"_id":"6sumqEMxf5TVT1gt"}
-{"$$deleted":true,"_id":"7AGVtqCmFp3hLQLb"}
-{"$$deleted":true,"_id":"8NfHIQKZg571N6N0"}
-{"$$deleted":true,"_id":"8TbwEu5LKz0okZNT"}
-{"$$deleted":true,"_id":"9KzLvDulr7RjrWyg"}
-{"$$deleted":true,"_id":"CBNkeeWqBXDDP4jg"}
-{"$$deleted":true,"_id":"CkWnjrJgpRSgTQ9H"}
-{"$$deleted":true,"_id":"DE0zJ7sIaLWhSxbr"}
-{"$$deleted":true,"_id":"DQWrIuNPUk8yjamL"}
-{"$$deleted":true,"_id":"Dr4wtsvwEgTZoRqD"}
-{"$$deleted":true,"_id":"EbEzcmQasceaOJU8"}
-{"$$deleted":true,"_id":"GKnljYRXTldKLMaW"}
-{"$$deleted":true,"_id":"GMne00d9Zt0mxW5v"}
-{"$$deleted":true,"_id":"HxWbzHdmiQcS1VeQ"}
-{"$$deleted":true,"_id":"LiMfFev01ttOzoh6"}
-{"$$deleted":true,"_id":"NCDYvSJ9kA1RNjF6"}
-{"$$deleted":true,"_id":"PhpHMFJsw6gIDP9f"}
-{"$$deleted":true,"_id":"QWbC3VBwvgXIxgPe"}
-{"$$deleted":true,"_id":"QouJYOZyeauWXlT0"}
-{"$$deleted":true,"_id":"RqsCIAlbWCaSLg9u"}
-{"$$deleted":true,"_id":"T3hLL1sBfRs4WTJu"}
-{"$$deleted":true,"_id":"TO6KQeRkqfjyzwXq"}
-{"$$deleted":true,"_id":"TrkSHjIkXXqEvkBi"}
-{"$$deleted":true,"_id":"W7JZrFEgM5qmoRrG"}
-{"$$deleted":true,"_id":"WfgKXzCtz57sKotv"}
-{"$$deleted":true,"_id":"Y92TIBgWa4UyzusE"}
-{"$$deleted":true,"_id":"YDrV3VvAQfKYSyEA"}
-{"$$deleted":true,"_id":"bOhSwgkbS8cXoIzf"}
-{"$$deleted":true,"_id":"cs9mnZf5sqcST4wB"}
-{"$$deleted":true,"_id":"duC0Izt3Pu2fKeQU"}
-{"$$deleted":true,"_id":"elbRjQAv3LdLqv39"}
-{"$$deleted":true,"_id":"exiH3xfEpasMRFoS"}
-{"$$deleted":true,"_id":"g4b0y4FDIrj46RD5"}
-{"$$deleted":true,"_id":"grQ3JxFOE4FaMsWt"}
-{"$$deleted":true,"_id":"hLmrKA0AHuN8GmEK"}
-{"$$deleted":true,"_id":"hYxNFrYiOQlG8OMY"}
-{"$$deleted":true,"_id":"iZ8WJUdBmFGNCZab"}
-{"$$deleted":true,"_id":"jgwDOg01DUQNyw16"}
-{"$$deleted":true,"_id":"k5DgZ53QYFL7CcBR"}
-{"$$deleted":true,"_id":"lY6FIdO11qZUHdN7"}
-{"$$deleted":true,"_id":"lZGZaatS6dApDB2F"}
-{"$$deleted":true,"_id":"mk6MgG6ApDZMHUKW"}
-{"$$deleted":true,"_id":"ndQhQ7Vwdw8Gd70y"}
-{"$$deleted":true,"_id":"p8nx0zyWj3scRCBh"}
-{"$$deleted":true,"_id":"rdBVxHoCfGcglmHF"}
-{"$$deleted":true,"_id":"rq9ITIfQEYjdhDlU"}
-{"$$deleted":true,"_id":"sOUwWxt6YhmhCLqr"}
-{"$$deleted":true,"_id":"uOqHnXlSRiKC40Jj"}
-{"$$deleted":true,"_id":"uqTNE18QYEiqP8Fe"}
-{"$$deleted":true,"_id":"vQfCsCtxvLYyaHap"}
-{"$$deleted":true,"_id":"wLhyScGfxlL8Rmcc"}
-{"$$deleted":true,"_id":"xmUPHVD6d6HCFzWN"}
-{"$$deleted":true,"_id":"yvKSPeirPs2NBY8Y"}
-{"$$deleted":true,"_id":"zjKOeGaKzvIEJEwb"}
-{"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 62","timestamp":1429403221152,"_id":"eZfmBKTligTO0R5B"}
+{"type":"log","level":"info","category":"Rules","message":"The rule \"white card 2\" was removed.","timestamp":1429462662254,"_id":"x5c0tw2aZQT4m2Qg"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha - renamed saved.","timestamp":1429466076327,"_id":"xFpRswMgaUYbpk00"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule test rule saved.","timestamp":1429466344129,"_id":"yPfU9V3DqtDRRNqv"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429469000572,"_id":"lFyuaeMBnHN3Ko1h"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID allowed tag rule \"white card alpha - renamed\" found and fully active: tag \"02150427\" authorized","timestamp":1429469014677,"_id":"bg7YfJ7yIpgvWxpd"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Opening Tray","timestamp":1429469014700,"_id":"hqy1m7TOggZYJX6V"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag match - white card: 02150427","timestamp":1429469014730,"_id":"vBPwLLCiFhe4OU7w"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"Closing Tray","timestamp":1429469027774,"_id":"b8YI5yGc9rfomHCG"}
+{"$$deleted":true,"_id":"1kAzNtGclDIn6u3y"}
+{"$$deleted":true,"_id":"2XqbsGZ61cqeRKS9"}
+{"$$deleted":true,"_id":"2sw5LpbjqI6cnaA5"}
+{"$$deleted":true,"_id":"33HIgTIJPBX8QWWb"}
+{"$$deleted":true,"_id":"4fNqtUK5DGX1AF0T"}
+{"$$deleted":true,"_id":"5OARgs3JaOp05CLg"}
+{"$$deleted":true,"_id":"5UZ0BsmYscw8QbdN"}
+{"$$deleted":true,"_id":"7GgawIQltiBI0T8L"}
+{"$$deleted":true,"_id":"7txfEaKKQ07WrJXJ"}
+{"$$deleted":true,"_id":"8tB51aLeyxZ7cn0n"}
+{"$$deleted":true,"_id":"9BNaN2MtSRbWnGQd"}
+{"$$deleted":true,"_id":"AbcN6B00CafAWdsJ"}
+{"$$deleted":true,"_id":"IBbj0kbWEoXrhAex"}
+{"$$deleted":true,"_id":"IpQqmoGoFgTjo99O"}
+{"$$deleted":true,"_id":"J2bOJbzjqIn7Y0Ed"}
+{"$$deleted":true,"_id":"J7KxgGbW0NQO2E1Q"}
+{"$$deleted":true,"_id":"JqDhe0W7QY0VmZGv"}
+{"$$deleted":true,"_id":"KIpNWvuzYXp00Vy4"}
+{"$$deleted":true,"_id":"M0hlB5b3Ouhmb22K"}
+{"$$deleted":true,"_id":"MD8iqO9Nt8HpsZkv"}
+{"$$deleted":true,"_id":"NACYJUbZlInG7mKn"}
+{"$$deleted":true,"_id":"NFIHHO9vgOEFMgGx"}
+{"$$deleted":true,"_id":"PTCQnyvHJimGQtvs"}
+{"$$deleted":true,"_id":"QF9pb7zI8CJ5kVrM"}
+{"$$deleted":true,"_id":"RI9SNC5EoyNrA7dQ"}
+{"$$deleted":true,"_id":"Rk42XFTzMZ5dRWXN"}
+{"$$deleted":true,"_id":"V5xaRknCeF25a6yQ"}
+{"$$deleted":true,"_id":"VwI4RVJkQ2ITcd3r"}
+{"$$deleted":true,"_id":"aoqtfR9QIob2TbJH"}
+{"$$deleted":true,"_id":"b8YI5yGc9rfomHCG"}
+{"$$deleted":true,"_id":"bAFHxcr4pV64cImH"}
+{"$$deleted":true,"_id":"bg7YfJ7yIpgvWxpd"}
+{"$$deleted":true,"_id":"cayyxWNsOJ978Lhf"}
+{"$$deleted":true,"_id":"fxK7B7ONKeMqdUf4"}
+{"$$deleted":true,"_id":"grjoMdjtvHfiTcu0"}
+{"$$deleted":true,"_id":"hqy1m7TOggZYJX6V"}
+{"$$deleted":true,"_id":"htac8uA3y8sY55Cf"}
+{"$$deleted":true,"_id":"ilYyKmzowuOJTCpv"}
+{"$$deleted":true,"_id":"jBZwuargeVpGuPOW"}
+{"$$deleted":true,"_id":"ke9XztHZ3HsDW2H8"}
+{"$$deleted":true,"_id":"lFyuaeMBnHN3Ko1h"}
+{"$$deleted":true,"_id":"lisxQOYp8axxKOPM"}
+{"$$deleted":true,"_id":"nKCMStKU1dOCkclr"}
+{"$$deleted":true,"_id":"oEnZmsDQZQavQowD"}
+{"$$deleted":true,"_id":"pLYLrmb3fL7c5UqU"}
+{"$$deleted":true,"_id":"pjWJuGPgOuRgyL3v"}
+{"$$deleted":true,"_id":"qo25fybZbteo76OR"}
+{"$$deleted":true,"_id":"qqIY3d5AcAoQv0HE"}
+{"$$deleted":true,"_id":"qx5inJYAtsx7AN9z"}
+{"$$deleted":true,"_id":"rNjXDbWKdstEwxbt"}
+{"$$deleted":true,"_id":"rlboZexTdDB4sPbg"}
+{"$$deleted":true,"_id":"vBPwLLCiFhe4OU7w"}
+{"$$deleted":true,"_id":"vxRT8wrbkmwh5ll4"}
+{"$$deleted":true,"_id":"vxsdfvvp6XRiXFkJ"}
+{"$$deleted":true,"_id":"wKPXkkQFN4qRTrQ7"}
+{"$$deleted":true,"_id":"x5c0tw2aZQT4m2Qg"}
+{"$$deleted":true,"_id":"xFpRswMgaUYbpk00"}
+{"$$deleted":true,"_id":"yPfU9V3DqtDRRNqv"}
+{"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 58","timestamp":1429469029985,"_id":"EZo7inplqAcAhFYo"}

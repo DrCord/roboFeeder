@@ -28,7 +28,14 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                 activateExpireDatetime: false,
                 startEndTime: false,
                 emptyField: false
+            },
+            editRule: {
+                sameName: false,
+                activateExpireDatetime: false,
+                startEndTime: false,
+                emptyField: false
             }
+
         };
         $scope.ruleTableHeaders = [
             'Name',
@@ -55,32 +62,60 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
             },
             datepicker: { // ui.bootstrap.datepicker
                 datepickers: { // true == opened
-                    start: false,
-                    end: false,
-                    activate: false,
-                    expire: false
+                    rules: {
+                        new:{
+                            start: false,
+                            end: false,
+                            activate: false,
+                            expire: false
+                        },
+                        edit: {
+                            start: false,
+                            end: false,
+                            activate: false,
+                            expire: false
+                        }
+                    }
                 },
                 examplePlaceholder: '4/15/15 7:17 PM',
-                toggle: function($event, picker){
+                toggle: function($event, picker, type, ruleObj){
                     $event.preventDefault();
                     $event.stopPropagation();
-                    if(picker == 'start' || picker == 'end'){
-                        $scope.msgs.newRule.startEndTime = false;
+                    if(type == 'new'){
+                        if(picker == 'start' || picker == 'end'){
+                            $scope.msgs.newRule.startEndTime = false;
+                        }
+                        else if(picker == 'activate' || picker == 'expire'){
+                            $scope.msgs.newRule.activateExpireDatetime = false;
+                        }
                     }
-                    else if(picker == 'activate' || picker == 'expire'){
-                        $scope.msgs.newRule.activateExpireDatetime = false;
+                    else{
+                        // type == edit
+                        // nothing currently
+                        // TODO show validation messages
                     }
-                    $scope.validateRule($scope.newRule);
-                    $scope.datetime.datepicker.datepickers[picker] = !$scope.datetime.datepicker.datepickers[picker];
-                    $scope.datetime.timepicker.timepickers[picker] = !$scope.datetime.timepicker.timepickers[picker];
+                    $scope.validateRule(ruleObj, type);
+
+                    $scope.datetime.datepicker.datepickers.rules[type][picker] = !$scope.datetime.datepicker.datepickers.rules[type][picker];
+                    $scope.datetime.timepicker.timepickers.rules[type][picker] = !$scope.datetime.timepicker.timepickers.rules[type][picker];
                 }
             },
             timepicker: { // ui.bootstrap.timepicker
                 timepickers: { // true == opened
-                    start: false,
-                    end: false,
-                    activate: false,
-                    expire: false
+                    rules: {
+                        new: {
+                            start: false,
+                            end: false,
+                            activate: false,
+                            expire: false
+                        },
+                        edit: {
+                            start: false,
+                            end: false,
+                            activate: false,
+                            expire: false
+                        }
+                    }
                 },
                 examplePlaceholder: '7:17 PM',
                 hstep: 1,
@@ -305,10 +340,9 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                 $scope.rules = data.rules;
             });
         };
-        $scope.saveRule = function(){
-            // TODO - check if start time is before end time and if activate datetime is before expire datetime
-            // either via on page validation or in this function before saving
-            $http.post('/api/rules/save', {rule: $scope.newRule}).
+        $scope.saveEditedRule = function(ruleObj){
+            delete ruleObj.editing;
+            $http.post('/api/rules/edit', {ruleObj: ruleObj}).
                 success(function( data ) {
                     $scope.rules = data.rules;
                 });
@@ -320,8 +354,12 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                 });
         };
         $scope.editRule = function(rule){
-            // TODO - activate edit mode (whatever that is - likely either a modal or inline editing via fields turning into inputs)
-            // TODO after editing save or cancel
+            $scope.oldRule = rule;
+            rule.newName = rule.name;
+        };
+        $scope.cancelEdit = function(rule){
+            rule = $scope.oldRule;
+            delete $scope.oldRule;
         };
         $scope.resetRules = function(){
             $http.get('/api/rules/reset').success(function( data ) {
@@ -344,11 +382,11 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
             }
             return tagObj.name + ' : ' + tagObj.tag;
         };
-        $scope.ruleTypeValue = function(ruleType){
-            return $scope.newRule.rule[ruleType];
+        $scope.ruleTypeValue = function(ruleObj, ruleType){
+            return ruleObj.rule[ruleType];
         };
         $scope.createRule = function(){
-            if($scope.validateRule($scope.newRule)){
+            if($scope.validateRule($scope.newRule, 'new')){
                 // page handles basic validation (is this filled in, correct data type)
                 $http.post('/api/rules/save', {newRule: $scope.newRule}).
                     success(function( data ) {
@@ -357,8 +395,7 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                     });
             }
         };
-        $scope.validateRule = function(ruleObj){
-            $scope.msgs.newRule.emptyField = false;
+        $scope.validateRule = function(ruleObj, type){
             $scope.errors = {};
             // validates the date and time ranges in the rule
             if(
@@ -368,18 +405,18 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                 ruleObj.rule.end === null
             ){
                 $scope.errors.empty = [];
-            }
-            if(ruleObj.rule.activate === null){
-                $scope.errors.empty.push('activate');
-            }
-            if(ruleObj.rule.expire === null){
-                $scope.errors.empty.push('expire');
-            }
-            if(ruleObj.rule.start === null){
-                $scope.errors.empty.push('start');
-            }
-            if(ruleObj.rule.end === null){
-                $scope.errors.empty.push('end');
+                if(ruleObj.rule.activate === null){
+                    $scope.errors.empty.push('activate');
+                }
+                if(ruleObj.rule.expire === null){
+                    $scope.errors.empty.push('expire');
+                }
+                if(ruleObj.rule.start === null){
+                    $scope.errors.empty.push('start');
+                }
+                if(ruleObj.rule.end === null){
+                    $scope.errors.empty.push('end');
+                }
             }
             // if datetimes not null check if range is valid
             if(ruleObj.rule.activate !== null && ruleObj.rule.expire !== null){
@@ -402,6 +439,12 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                     }
                 }
             }
+            // error display messages
+            var msgType = 'newRule';
+            if(type == 'edit'){
+                msgType = 'editRule';
+            }
+            $scope.msgs[msgType].emptyField = false;
             // no errors
             if($scope.errorsSize() === 0){
                 return true;
@@ -410,16 +453,16 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                 // activate errors in DOM
                 for(var i=0; i<Object.size($scope.errors); i++){
                     if(typeof $scope.errors['activateExpireDatetime'] != "undefined" && $scope.errors['activateExpireDatetime']){
-                        $scope.msgs.newRule.activateExpireDatetime = true;
+                        $scope.msgs[msgType].activateExpireDatetime = true;
                     }
                     if(typeof $scope.errors['startEndTime'] != "undefined" && $scope.errors['startEndTime']){
-                        $scope.msgs.newRule.startEndTime = true;
+                        $scope.msgs[msgType].startEndTime = true;
                     }
                     if(typeof $scope.errors['empty'] != "undefined" && $scope.errors['empty']){
-                        $scope.msgs.newRule.emptyField = true;
+                        $scope.msgs[msgType].emptyField = true;
                     }
                     if(typeof $scope.errors['sameName'] != "undefined" && $scope.errors['sameName']){
-                        $scope.msgs.newRule.sameName = true;
+                        $scope.msgs[msgType].sameName = true;
                     }
                 }
             }
@@ -472,7 +515,7 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
         $scope.createRuleOptionsModal = function(size) {
             var modalInstance = $modal.open({
                 templateUrl: 'createRuleOptionsModal',
-                controller: 'ModalInstanceCtrl',
+                controller: 'ModalRuleOptionsCtrl',
                 size: size,
                 resolve: {
                     datetime: function(){
@@ -486,9 +529,31 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                 $log.info('Modal dismissed at: ' + new Date());
             });
         };
+        $scope.createRuleEditModal = function(ruleObj, size) {
+            $scope.editRule(ruleObj);
+            var modalInstance = $modal.open({
+                templateUrl: 'createRuleEditModal',
+                controller: 'ModalRuleEditCtrl',
+                scope: $scope,
+                size: size,
+                resolve: {
+                    ruleObj: function(){
+                        return ruleObj;
+                    }
+                }
+            });
+            modalInstance.result.then(function (selectedItem) {
+                $scope.selected = selectedItem;
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
         $scope.errorsSize = function(){
             // returns boolean
             return Object.size($scope.errors);
+        };
+        $scope.ruleActiveString = function(status){
+            return status ? 'Active' : 'Disabled';
         };
         $scope.init = function(){
             $scope.getStatuses();
@@ -503,7 +568,7 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
         // do stuff
         $scope.init();
     }).
-    controller('ModalInstanceCtrl', function ($scope, $modalInstance, datetime) {
+    controller('ModalRuleOptionsCtrl', function ($scope, $modalInstance, datetime) {
         $scope.datetime = datetime;
         $scope.ok = function () {
             $modalInstance.close();
@@ -521,5 +586,16 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                 $scope.datetime.timepicker.examplePlaceholder = '19:17';
                 $scope.datetime.datepicker.examplePlaceholder = '4/15/15 19:17';
             }
-        }
+        };
+    }).
+    controller('ModalRuleEditCtrl', function ($scope, $modalInstance, ruleObj) {
+        $scope.ruleObj = ruleObj;
+        $scope.ok = function () {
+            $scope.saveEditedRule($scope.ruleObj);
+            $modalInstance.close();
+        };
+        $scope.cancel = function () {
+            $scope.cancelEdit($scope.ruleObj);
+            $modalInstance.dismiss('cancel');
+        };
     });
