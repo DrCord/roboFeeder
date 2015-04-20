@@ -347,19 +347,19 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                     $scope.rules = data.rules;
                 });
         };
-        $scope.removeRule = function(rule){
-            $http.post('/api/rules/remove', {rule: rule}).
+        $scope.removeRule = function(ruleObj){
+            $http.post('/api/rules/remove', {rule: ruleObj}).
                 success(function( data ) {
                     $scope.rules = data.rules;
                 });
         };
-        $scope.editRule = function(rule){
-            $scope.oldRule = rule;
-            rule.newName = rule.name;
+        $scope.editRule = function(ruleObj){
+            // use angular.copy to clone the ruleObj to prevent binding
+            $scope.editedRule = angular.copy(ruleObj);
+            $scope.editedRule.newName = ruleObj.name;
         };
-        $scope.cancelEdit = function(rule){
-            rule = $scope.oldRule;
-            delete $scope.oldRule;
+        $scope.cancelEdit = function(){
+            delete $scope.editedRule;
         };
         $scope.resetRules = function(){
             $http.get('/api/rules/reset').success(function( data ) {
@@ -513,7 +513,7 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
             };
         };
         $scope.createRuleOptionsModal = function(size) {
-            var modalInstance = $modal.open({
+            $modal.open({
                 templateUrl: 'createRuleOptionsModal',
                 controller: 'ModalRuleOptionsCtrl',
                 size: size,
@@ -523,15 +523,10 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                     }
                 }
             });
-            modalInstance.result.then(function (selectedItem) {
-                $scope.selected = selectedItem;
-            }, function () {
-                $log.info('Modal dismissed at: ' + new Date());
-            });
         };
         $scope.createRuleEditModal = function(ruleObj, size) {
             $scope.editRule(ruleObj);
-            var modalInstance = $modal.open({
+            $modal.open({
                 templateUrl: 'createRuleEditModal',
                 controller: 'ModalRuleEditCtrl',
                 scope: $scope,
@@ -541,11 +536,6 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                         return ruleObj;
                     }
                 }
-            });
-            modalInstance.result.then(function (selectedItem) {
-                $scope.selected = selectedItem;
-            }, function () {
-                $log.info('Modal dismissed at: ' + new Date());
             });
         };
         $scope.errorsSize = function(){
@@ -573,9 +563,6 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
         $scope.ok = function () {
             $modalInstance.close();
         };
-        $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
-        };
         $scope.toggleMode = function() {
             $scope.datetime.timepicker.ismeridian = !$scope.datetime.timepicker.ismeridian;
             if($scope.datetime.timepicker.ismeridian){
@@ -591,11 +578,12 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
     controller('ModalRuleEditCtrl', function ($scope, $modalInstance, ruleObj) {
         $scope.ruleObj = ruleObj;
         $scope.ok = function () {
+            $scope.ruleObj = $scope.editedRule;
             $scope.saveEditedRule($scope.ruleObj);
             $modalInstance.close();
         };
         $scope.cancel = function () {
-            $scope.cancelEdit($scope.ruleObj);
+            $scope.cancelEdit();
             $modalInstance.dismiss('cancel');
         };
     });

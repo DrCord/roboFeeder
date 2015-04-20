@@ -28,9 +28,7 @@ TODO LIST
   * build instructable with pictures while building next physical device
   * setup instructions - wifi credentials location
 * Rules
-  * edit
-     * cancel button on modal needs to revert changes
-     * validation testing
+  * edit: validation testing
   * improve validation look: merge message types (low priority)
 * UI
   * logo
