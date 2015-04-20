@@ -91,8 +91,12 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                     }
                     else{
                         // type == edit
-                        // nothing currently
-                        // TODO show validation messages
+                        if(picker == 'start' || picker == 'end'){
+                            $scope.msgs.editRule.startEndTime = false;
+                        }
+                        else if(picker == 'activate' || picker == 'expire'){
+                            $scope.msgs.editRule.activateExpireDatetime = false;
+                        }
                     }
                     $scope.validateRule(ruleObj, type);
 
@@ -148,7 +152,8 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                 var tz = jstz.determine(); // Determines the time zone of the browser client
                 return tz.name(); // Returns the name of the time zone eg "Europe/Berlin"
             },
-            convert: function(d){ // Source: http://stackoverflow.com/questions/497790
+            convert: function(d){
+                // Source: http://stackoverflow.com/questions/497790
                 // Converts the date in d to a date-object. The input can be:
                 //   a date object: returned without modification
                 //  an array      : Interpreted as [year,month,day]. NOTE: month is 0-11.
@@ -432,7 +437,7 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                 }
             }
             // check if rule name is unique
-            if(ruleObj.name != ''){
+            if(type == 'new' && ruleObj.name != ''){
                 for(var i=0; i<$scope.rules.length;i++){
                     if ($scope.rules[i].name === ruleObj.name) {
                         $scope.errors['sameName'] = true;
@@ -545,6 +550,11 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
         $scope.ruleActiveString = function(status){
             return status ? 'Active' : 'Disabled';
         };
+        $scope.resetValidationMessages = function(msgType){
+            for(var fieldName in $scope.msgs[msgType]){
+                $scope.msgs[msgType][fieldName] = false;
+            }
+        };
         $scope.init = function(){
             $scope.getStatuses();
             $scope.getAllowedTags();
@@ -577,13 +587,36 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
     }).
     controller('ModalRuleEditCtrl', function ($scope, $modalInstance, ruleObj) {
         $scope.ruleObj = ruleObj;
-        $scope.ok = function () {
-            $scope.ruleObj = $scope.editedRule;
-            $scope.saveEditedRule($scope.ruleObj);
-            $modalInstance.close();
+        $scope.edited = false;
+        $scope.save = function () {
+            if($scope.validateRule($scope.editedRule, 'edit')){
+                $scope.ruleObj = $scope.editedRule;
+                $scope.saveEditedRule($scope.ruleObj);
+                $scope.closeEditModal();
+                $modalInstance.close();
+            }
         };
         $scope.cancel = function () {
+            $scope.closeEditModal();
             $scope.cancelEdit();
             $modalInstance.dismiss('cancel');
         };
+        $scope.closeEditModal = function(){
+            $scope.resetValidationMessages('editRule');
+        };
+        $scope.togglePicker = function($event, picker){
+            $event.preventDefault();
+            $event.stopPropagation();
+            if(picker == 'start' || picker == 'end'){
+                $scope.msgs.editRule.startEndTime = false;
+            }
+            else if(picker == 'activate' || picker == 'expire'){
+                $scope.msgs.editRule.activateExpireDatetime = false;
+            }
+            if($scope.validateRule($scope.editedRule, 'edit')){
+            }
+            $scope.datetime.datepicker.datepickers.rules.edit[picker] = !$scope.datetime.datepicker.datepickers.rules.edit[picker];
+            $scope.datetime.timepicker.timepickers.rules.edit[picker] = !$scope.datetime.timepicker.timepickers.rules.edit[picker];
+            $scope.edited = true;
+        }
     });

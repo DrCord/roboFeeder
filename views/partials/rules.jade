@@ -88,16 +88,16 @@ include ../includes/menu.jade
             div.modal-body
                 div
                     label(id="editRuleName") Name
-                    input.form-control.edit(type="text", ng-model="editedRule.newName")
+                    input.form-control.edit(type="text", ng-model="editedRule.newName", ng-change="$scope.edited = true")
                 div
                     label(id="editRuleWeight") Weight
-                    input.form-control.edit(type="number", ng-model="editedRule.weight")
+                    input.form-control.edit(type="number", ng-model="editedRule.weight", ng-change="$scope.edited = true")
                 div
                     label(id="editRuleStatus") Status
-                    input.form-control.edit(type="checkbox", ng-model="editedRule.active")
+                    input.form-control.edit(type="checkbox", ng-model="editedRule.active", ng-change="$scope.edited = true")
                 div
                     label(id="editRuleTag") Tag
-                    select.form-control.edit(name="editRuleTag", ng-model="editedRule.rule.tag")
+                    select.form-control.edit(name="editRuleTag", ng-model="editedRule.rule.tag", ng-change="$scope.edited = true")
                         option(ng-repeat="allowedTag in allowedTags | toArray | orderBy:['name', 'tag']" value="{{allowedTag.tag}}")  {{tagObjName(allowedTag)}}
 
                 div.required(ng-repeat="fieldName in datetime.fields", id="{{fieldName}}")
@@ -105,10 +105,10 @@ include ../includes/menu.jade
                         label(id="editRule{{fieldName | capitalize}}") {{fieldName | capitalize}}
                             span(ng-if="fieldName == 'activate' || fieldName == 'expire'")  datetime
                             span(ng-if="fieldName == 'start' || fieldName == 'end'")  time
-                        input.form-control.datetime(type="text", value="{{ruleTypeValue(editedRule, fieldName) | date : datetime.timeFormatter(fieldName)}}", ng-click="datetime.datepicker.toggle($event, fieldName, 'edit', editedRule)", readonly="readonly", ng-if="fieldName == 'start' || fieldName == 'end'")
-                        input.form-control.datetime(type="text", value="{{ruleTypeValue(editedRule, fieldName) | date : datetime.dateFormatter(fieldName)}}", ng-click="datetime.datepicker.toggle($event, fieldName, 'edit', editedRule)", readonly="readonly", ng-if="fieldName == 'activate' || fieldName == 'expire'")
+                        input.form-control.datetime(type="text", value="{{ruleTypeValue(editedRule, fieldName) | date : datetime.timeFormatter(fieldName)}}", ng-click="togglePicker($event, fieldName)", readonly="readonly", ng-if="fieldName == 'start' || fieldName == 'end'")
+                        input.form-control.datetime(type="text", value="{{ruleTypeValue(editedRule, fieldName) | date : datetime.dateFormatter(fieldName)}}", ng-click="togglePicker($event, fieldName)", readonly="readonly", ng-if="fieldName == 'activate' || fieldName == 'expire'")
                         span.input-group-btn
-                            button.btn.btn-sm.btn-default(type="button", ng-click="datetime.datepicker.toggle($event, fieldName, 'edit', editedRule)")
+                            button.btn.btn-sm.btn-default(type="button", ng-click="togglePicker($event, fieldName)")
                                 i.glyphicon.glyphicon-time(ng-if="fieldName == 'start' || fieldName == 'end'")
                                 i.glyphicon.glyphicon-calendar(ng-if="fieldName == 'activate' || fieldName == 'expire'")
                     div
@@ -120,5 +120,5 @@ include ../includes/menu.jade
                         div.timepicker.col-sm-6.animate-show(ng-show="datetime.timepicker.timepickers.rules.edit[fieldName]")
                             timepicker(ng-model="editedRule.rule[fieldName]", hour-step="datetime.timepicker.hstep", minute-step="datetime.timepicker.mstep", show-meridian="datetime.timepicker.ismeridian")
             div.modal-footer
-                button.btn.btn-primary(ng-click="ok()") Save
+                button.btn.btn-primary(ng-click="save()", ng-disabled="edited == false") Save
                 button.btn.btn-warning(ng-click="cancel()") Cancel

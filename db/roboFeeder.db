@@ -1,32 +1,27 @@
-{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule test rule 2 saved.","timestamp":1429495322225,"_id":"0t8Ls2UrCbT13IFh"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha saved.","timestamp":1429496287414,"_id":"2EQ6e0MiaIxPHr5O"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha saved.","timestamp":1429496432811,"_id":"6pOTcpUoHIMAkbxD"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha - renamed saved.","timestamp":1429496132081,"_id":"8am0aHoKVOQzquFG"}
 {"type":"tag","allowed":true,"tag":"04233951","name":"ems tag","_id":"8bBuevDAUfch9QmJ"}
 {"type":"rule","name":"test rule 2","weight":3,"active":true,"browserTZ":"America/Los_Angeles","rule":{"tag":"44557456","start":"2015-04-19T18:56:14.956Z","end":"2015-04-20T05:41:14.963Z","activate":"2015-03-29T07:00:00.000Z","expire":"2015-06-05T07:00:00.000Z"},"_id":"9MlyHR9JqspXseUE"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule test rule 2 saved.","timestamp":1429495823425,"_id":"AFuyLvcyHEC2EAF6"}
-{"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 58","timestamp":1429469029985,"_id":"EZo7inplqAcAhFYo"}
 {"type":"rule","name":"white card alpha","weight":0,"active":true,"browserTZ":"America/Los_Angeles","rule":{"tag":"02150427","start":"2015-04-18T08:53:24.527Z","end":"2015-04-18T23:53:24.532Z","activate":"2015-03-10T12:00:00.000Z","expire":"2015-04-20T07:00:00.000Z"},"_id":"Gh1HvSt072KzPB9H"}
 {"type":"tag","allowed":true,"tag":"44557456","name":"test tag 2","_id":"ZhtlU3PPRwSJet1B"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha - renamed saved.","timestamp":1429495987659,"_id":"dH8FPHBDlSnzYsBP"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha saved.","timestamp":1429496307636,"_id":"kRxMpyVcAlJ4Q8W2"}
 {"type":"setting","name":"rfidThreshold","value":"8000","_id":"n0IK3g0Lo8KXXPX0"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha saved.","timestamp":1429496273491,"_id":"pVJCPq35yLhXM8gn"}
 {"type":"tag","allowed":true,"tag":"02150427","name":"white card","_id":"ryBImFbnvmcZNsBk"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429494978967,"_id":"tyTqcqkKlCcZuQHL"}
-{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha saved.","timestamp":1429496147414,"_id":"vGjUc28ygMxjL9Lv"}
-{"type":"setting","name":"pirThreshold","value":"12000","_id":"wuMDQthYhDwGNW46"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429496520618,"_id":"GpV10pYEoFSSXxQ7"}
-{"$$deleted":true,"_id":"0t8Ls2UrCbT13IFh"}
-{"$$deleted":true,"_id":"2EQ6e0MiaIxPHr5O"}
-{"$$deleted":true,"_id":"6pOTcpUoHIMAkbxD"}
-{"$$deleted":true,"_id":"8am0aHoKVOQzquFG"}
-{"$$deleted":true,"_id":"AFuyLvcyHEC2EAF6"}
-{"$$deleted":true,"_id":"EZo7inplqAcAhFYo"}
-{"$$deleted":true,"_id":"GpV10pYEoFSSXxQ7"}
-{"$$deleted":true,"_id":"dH8FPHBDlSnzYsBP"}
-{"$$deleted":true,"_id":"kRxMpyVcAlJ4Q8W2"}
-{"$$deleted":true,"_id":"pVJCPq35yLhXM8gn"}
-{"$$deleted":true,"_id":"tyTqcqkKlCcZuQHL"}
-{"$$deleted":true,"_id":"vGjUc28ygMxjL9Lv"}
 {"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 12","timestamp":1429496540218,"_id":"vAnPHE6VYP88bPuf"}
+{"type":"setting","name":"pirThreshold","value":"12000","_id":"wuMDQthYhDwGNW46"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429496692645,"_id":"l0Ddu4jz5IzJUIR7"}
+{"type":"rule","name":"white card alpha","weight":0,"active":true,"browserTZ":"America/Los_Angeles","rule":{"tag":"02150427","start":"2015-04-18T08:53:24.527Z","end":"2015-04-18T20:23:24.532Z","activate":"2015-03-10T12:00:00.000Z","expire":"2015-04-20T07:00:00.000Z"},"_id":"Gh1HvSt072KzPB9H"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha saved.","timestamp":1429497038841,"_id":"1SjuWunk5xAld8hk"}
+{"type":"rule","name":"white card alpha","weight":0,"active":true,"browserTZ":"America/Los_Angeles","rule":{"tag":"02150427","start":"2015-04-18T08:53:24.527Z","end":"2015-04-18T08:23:24.532Z","activate":"2015-03-10T12:00:00.000Z","expire":"2015-04-20T07:00:00.000Z"},"_id":"Gh1HvSt072KzPB9H"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha saved.","timestamp":1429497056930,"_id":"oFyUC07WUp9fzHAy"}
+{"type":"rule","name":"test rule 2","weight":3,"active":true,"browserTZ":"America/Los_Angeles","rule":{"tag":"44557456","start":"2015-04-19T18:56:14.956Z","end":"2015-04-20T05:41:14.963Z","activate":"2015-03-29T07:00:00.000Z","expire":"2015-06-05T07:00:00.000Z"},"_id":"9MlyHR9JqspXseUE"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule test rule 2 saved.","timestamp":1429498171940,"_id":"9JV0YfklkQOQsxEB"}
+{"type":"rule","name":"test rule 2","weight":3,"active":true,"browserTZ":"America/Los_Angeles","rule":{"tag":"44557456","start":"2015-04-19T17:56:14.956Z","end":"2015-04-20T05:41:14.963Z","activate":"2015-03-29T07:00:00.000Z","expire":"2015-06-05T07:00:00.000Z"},"_id":"9MlyHR9JqspXseUE"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule test rule 2 saved.","timestamp":1429498194654,"_id":"Z50uDwBuhVjQPjY9"}
+{"type":"rule","name":"white card alpha - renamed","weight":0,"active":true,"browserTZ":"America/Los_Angeles","rule":{"tag":"02150427","start":"2015-04-18T08:53:24.527Z","end":"2015-04-18T20:23:24.532Z","activate":"2015-03-10T12:00:00.000Z","expire":"2015-04-20T07:00:00.000Z"},"_id":"Gh1HvSt072KzPB9H"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.edit - rule white card alpha - renamed saved.","timestamp":1429498495741,"_id":"TdCTA4vw5HktjzfO"}
+{"$$deleted":true,"_id":"1SjuWunk5xAld8hk"}
+{"$$deleted":true,"_id":"9JV0YfklkQOQsxEB"}
+{"$$deleted":true,"_id":"TdCTA4vw5HktjzfO"}
+{"$$deleted":true,"_id":"Z50uDwBuhVjQPjY9"}
+{"$$deleted":true,"_id":"l0Ddu4jz5IzJUIR7"}
+{"$$deleted":true,"_id":"oFyUC07WUp9fzHAy"}
+{"$$deleted":true,"_id":"vAnPHE6VYP88bPuf"}
+{"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 7","timestamp":1429500484676,"_id":"3uqrVyyZ9ABYUtJT"}
