@@ -29,7 +29,6 @@ TODO LIST
   * setup instructions - wifi credentials location
 * Rules
   * improve validation look: merge message types (low priority)
-  * check if time check is actually correct (make sure it accounts for 12:00 am/pm being earlier than 1:00am/pm)
 * UI
   * logo
   * improve look of the web app pages
