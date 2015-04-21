@@ -26,14 +26,12 @@ TODO LIST
 * General
   * get hardware remaining specifications (wire lengths, wood sizes, etc.)
   * build instructable with pictures while building next physical device
-  * setup instructions - wifi credentials location
-* Rules
-  * improve validation look: merge message types (low priority)
 * UI
   * logo
   * improve look of the web app pages
   * add tooltips or notes/instructions to various pages, especially rule creation
   * FAQ/help page
+  * rules app page - improve validation look: merge message types (low priority)
 
 Parts List:
 * Raspberry Pi ([B+](http://www.adafruit.com/products/1914), [Pi 2](http://www.adafruit.com/products/2358))
@@ -61,7 +59,9 @@ Parts List:
 * Female Headers([Adafruit](http://www.adafruit.com/products/598))
 
 Setup Instructions
-* setup wifi credentials //TODO: update wifi file location
+* setup wifi 
+  * credentials go in the file `/etc/network/interfaces`
+  * follow these [instructions from Adafruit](https://learn.adafruit.com/adafruits-raspberry-pi-lesson-3-network-setup/setting-up-wifi-with-occidentalis) (even though they say they are for Occidentalis (Adafruit's OS) they work fine for Raspbian)
 * disable shell and kernel messages via serial in the raspi-config utility
 * connect to the pi via ssh, make sure you are in the pi user's home directory (/home/pi/) and run `git clone https://github.com/DrCord/roboFeeder.git`
 * `cd roboFeeder` then `sudo npm install`
