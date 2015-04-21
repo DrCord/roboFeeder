@@ -32,7 +32,6 @@ TODO LIST
 * UI
   * logo
   * improve look of the web app pages
-  * explain in UI that tags that are allowed but have no rules have unrestricted access
   * add tooltips or notes/instructions to various pages, especially rule creation
   * FAQ/help page
 
