@@ -32,13 +32,13 @@ include ../includes/menu.jade
                         span(ng-show="msgs.newRule.sameName").error Identically named rule already exists
                     div.required
                         label(id="newRuleWeight") Weight
-                        input.form-control(type="number", name="newRuleWeight", ng-model="newRule.weight")
+                        input.form-control(type="number", name="newRuleWeight", ng-model="newRule.weight", tooltip="{{tooltips.rules.weight}}")
                     div.required
                         label(id="newRuleStatus") Status
-                        input.form-control(type="checkbox", name="newRuleStatus", ng-model="newRule.active")
+                        input.form-control(type="checkbox", name="newRuleStatus", ng-model="newRule.active", tooltip="{{tooltips.rules.active")
                     div.required
                         label(id="newRuleTag") Tag
-                        select.form-control(name="newRuleTag", ng-model="newRule.rule.tag", ng-change="msgs.removeSelectTag = false", ng-required="true")
+                        select.form-control(name="newRuleTag", ng-model="newRule.rule.tag", ng-change="msgs.removeSelectTag = false", ng-required="true", tooltip="{{tooltips.rules.tag}}")
                             option(value="", disabled, selected) Select a tag
                             option(ng-repeat="allowedTag in allowedTags | toArray | orderBy:['name', 'tag']" value="{{allowedTag.tag}}")  {{tagObjName(allowedTag)}}
                         span(ng-show="msgs.removeSelectTag").error Select a tag to remove
@@ -47,8 +47,8 @@ include ../includes/menu.jade
                             label(id="newRule{{fieldName | capitalize}}") {{fieldName | capitalize}}
                                 span(ng-if="fieldName == 'activate' || fieldName == 'expire'")  datetime
                                 span(ng-if="fieldName == 'start' || fieldName == 'end'")  time
-                            input.form-control.datetime(type="text", value="{{ruleTypeValue(newRule, fieldName) | date : datetime.timeFormatter(newRule.rule[fieldName])}}", placeholder="{{datetime.timepicker.examplePlaceholder}}", ng-click="datetime.datepicker.toggle($event, fieldName, 'new', newRule)", readonly="readonly", ng-if="fieldName == 'start' || fieldName == 'end'")
-                            input.form-control.datetime(type="text", value="{{ruleTypeValue(newRule, fieldName) | date : datetime.dateFormatter(newRule.rule[fieldName])}}", placeholder="{{datetime.datepicker.examplePlaceholder}}", ng-click="datetime.datepicker.toggle($event, fieldName, 'new', newRule)", readonly="readonly", ng-if="fieldName == 'activate' || fieldName == 'expire'")
+                            input.form-control.datetime(type="text", value="{{ruleTypeValue(newRule, fieldName) | date : datetime.timeFormatter(newRule.rule[fieldName])}}", placeholder="{{datetime.timepicker.examplePlaceholder}}", ng-click="datetime.datepicker.toggle($event, fieldName, 'new', newRule)", readonly="readonly", ng-if="fieldName == 'start' || fieldName == 'end'", tooltip="{{tooltipHelper('rules', fieldName)}}")
+                            input.form-control.datetime(type="text", value="{{ruleTypeValue(newRule, fieldName) | date : datetime.dateFormatter(newRule.rule[fieldName])}}", placeholder="{{datetime.datepicker.examplePlaceholder}}", ng-click="datetime.datepicker.toggle($event, fieldName, 'new', newRule)", readonly="readonly", ng-if="fieldName == 'activate' || fieldName == 'expire'", tooltip="{{tooltipHelper('rules', fieldName)}}")
                             span.input-group-btn
                                 button.btn.btn-sm.btn-default(type="button", ng-click="datetime.datepicker.toggle($event, fieldName, 'new', newRule)")
                                     i.glyphicon.glyphicon-time(ng-if="fieldName == 'start' || fieldName == 'end'")

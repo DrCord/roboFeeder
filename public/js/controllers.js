@@ -8,7 +8,7 @@ Object.size = function(obj) {
     return size;
 };
 angular.module('roboFeeder.controllers', ['ngAnimate']).
-    controller('AppCtrl', function ($scope, $http, $resource, poller, $modal, $log, $filter) {
+    controller('AppCtrl', function ($scope, $http, $resource, poller, $modal) {
         $scope.status = {};
         $scope.errors = {};
         $scope.newTag = '';
@@ -48,6 +48,18 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
             'Expire datetime',
             'Actions'
         ];
+        $scope.tooltips = {
+            rules: {
+                name: '',
+                weight: 'Sorts the rules, larger values sink to the bottom',
+                active: 'Enable/disable rule',
+                tag: 'Select a tag from the allowed tags list. To add tags to the allowed list go to the "tags" page',
+                start: 'Click to set the start time',
+                end: 'Click to set the end time',
+                activate: 'Click to set the activate datetime',
+                expire: 'Click to set the expire datetime'
+            }
+        };
         $scope.datetime = {
             browserTZ: null,
             fields: [
@@ -194,6 +206,9 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
             timeFormatter: function(time){
                 return $scope.datetime.formats.time;
             }
+        };
+        $scope.tooltipHelper = function(type, name){
+            return $scope.tooltips[type][name];
         };
         $scope.getAllowedTags = function(){
             $http.get('/api/tags/allowed/get').success(function( data ) {
