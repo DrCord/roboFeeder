@@ -112,9 +112,6 @@ ul{
 .timepicker input{
     width: 50px;
 }
-#start input.datetime{
-    min-width: 150px;
-}
 #create form{
     padding: 10px 20px;
 }

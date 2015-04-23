@@ -506,6 +506,14 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
             var start_min = start.getMinutes();
             var end_min = end.getMinutes();
 
+            console.log('validateStartEndRange');
+            console.log('start_hour');
+            console.log(start_hour);
+            console.log('end_hour');
+            console.log(end_hour);
+            console.log('start_hour < end_hour');
+            console.log(start_hour < end_hour);
+
             if(start_hour < end_hour){
                 return true;
             }

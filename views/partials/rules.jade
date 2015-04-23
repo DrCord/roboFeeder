@@ -24,6 +24,7 @@ include ../includes/menu.jade
             p(ng-show="rules.length == 0") No rules
         section#actions
             div#create
+                pre {{createRuleForm | json}}
                 h3 Create a Rule
                 form(name="createRuleForm", ng-submit="createRule()")
                     div.required
@@ -47,23 +48,14 @@ include ../includes/menu.jade
                             label(id="newRule{{fieldName | capitalize}}") {{fieldName | capitalize}}
                                 span(ng-if="fieldName == 'activate' || fieldName == 'expire'")  datetime
                                 span(ng-if="fieldName == 'start' || fieldName == 'end'")  time
-                            input.form-control.datetime(type="text", value="{{ruleTypeValue(newRule, fieldName) | date : datetime.timeFormatter(newRule.rule[fieldName])}}", placeholder="{{datetime.timepicker.examplePlaceholder}}", ng-click="datetime.datepicker.toggle($event, fieldName, 'new', newRule)", readonly="readonly", ng-if="fieldName == 'start' || fieldName == 'end'", tooltip="{{tooltipHelper('rules', fieldName)}}")
-                            input.form-control.datetime(type="text", value="{{ruleTypeValue(newRule, fieldName) | date : datetime.dateFormatter(newRule.rule[fieldName])}}", placeholder="{{datetime.datepicker.examplePlaceholder}}", ng-click="datetime.datepicker.toggle($event, fieldName, 'new', newRule)", readonly="readonly", ng-if="fieldName == 'activate' || fieldName == 'expire'", tooltip="{{tooltipHelper('rules', fieldName)}}")
-                            span.input-group-btn
-                                button.btn.btn-sm.btn-default(type="button", ng-click="datetime.datepicker.toggle($event, fieldName, 'new', newRule)")
-                                    i.glyphicon.glyphicon-time(ng-if="fieldName == 'start' || fieldName == 'end'")
-                                    i.glyphicon.glyphicon-calendar(ng-if="fieldName == 'activate' || fieldName == 'expire'")
+                            input.form-control.datetime(type="time", name="newRule{{fieldName | capitalize}}", ng-model="newRule.rule[fieldName]", placeholder="{{datetime.timepicker.examplePlaceholder}}", ng-if="fieldName == 'start'", tooltip="{{tooltipHelper('rules', fieldName)}}", ng-required="true", lower-than="{{newRule.rule.end | date : datetime.timeFormatter(newRule.rule.end)}}")
+                            input.form-control.datetime(type="time", name="newRule{{fieldName | capitalize}}", ng-model="newRule.rule[fieldName]", placeholder="{{datetime.timepicker.examplePlaceholder}}", ng-if="fieldName == 'end'", tooltip="{{tooltipHelper('rules', fieldName)}}", ng-required="true")
+                            input.form-control.datetime(type="date", name="newRule{{fieldName | capitalize}}", ng-model="newRule.rule[fieldName]", placeholder="{{datetime.datepicker.examplePlaceholder}}", ng-if="fieldName == 'activate' || fieldName == 'expire'", tooltip="{{tooltipHelper('rules', fieldName)}}", ng-required="true")
+                            input.form-control.datetime(type="time", name="newRule{{fieldName | capitalize}}", ng-model="newRule.rule[fieldName]", placeholder="{{datetime.datepicker.examplePlaceholder}}", ng-if="fieldName == 'activate' || fieldName == 'expire'", tooltip="{{tooltipHelper('rules', fieldName)}}", ng-required="true")
                         div
-                            span(ng-if="fieldName == 'end'", ng-show="msgs.newRule.startEndTime").error The start time is not before the end time
-                            span(ng-if="fieldName == 'expire'", ng-show="msgs.newRule.activateExpireDatetime").error The activate datetime is not before the expire datetime
-                        div.row
-                            div.datepicker.col-sm-6.animate-show(ng-show="datetime.datepicker.datepickers.rules.new[fieldName]", ng-if="fieldName == 'activate' || fieldName == 'expire'")
-                                datepicker.well.well-sm(ng-model="newRule.rule[fieldName]", close-text="Close")
-                            div.timepicker.col-sm-6.animate-show(ng-show="datetime.timepicker.timepickers.rules.new[fieldName]")
-                                timepicker(ng-model="newRule.rule[fieldName]", hour-step="datetime.timepicker.hstep", minute-step="datetime.timepicker.mstep", show-meridian="datetime.timepicker.ismeridian")
-                    div.required
-                        span(ng-show="msgs.newRule.emptyField").error There is an empty field, all fields are required.
-                    input.btn.btn-success(type="submit", value="Create Rule" ng-disabled="errorsSize() > 0")
+                            span(ng-if="fieldName == 'end'", ng-show="createRuleForm.newRuleStart.$error.lowerThan").error.ng-invalid The start time is not before the end time
+                            span(ng-if="fieldName == 'expire'", ng-show="msgs.newRule.activateExpireDatetime").error.ng-invalid The activate datetime is not before the expire datetime
+                    input.btn.btn-success(type="submit", value="Create Rule")
     script(type="text/ng-template", id="createRuleOptionsModal")
         div.options
             div.modal-header

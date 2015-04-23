@@ -42,5 +42,91 @@ angular.module('roboFeeder.directives', []).
 
             updateLater(); // kick off the UI update process.
         }
-    })
+    }).
+  directive('lowerThan', [
+    function() {
+
+        var link = function($scope, $element, $attrs, ctrl) {
+
+            var validate = function(viewValue) {
+                var comparisonModel = $attrs.lowerThan;
+
+                if(!viewValue || !comparisonModel){
+                    // It's valid because we have nothing to compare against
+                    ctrl.$setValidity('lowerThan', true);
+                }
+
+                if(viewValue != null && typeof viewValue == "string"){
+                    var d = new Date();
+                    // TODO - fix regex to work with pm time!!!!
+                    var time = viewValue.match(/(\d+)(?::(\d\d))?\s*(P?)/);
+                    if(time != null){
+                        d.setHours( parseInt(time[1]) + (time[3] ? 12 : 0) );
+                        d.setMinutes( parseInt(time[2]) || 0 );
+                        var start = d;
+
+                        console.log('start');
+                        console.log(start);
+                        console.log('start.getHours()');
+                        console.log(start.getHours());
+                    }
+                }
+
+                if(comparisonModel != null && typeof comparisonModel == "string"){
+                    var d = new Date();
+                    var time = comparisonModel.match(/(\d+)(?::(\d\d))?\s*(p?)/);
+                    if(time != null){
+                        d.setHours( parseInt(time[1]) + (time[3] ? 12 : 0) );
+                        d.setMinutes( parseInt(time[2]) || 0 );
+                        var end = d;
+                        console.log('end');
+                        console.log(end);
+                        console.log('end.getHours()');
+                        console.log(end.getHours());
+                    }
+                }
+
+                //start = new Date(start);
+                //end = new Date(end);
+                /*var start_hour = start.getHours();
+                var end_hour = end.getHours();
+                var start_min = start.getMinutes();
+                var end_min = end.getMinutes();
+
+                console.log('validateStartEndRange');
+                console.log('start_hour');
+                console.log(start_hour);
+                console.log('end_hour');
+                console.log(end_hour);
+                console.log('start_hour < end_hour');
+                console.log(start_hour < end_hour);*/
+
+                console.log('directive - lowerThan');
+                console.log('viewValue');
+                console.log(viewValue);
+                console.log('comparisonModel');
+                console.log(comparisonModel);
+
+                // It's valid if model is lower than the model we're comparing against
+                ctrl.$setValidity('lowerThan', parseInt(start, 10) < parseInt(end, 10) );
+                return viewValue;
+            };
+
+            ctrl.$parsers.unshift(validate);
+            ctrl.$formatters.push(validate);
+
+            $attrs.$observe('lowerThan', function(comparisonModel){
+                // Whenever the comparison model changes we'll re-validate
+                return validate(ctrl.$viewValue);
+            });
+
+        };
+
+        return {
+            require: 'ngModel',
+            link: link
+        };
+
+    }
+])
 ;

@@ -1,22 +1,22 @@
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429709433956,"_id":"0gkXjqZv5acK64A8"}
-{"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 7","timestamp":1429500484676,"_id":"3uqrVyyZ9ABYUtJT"}
 {"type":"tag","allowed":true,"tag":"04233951","name":"ems tag","_id":"8bBuevDAUfch9QmJ"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429754969671,"_id":"98XWvEqnR9HZeYDW"}
 {"type":"rule","name":"test rule 2","weight":3,"active":true,"browserTZ":"America/Los_Angeles","rule":{"tag":"44557456","start":"2015-04-19T17:56:14.956Z","end":"2015-04-20T05:41:14.963Z","activate":"2015-03-29T07:00:00.000Z","expire":"2015-06-05T07:00:00.000Z"},"_id":"9MlyHR9JqspXseUE"}
-{"type":"rule","name":"white card alpha - renamed","weight":0,"active":true,"browserTZ":"America/Los_Angeles","rule":{"tag":"02150427","start":"2015-04-18T08:53:24.527Z","end":"2015-04-18T20:23:24.532Z","activate":"2015-03-10T12:00:00.000Z","expire":"2015-04-20T07:00:00.000Z"},"_id":"Gh1HvSt072KzPB9H"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429657908392,"_id":"QZoLuGoQAKhwJvj6"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429670522397,"_id":"ZIH4tD0BcZOeA87T"}
-{"type":"tag","allowed":true,"tag":"44557456","name":"test tag 2","_id":"ZhtlU3PPRwSJet1B"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429710187763,"_id":"mS1xGfmZkTMGz6gA"}
-{"type":"setting","name":"rfidThreshold","value":"8000","_id":"n0IK3g0Lo8KXXPX0"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429659636294,"_id":"nnTwwyq20ywqW5sk"}
-{"type":"tag","allowed":true,"tag":"02150427","name":"white card","_id":"ryBImFbnvmcZNsBk"}
-{"type":"setting","name":"pirThreshold","value":"12000","_id":"wuMDQthYhDwGNW46"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429710509423,"_id":"dSqXeLywQhJWbkvc"}
-{"$$deleted":true,"_id":"0gkXjqZv5acK64A8"}
-{"$$deleted":true,"_id":"3uqrVyyZ9ABYUtJT"}
-{"$$deleted":true,"_id":"QZoLuGoQAKhwJvj6"}
-{"$$deleted":true,"_id":"ZIH4tD0BcZOeA87T"}
-{"$$deleted":true,"_id":"dSqXeLywQhJWbkvc"}
-{"$$deleted":true,"_id":"mS1xGfmZkTMGz6gA"}
-{"$$deleted":true,"_id":"nnTwwyq20ywqW5sk"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule test rule 3 saved.","timestamp":1429756101497,"_id":"AZfLUqNDKQiGyeh1"}
 {"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 7","timestamp":1429710533002,"_id":"DGQCjKHAbgRg6b1c"}
+{"type":"rule","name":"white card alpha - renamed","weight":0,"active":true,"browserTZ":"America/Los_Angeles","rule":{"tag":"02150427","start":"2015-04-18T08:53:24.527Z","end":"2015-04-18T20:23:24.532Z","activate":"2015-03-10T12:00:00.000Z","expire":"2015-04-20T07:00:00.000Z"},"_id":"Gh1HvSt072KzPB9H"}
+{"type":"tag","allowed":true,"tag":"44557456","name":"test tag 2","_id":"ZhtlU3PPRwSJet1B"}
+{"type":"rule","name":"test rule 5","weight":0,"active":true,"browserTZ":"America/Los_Angeles","rule":{"tag":"44557456","start":"1970-01-01T09:00:00.000Z","end":"1970-01-01T21:00:00.000Z","activate":"2015-04-15T07:00:00.000Z","expire":"2015-04-30T07:00:00.000Z"},"_id":"ciYmI8OOUr5kCPLP"}
+{"type":"setting","name":"rfidThreshold","value":"8000","_id":"n0IK3g0Lo8KXXPX0"}
+{"type":"tag","allowed":true,"tag":"02150427","name":"white card","_id":"ryBImFbnvmcZNsBk"}
+{"type":"log","level":"info","category":"Rules","message":"Rules.save - rule test rule 5 saved.","timestamp":1429758214243,"_id":"sSf5eAO8Y6cUckns"}
+{"type":"setting","name":"pirThreshold","value":"12000","_id":"wuMDQthYhDwGNW46"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429797280702,"_id":"xpdAningsTY3eNuw"}
+{"type":"rule","name":"test rule 3","weight":1,"active":true,"browserTZ":"America/Los_Angeles","rule":{"tag":"44557456","start":"2015-04-22T15:27:08.275Z","end":"2015-04-23T01:27:08.280Z","activate":"2015-04-07T07:00:00.000Z","expire":"2015-05-01T07:00:00.000Z"},"_id":"yeSX4up92aZ48MWL"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1429799750058,"_id":"OIJQbYzfAZFxdlTI"}
+{"$$deleted":true,"_id":"98XWvEqnR9HZeYDW"}
+{"$$deleted":true,"_id":"AZfLUqNDKQiGyeh1"}
+{"$$deleted":true,"_id":"DGQCjKHAbgRg6b1c"}
+{"$$deleted":true,"_id":"OIJQbYzfAZFxdlTI"}
+{"$$deleted":true,"_id":"sSf5eAO8Y6cUckns"}
+{"$$deleted":true,"_id":"xpdAningsTY3eNuw"}
+{"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 6","timestamp":1429799764394,"_id":"O4rYqjiwbwyOYKA0"}
