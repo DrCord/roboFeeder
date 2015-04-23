@@ -43,79 +43,115 @@ angular.module('roboFeeder.directives', []).
             updateLater(); // kick off the UI update process.
         }
     }).
-  directive('lowerThan', [
+  directive('timeLowerThan', [
     function() {
-
         var link = function($scope, $element, $attrs, ctrl) {
-
             var validate = function(viewValue) {
-                var comparisonModel = $attrs.lowerThan;
+                var comparisonModel = $attrs.timeLowerThan;
 
                 if(!viewValue || !comparisonModel){
                     // It's valid because we have nothing to compare against
-                    ctrl.$setValidity('lowerThan', true);
+                    ctrl.$setValidity('timeLowerThan', true);
                 }
-
                 if(viewValue != null && typeof viewValue == "string"){
-                    var d = new Date();
-                    // TODO - fix regex to work with pm time!!!!
                     var time = viewValue.match(/(\d+)(?::(\d\d))?\s*(P?)/);
                     if(time != null){
-                        d.setHours( parseInt(time[1]) + (time[3] ? 12 : 0) );
-                        d.setMinutes( parseInt(time[2]) || 0 );
-                        var start = d;
-
-                        console.log('start');
-                        console.log(start);
-                        console.log('start.getHours()');
-                        console.log(start.getHours());
+                        var start = new Date();
+                        start.setHours( parseInt(time[1]) + (time[3] ? 12 : 0) );
+                        start.setMinutes( parseInt(time[2]) || 0 );
                     }
                 }
-
                 if(comparisonModel != null && typeof comparisonModel == "string"){
-                    var d = new Date();
                     var time = comparisonModel.match(/(\d+)(?::(\d\d))?\s*(p?)/);
                     if(time != null){
-                        d.setHours( parseInt(time[1]) + (time[3] ? 12 : 0) );
-                        d.setMinutes( parseInt(time[2]) || 0 );
-                        var end = d;
-                        console.log('end');
-                        console.log(end);
-                        console.log('end.getHours()');
-                        console.log(end.getHours());
+                        var end = new Date();
+                        end.setHours( parseInt(time[1]) + (time[3] ? 12 : 0) );
+                        end.setMinutes( parseInt(time[2]) || 0 );
                     }
                 }
-
-                //start = new Date(start);
-                //end = new Date(end);
-                /*var start_hour = start.getHours();
-                var end_hour = end.getHours();
-                var start_min = start.getMinutes();
-                var end_min = end.getMinutes();
-
-                console.log('validateStartEndRange');
-                console.log('start_hour');
-                console.log(start_hour);
-                console.log('end_hour');
-                console.log(end_hour);
-                console.log('start_hour < end_hour');
-                console.log(start_hour < end_hour);*/
-
-                console.log('directive - lowerThan');
-                console.log('viewValue');
-                console.log(viewValue);
-                console.log('comparisonModel');
-                console.log(comparisonModel);
-
-                // It's valid if model is lower than the model we're comparing against
-                ctrl.$setValidity('lowerThan', parseInt(start, 10) < parseInt(end, 10) );
+                if((typeof start != "undefined") && (typeof end != "undefined")){
+                    // It's valid if model is lower than the model we're comparing against
+                    ctrl.$setValidity('timeLowerThan', parseInt(start.getTime(), 10) < parseInt(end.getTime(), 10) );
+                }
                 return viewValue;
             };
 
             ctrl.$parsers.unshift(validate);
             ctrl.$formatters.push(validate);
 
-            $attrs.$observe('lowerThan', function(comparisonModel){
+            $attrs.$observe('timeLowerThan', function(comparisonModel){
+                // Whenever the comparison model changes we'll re-validate
+                return validate(ctrl.$viewValue);
+            });
+
+        };
+
+        return {
+            require: 'ngModel',
+            link: link
+        };
+
+    }
+]).
+  directive('datetimeBefore', [
+    function() {
+        var link = function($scope, $element, $attrs, ctrl) {
+            var validate = function(viewValue) {
+                var comparisonModel = $attrs.datetimeBefore;
+
+                if(!viewValue || !comparisonModel){
+                    // It's valid because we have nothing to compare against
+                    ctrl.$setValidity('datetimeBefore', true);
+                }
+                if(viewValue != null && typeof viewValue == "string"){
+                    var start = new Date(viewValue);
+                    // http://stackoverflow.com/questions/1353684/detecting-an-invalid-date-date-instance-in-javascript
+                    if ( Object.prototype.toString.call(start) === "[object Date]" ) {
+                        // it is a date
+                        if ( isNaN( start.getTime() ) ) {  // d.valueOf() could also work
+                            // date is not valid
+                            ctrl.$setValidity('startInvalidDate', false );
+                        }
+                        else {
+                            // date is valid
+                            ctrl.$setValidity('startInvalidDate', true );
+                            var start_time = start.getTime();
+                        }
+                    }
+                    else {
+                        // not a date
+                    }
+                }
+                if(comparisonModel != null && typeof comparisonModel == "string"){
+                    var end = new Date(comparisonModel);
+                    if ( Object.prototype.toString.call(end) === "[object Date]" ) {
+                        // it is a date
+                        if ( isNaN( end.getTime() ) ) {  // d.valueOf() could also work
+                            // date is not valid
+                            ctrl.$setValidity('endInvalidDate', false );
+                        }
+                        else {
+                            // date is valid
+                            ctrl.$setValidity('endInvalidDate', true );
+                            var end_time = end.getTime();
+                        }
+                    }
+                    else {
+                        // not a date
+                    }
+                }
+                if(
+                    (typeof start_time != "undefined") && (typeof end_time != "undefined") && !isNaN(start_time) && !isNaN(end_time) ){
+                    // It's valid if model is lower than the model we're comparing against
+                    ctrl.$setValidity('datetimeBefore', parseInt(start_time, 10) < parseInt(start_time, 10) );
+                }
+                return viewValue;
+            };
+
+            ctrl.$parsers.unshift(validate);
+            ctrl.$formatters.push(validate);
+
+            $attrs.$observe('datetimeBefore', function(comparisonModel){
                 // Whenever the comparison model changes we'll re-validate
                 return validate(ctrl.$viewValue);
             });

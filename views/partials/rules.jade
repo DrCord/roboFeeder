@@ -24,7 +24,6 @@ include ../includes/menu.jade
             p(ng-show="rules.length == 0") No rules
         section#actions
             div#create
-                pre {{createRuleForm | json}}
                 h3 Create a Rule
                 form(name="createRuleForm", ng-submit="createRule()")
                     div.required
@@ -48,14 +47,16 @@ include ../includes/menu.jade
                             label(id="newRule{{fieldName | capitalize}}") {{fieldName | capitalize}}
                                 span(ng-if="fieldName == 'activate' || fieldName == 'expire'")  datetime
                                 span(ng-if="fieldName == 'start' || fieldName == 'end'")  time
-                            input.form-control.datetime(type="time", name="newRule{{fieldName | capitalize}}", ng-model="newRule.rule[fieldName]", placeholder="{{datetime.timepicker.examplePlaceholder}}", ng-if="fieldName == 'start'", tooltip="{{tooltipHelper('rules', fieldName)}}", ng-required="true", lower-than="{{newRule.rule.end | date : datetime.timeFormatter(newRule.rule.end)}}")
-                            input.form-control.datetime(type="time", name="newRule{{fieldName | capitalize}}", ng-model="newRule.rule[fieldName]", placeholder="{{datetime.timepicker.examplePlaceholder}}", ng-if="fieldName == 'end'", tooltip="{{tooltipHelper('rules', fieldName)}}", ng-required="true")
-                            input.form-control.datetime(type="date", name="newRule{{fieldName | capitalize}}", ng-model="newRule.rule[fieldName]", placeholder="{{datetime.datepicker.examplePlaceholder}}", ng-if="fieldName == 'activate' || fieldName == 'expire'", tooltip="{{tooltipHelper('rules', fieldName)}}", ng-required="true")
-                            input.form-control.datetime(type="time", name="newRule{{fieldName | capitalize}}", ng-model="newRule.rule[fieldName]", placeholder="{{datetime.datepicker.examplePlaceholder}}", ng-if="fieldName == 'activate' || fieldName == 'expire'", tooltip="{{tooltipHelper('rules', fieldName)}}", ng-required="true")
-                        div
-                            span(ng-if="fieldName == 'end'", ng-show="createRuleForm.newRuleStart.$error.lowerThan").error.ng-invalid The start time is not before the end time
-                            span(ng-if="fieldName == 'expire'", ng-show="msgs.newRule.activateExpireDatetime").error.ng-invalid The activate datetime is not before the expire datetime
-                    input.btn.btn-success(type="submit", value="Create Rule")
+                            input.form-control.datetime(type="time", name="newRule{{fieldName | capitalize}}", ng-model="newRule.rule[fieldName]", ng-if="fieldName == 'start'", tooltip="{{tooltipHelper('rules', fieldName)}}", ng-required="true", time-lower-than="{{newRule.rule.end | date : 'H:mm'}}")
+                            input.form-control.datetime(type="time", name="newRule{{fieldName | capitalize}}", ng-model="newRule.rule[fieldName]", ng-if="fieldName == 'end'", tooltip="{{tooltipHelper('rules', fieldName)}}", ng-required="true")
+                            input.form-control.datetime(type="datetime-local", name="newRuleDatetime{{fieldName | capitalize}}", ng-model="newRule.rule[fieldName]", ng-if="fieldName == 'activate'", tooltip="{{tooltipHelper('rules', fieldName)}}", ng-required="true", datetime-before="{{newRule.rule.expire | date : 'yyyy-MM-ddTHH:mm'}}")
+                            input.form-control.datetime(type="datetime-local", name="newRuleDatetime{{fieldName | capitalize}}", ng-model="newRule.rule[fieldName]", ng-if="fieldName == 'expire'", tooltip="{{tooltipHelper('rules', fieldName)}}", ng-required="true")
+                    div.error-container
+                        small(ng-show="createRuleForm.newRuleStart.$error.timeLowerThan").error.ng-invalid The start time is not before the end time
+                        small(ng-show="createRuleForm.newRuleDatetimeActivate.$error.datetimeBefore").error.ng-invalid The activate datetime is not before the expire datetime
+                        small(ng-show="createRuleForm.newRuleDatetimeActivate.$error.startInvalidDate && createRuleForm.newRuleDatetimeActivate.$dirty").error.ng-invalid The activate datetime is not a valid datetime
+                        small(ng-show="createRuleForm.newRuleDatetimeActivate.$error.endInvalidDate&& createRuleForm.newRuleDatetimeExpire.$dirty").error.ng-invalid The expire datetime is not a valid datetime
+                    input.btn.btn-success(type="submit", value="Create Rule", ng-disabled="createRuleForm.$invalid")
     script(type="text/ng-template", id="createRuleOptionsModal")
         div.options
             div.modal-header
