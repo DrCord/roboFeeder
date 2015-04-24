@@ -29,9 +29,8 @@ TODO LIST
 * UI
   * logo
   * improve look of the web app pages
-  * add tooltips or notes/instructions to various pages, especially rule creation
+  * add tooltips or notes/instructions to various pages (rules done)
   * FAQ/help page
-  * rules app page - improve validation look: merge message types (low priority)
 
 Parts List:
 * Raspberry Pi ([B+](http://www.adafruit.com/products/1914), [Pi 2](http://www.adafruit.com/products/2358))

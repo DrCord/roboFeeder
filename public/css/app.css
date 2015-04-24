@@ -142,4 +142,7 @@ input[type=checkbox].form-control{
 input[type="number"].form-control{
     width: 70px;
 }
+.error-container small{
+    display: block;
+}
 

@@ -141,9 +141,13 @@ angular.module('roboFeeder.directives', []).
                     }
                 }
                 if(
-                    (typeof start_time != "undefined") && (typeof end_time != "undefined") && !isNaN(start_time) && !isNaN(end_time) ){
+                    (typeof start_time != "undefined") &&
+                    (typeof end_time != "undefined")
+                    && !isNaN(start_time)
+                    && !isNaN(end_time)
+                ){
                     // It's valid if model is lower than the model we're comparing against
-                    ctrl.$setValidity('datetimeBefore', parseInt(start_time, 10) < parseInt(start_time, 10) );
+                    ctrl.$setValidity('datetimeBefore', parseInt(start_time, 10) < parseInt(end_time, 10) );
                 }
                 return viewValue;
             };
