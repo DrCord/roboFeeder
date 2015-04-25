@@ -18,8 +18,10 @@ include ../includes/menu.jade
                     td {{rule.rule.activate | date : 'M/d/yy h:mm a'}}
                     td {{rule.rule.expire | date : 'M/d/yy h:mm a'}}
                     td
-                        button.btn.btn-xs.btn-warning.edit(ng-click="createRuleEditModal(rule)") Edit
-                        button.btn.btn-xs.btn-danger.remove(ng-click="removeRule(rule)") X
+                        button.btn.btn-xs.btn-warning.edit.glyphicon-container(ng-click="createRuleEditModal(rule)")
+                            span.glyphicon.glyphicon-cog(aria-hidden="true")
+                        button.btn.btn-xs.btn-danger.remove.glyphicon-container(ng-click="removeRule(rule)")
+                            span.glyphicon.glyphicon-remove(aria-hidden="true")
             p(ng-show="rules.length == 0") No rules
         section#actions
             div#create
@@ -34,7 +36,7 @@ include ../includes/menu.jade
                         input.form-control(type="number", name="newRuleWeight", ng-model="newRule.weight", tooltip="{{tooltips.rules.weight}}")
                     div.required
                         label(id="newRuleStatus") Status
-                        input.form-control(type="checkbox", name="newRuleStatus", ng-model="newRule.active", tooltip="{{tooltips.rules.active")
+                        input.form-control(type="checkbox", name="newRuleStatus", ng-model="newRule.active", tooltip="{{tooltips.rules.active}}")
                     div.required
                         label(id="newRuleTag") Tag
                         select.form-control(name="newRuleTag", ng-model="newRule.rule.tag", ng-change="msgs.removeSelectTag = false", ng-required="true", tooltip="{{tooltips.rules.tag}}")

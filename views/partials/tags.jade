@@ -16,16 +16,20 @@ include ../includes/menu.jade
                 form(name="authorizeTagForm", ng-submit="authorizeTag()")
                     div.required
                         label(id="newTagInput") Tag
-                        input(type="text", name="newTagInput", ng-model="newTag", ng-pattern="/^[0-9]{8}$/" ng-change="msgs.alreadyAllowed = false; msgs.notValidCode = false;", placeholder="8 digit unique code")
+                        input.form-control(type="text", name="newTagInput", ng-model="newTag", ng-pattern="/^[0-9]{8}$/" ng-change="msgs.alreadyAllowed = false; msgs.notValidCode = false;", placeholder="8 digit unique code", ng-required)
                         span(ng-show="authorizeTagForm.newTagInput.$error.pattern || msgs.notValidCode").error Not a valid code
                         span(ng-show="msgs.alreadyAllowed").error Tag already allowed
                     div
                         label(id="newTagNameInput") Name
-                        input(type="text", name="newTagNameInput", ng-model="newTagName")
-                    input(type="submit", value="Authorize Tag" class="btn btn-sm btn-success")
+                        input.form-control(type="text", name="newTagNameInput", ng-model="newTagName", placeholder="non-unique string")
+                        button.btn.btn-sm.btn-success.glyphicon-container(type="submit", ng-disabled="authorizeTagForm.$invalid || authorizeTagForm.$pristine")
+                            span.glyphicon.glyphicon-ok(aria-hidden="true")
             div#remove
                 h3 Remove Existing Tag
-                select(id="removeTag", name="removeTag-select", ng-model="removeTagSelect" ng-change="msgs.removeSelectTag = false")
-                    option(ng-repeat="allowedTag in allowedTags | toArray | orderBy:['name', 'tag']" value="{{allowedTag.tag}}")  {{tagObjName(allowedTag)}}
-                span(ng-show="msgs.removeSelectTag").error Select a tag to remove
-                button(ng-click="removeTag(removeTagSelect)" class="btn btn-sm btn-danger") Remove Tag
+                div
+                    select.form-control(id="removeTag", name="removeTag-select", ng-model="removeTagSelect" ng-change="msgs.removeSelectTag = false")
+                        option(value="", disabled) Select a tag to remove
+                        option(ng-repeat="allowedTag in allowedTags | toArray | orderBy:['name', 'tag']" value="{{allowedTag.tag}}")  {{tagObjName(allowedTag)}}
+                    button.btn.btn-sm.btn-danger.glyphicon-container(ng-click="removeTag(removeTagSelect)", ng-disabled="removeTagSelect == ''")
+                        span.glyphicon.glyphicon-remove(aria-hidden="true")
+                    span(ng-show="msgs.removeSelectTag").error Select a tag to remove

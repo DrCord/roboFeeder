@@ -14,13 +14,23 @@ body{
 span button{
     margin: 0 10px;
 }
-#tags #authorize label{
-    width: 80px;
+#tags #authorize form,
+#tags #remove > div{
+    padding-left: 20px;
 }
-#tags #authorize input[type="submit"],
-#tags #remove button{
+#tags #remove span.error{
     display: block;
-    margin-top: 10px;
+}
+#tags #authorize label{
+    width: 45px;
+}
+#tags #authorize button[type="submit"]{
+    margin-left: 4px;
+    margin-top: -2px;
+}
+#tags #remove button{
+    margin-left: 4px;
+    margin-top: -2px;
 }
 #removeTag{
     min-width: 150px;
@@ -145,4 +155,16 @@ input[type="number"].form-control{
 .error-container small{
     display: block;
 }
-
+h3{
+    font-size: 20px;
+}
+.footer{
+    margin: 20px 10%;
+}
+.footer small{
+    float: right;
+    margin-bottom: 10px;
+}
+.glyphicon-container.btn-sm{
+    padding: 1px 4px 0px 5px;
+}

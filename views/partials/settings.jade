@@ -6,6 +6,6 @@ include ../includes/menu.jade
         form(name="settingsForm", ng-submit="saveSettings()")
             div(ng-repeat="(name, value) in roboFeederSettings")
                 label {{name}}
-                input(type="text", name="setting-{{name}}", ng-model="roboFeederSettings[name]", value="{{value}}")
-            input(type="submit", value="Save Settings", class="btn btn-sm btn-success")
+                input.form-control(type="text", name="setting-{{name}}", ng-model="roboFeederSettings[name]", value="{{value}}", tooltip="Length of time to wait without getting a {{sensorName(name)}} signal before allowing close", tooltip-placement="right")
+            input.btn.btn-sm.btn-success(type="submit", value="Save Settings")
             button(ng-click="resetSettings()", class="btn btn-sm btn-danger") Reset Settings to Default

@@ -3,7 +3,7 @@ include ../includes/menu.jade
 #content
     section#log
         h2 Log
-        button(ng-click="resetLog()", class="btn btn-sm btn-danger") Reset
+        button.btn.btn-sm.btn-danger(ng-click="resetLog()", tooltip="Remove all log messages", tooltip-placement="right") Reset
         table.table.table-striped.table-bordered.table-condensed
             tr
                 th.message Message
@@ -16,4 +16,4 @@ include ../includes/menu.jade
                 td.category {{logItem.category}}
                 td.timestamp {{logItem.timestamp | date: 'medium'}}
         p(ng-show="!log.length" ng-cloak) Log is empty
-        button(ng-click="resetLog()", class="btn btn-sm btn-danger") Reset
+        button.btn.btn-sm.btn-danger(ng-click="resetLog()" tooltip="Remove all log messages", tooltip-placement="right") Reset

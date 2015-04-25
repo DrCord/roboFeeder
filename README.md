@@ -26,11 +26,10 @@ TODO LIST
 * General
   * get hardware remaining specifications (wire lengths, wood sizes, etc.)
   * build instructable with pictures while building next physical device
+  * rules page is slow to load - wondering if compiling complex jade template and then rendering it is too much for Raspi B+, test on RasPi 2
 * UI
   * logo
-  * improve look of the web app pages
-  * add tooltips or notes/instructions to various pages (rules done)
-  * FAQ/help page
+  * FAQ/help page - pondering what else to add to this page...after I get feedback from beta testers this will get more content
 
 Parts List:
 * Raspberry Pi ([B+](http://www.adafruit.com/products/1914), [Pi 2](http://www.adafruit.com/products/2358))

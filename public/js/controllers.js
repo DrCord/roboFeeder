@@ -14,7 +14,7 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
         $scope.newTag = '';
         $scope.newTagName = '';
         $scope.log = [];
-        $scope.removeTagSelect = {};
+        $scope.removeTagSelect = '';
         $scope.roboFeederSettings = {};
         $scope.allowedTags = [];
         $scope.rules = [];
@@ -47,10 +47,10 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
                 weight: 'Sorts the rules, larger values sink to the bottom',
                 active: 'Enable/disable rule',
                 tag: 'Select a tag from the allowed tags list. To add tags to the allowed list go to the "tags" page',
-                start: 'Click to set the start time',
-                end: 'Click to set the end time',
-                activate: 'Click to set the activate datetime',
-                expire: 'Click to set the expire datetime'
+                start: 'Daily start time',
+                end: 'Daily end time',
+                activate: 'Active period starting datetime',
+                expire: 'Expire datetime'
             }
         };
         $scope.datetime = {
@@ -295,14 +295,19 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
             return {tagIndex: tagIndex, tagObj: tagObj};
         };
         $scope.tagObjName = function(tagObj){
+            if(typeof tagObj == "undefined"){
+                return 'ALLOWED TAG NOT FOUND: INVALID RULE';
+            }
             if(typeof tagObj.name == "undefined" || tagObj.name == ''){
                 return tagObj.tag;
             }
             return tagObj.name + ' : ' + tagObj.tag;
         };
         $scope.tagDisplayName = function(tag){
-            var filterObj = $scope.filterAllowedTags(tag);
-            return $scope.tagObjName(filterObj.tagObj);
+            if(typeof tag != "undefined"){
+                var filterObj = $scope.filterAllowedTags(tag);
+                return $scope.tagObjName(filterObj.tagObj);
+            }
         };
         $scope.ruleTypeValue = function(ruleObj, ruleType){
             return ruleObj.rule[ruleType];
@@ -385,6 +390,9 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
         $scope.errorsSize = function(){
             // returns boolean
             return Object.size($scope.errors);
+        };
+        $scope.sensorName = function(settingName){
+            return settingName.replace(/Threshold/i, '').toUpperCase();
         };
         $scope.init = function(){
             $scope.getStatuses();
