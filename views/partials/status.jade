@@ -11,8 +11,8 @@ include ../includes/menu.jade
               span.closed(ng-show="!status.open")  closed
                 button.btn.btn-sm.btn-success(ng-click="open()") Open Tray
             li.pir PIR sensor
-                span.active(ng-show="status.pir")  online
-                span.inactive(ng-show="!status.pir")  offline
+                span.online(ng-show="status.pir")  online
+                span.offline(ng-show="!status.pir")  offline
             li.rfid RFID reader
                 span.online(ng-show="status.rfid")  online
                 span.offline.error(ng-show="!status.rfid")  offline

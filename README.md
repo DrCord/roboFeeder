@@ -29,7 +29,7 @@ TODO LIST
   * rules page is slow to load - wondering if compiling complex jade template and then rendering it is too much for Raspi B+, test on RasPi 2
 * UI
   * logo
-  * FAQ/help page - pondering what else to add to this page...after I get feedback from beta testers this will get more content
+  * help page - add to this page as I get additional feedback from beta testers
 
 Parts List:
 * Raspberry Pi ([B+](http://www.adafruit.com/products/1914), [Pi 2](http://www.adafruit.com/products/2358))

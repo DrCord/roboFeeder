@@ -61,7 +61,10 @@ ul{
     text-align: left;
 }
 #rules button.edit{
-    margin: 0 10px 0 0;
+    margin: 0 6px 0 0;
+}
+#rules td.actions{
+    min-width: 65px;
 }
 #rules input[type="submit"],
 #log button,
@@ -167,4 +170,43 @@ h3{
 }
 .glyphicon-container.btn-sm{
     padding: 1px 4px 0px 5px;
+}
+#editRuleModal form{
+    min-height: 350px;
+}
+#create form > div,
+#editRuleModal form > div,
+#settings form > div{
+    float: left;
+    clear: both;
+}
+#create form > div label,
+#editRuleModal form > div label,
+#settings form > div label{
+    width: 150px;
+}
+#create form > div input[type="checkbox"],
+#editRuleModal form > div input[type="checkbox"]{
+    margin-left: 5px;
+}
+#editRuleModal form div.actions{
+    margin-top: 10px;
+    width: 100%;
+}
+#editRuleModal form div.actions input{
+    float: right;
+}
+#editRuleModal form div.actions input[type="submit"]{
+    margin-left: 10px;
+}
+#editRuleModal.modal-body{
+    margin-bottom: 7px;
+}
+#status ul li span.open,
+#status ul li span.online{
+    color: green;
+}
+#status ul li span.closed,
+#status ul li span.offline{
+    color: red;
 }

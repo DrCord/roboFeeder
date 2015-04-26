@@ -7,7 +7,8 @@ include ../includes/menu.jade
             h3 Existing Rules
             table#rules-table(ng-show="rules.length > 0").table.table-striped.table-bordered.table-condensed
                 tr
-                    th(ng-repeat="headerTitle in ruleTableHeaders") {{headerTitle}}
+                    th(ng-repeat="headerTitleObj in ruleTableHeaders")
+                        div(tooltip="{{tooltips.rules[headerTitleObj.machine_name]}}") {{headerTitleObj.title}}
                 tr.rule(ng-repeat="rule in rules | toArray | orderBy:['weight','name']")
                     td {{rule.name}}
                     td {{rule.weight}}
@@ -17,7 +18,7 @@ include ../includes/menu.jade
                     td {{rule.rule.end | date : 'h:mm a'}}
                     td {{rule.rule.activate | date : 'M/d/yy h:mm a'}}
                     td {{rule.rule.expire | date : 'M/d/yy h:mm a'}}
-                    td
+                    td.actions
                         button.btn.btn-xs.btn-warning.edit.glyphicon-container(ng-click="createRuleEditModal(rule)")
                             span.glyphicon.glyphicon-cog(aria-hidden="true")
                         button.btn.btn-xs.btn-danger.remove.glyphicon-container(ng-click="removeRule(rule)")
@@ -27,71 +28,77 @@ include ../includes/menu.jade
             div#create
                 h3 Create a Rule
                 form(name="createRuleForm", ng-submit="createRule()")
-                    div.required
+                    div.required(tooltip="{{tooltips.rules.name}}", tooltip-placement="right")
                         label(id="newRuleName") Name
                         input.form-control(type="text", name="newRuleName", ng-model="newRule.name", ng-change="msgs.newRule.sameName = false; validateRule(newRule, 'new');", placeholder="unique string", ng-required="true")
                         span(ng-show="msgs.newRule.sameName").error Identically named rule already exists
-                    div.required
-                        label(id="newRuleWeight") Weight
-                        input.form-control(type="number", name="newRuleWeight", ng-model="newRule.weight", tooltip="{{tooltips.rules.weight}}")
-                    div.required
+                    div.required(tooltip="{{tooltips.rules.weight}}", tooltip-placement="right")
+                        label(id="newRuleWeight") Sort Order
+                        input.form-control(type="number", name="newRuleWeight", ng-model="newRule.weight")
+                    div.required(tooltip="{{tooltips.rules.active}}", tooltip-placement="right")
                         label(id="newRuleStatus") Status
-                        input.form-control(type="checkbox", name="newRuleStatus", ng-model="newRule.active", tooltip="{{tooltips.rules.active}}")
-                    div.required
+                        input.form-control(type="checkbox", name="newRuleStatus", ng-model="newRule.active")
+                    div.required(tooltip="{{tooltips.rules.tag}}", tooltip-placement="right")
                         label(id="newRuleTag") Tag
-                        select.form-control(name="newRuleTag", ng-model="newRule.rule.tag", ng-change="msgs.removeSelectTag = false", ng-required="true", tooltip="{{tooltips.rules.tag}}")
+                        select.form-control(name="newRuleTag", ng-model="newRule.rule.tag", ng-change="msgs.removeSelectTag = false", ng-required="true")
                             option(value="", disabled, selected) Select a tag
                             option(ng-repeat="allowedTag in allowedTags | toArray | orderBy:['name', 'tag']" value="{{allowedTag.tag}}")  {{tagObjName(allowedTag)}}
                         span(ng-show="msgs.removeSelectTag").error Select a tag to remove
-                    div.required(ng-repeat="fieldName in datetime.fields", id="{{fieldName}}")
+                    div.required(ng-repeat="fieldName in datetime.fields", id="{{fieldName}}", tooltip="{{tooltipHelper('rules', fieldName)}}", tooltip-placement="right")
                         div
-                            label(id="newRule{{fieldName | capitalize}}") {{fieldName | capitalize}}
-                                span(ng-if="fieldName == 'activate' || fieldName == 'expire'")  datetime
-                                span(ng-if="fieldName == 'start' || fieldName == 'end'")  time
-                            input.form-control.datetime(type="time", name="newRule{{fieldName | capitalize}}", ng-model="newRule.rule[fieldName]", ng-if="fieldName == 'start'", tooltip="{{tooltipHelper('rules', fieldName)}}", ng-required="true", time-lower-than="{{newRule.rule.end | date : 'H:mm'}}")
-                            input.form-control.datetime(type="time", name="newRule{{fieldName | capitalize}}", ng-model="newRule.rule[fieldName]", ng-if="fieldName == 'end'", tooltip="{{tooltipHelper('rules', fieldName)}}", ng-required="true")
+                            label(id="newRule{{fieldName | capitalize}}")
+                                span(ng-if="fieldName == 'start' || fieldName == 'end'") Daily
+                                span  {{fieldName | capitalize}}
+                                span(ng-if="fieldName == 'activate' || fieldName == 'expire'")  Datetime
+                                span(ng-if="fieldName == 'start' || fieldName == 'end'")  Time
+                            input.form-control.datetime(type="time", name="newRule{{fieldName | capitalize}}", ng-model="newRule.rule[fieldName]", ng-if="fieldName == 'start'", ng-required="true", time-lower-than="{{newRule.rule.end | date : 'H:mm'}}")
+                            input.form-control.datetime(type="time", name="newRule{{fieldName | capitalize}}", ng-model="newRule.rule[fieldName]", ng-if="fieldName == 'end'", ng-required="true")
                             div.error-container(ng-if="fieldName == 'end'")
                                 small(ng-show="createRuleForm.newRuleStart.$error.timeLowerThan").error.ng-invalid The start time is not before the end time
-                            input.form-control.datetime(type="datetime-local", name="newRuleDatetime{{fieldName | capitalize}}", ng-model="newRule.rule[fieldName]", ng-if="fieldName == 'activate'", tooltip="{{tooltipHelper('rules', fieldName)}}", ng-required="true", datetime-before="{{newRule.rule.expire | date : 'yyyy-MM-ddTHH:mm'}}")
-                            input.form-control.datetime(type="datetime-local", name="newRuleDatetime{{fieldName | capitalize}}", ng-model="newRule.rule[fieldName]", ng-if="fieldName == 'expire'", tooltip="{{tooltipHelper('rules', fieldName)}}", ng-required="true")
+                            input.form-control.datetime(type="datetime-local", name="newRuleDatetime{{fieldName | capitalize}}", ng-model="newRule.rule[fieldName]", ng-if="fieldName == 'activate'", ng-required="true", datetime-before="{{newRule.rule.expire | date : 'yyyy-MM-ddTHH:mm'}}")
+                            input.form-control.datetime(type="datetime-local", name="newRuleDatetime{{fieldName | capitalize}}", ng-model="newRule.rule[fieldName]", ng-if="fieldName == 'expire'", ng-required="true")
                             div.error-container(ng-if="fieldName == 'expire'")
                                 small(ng-show="createRuleForm.newRuleDatetimeActivate.$error.datetimeBefore").error.ng-invalid The activate datetime is not before the expire datetime
                                 small(ng-show="createRuleForm.newRuleDatetimeActivate.$error.startInvalidDate && createRuleForm.newRuleDatetimeActivate.$dirty").error.ng-invalid The activate datetime is not a valid datetime
                                 small(ng-show="createRuleForm.newRuleDatetimeActivate.$error.endInvalidDate && createRuleForm.newRuleDatetimeExpire.$dirty").error.ng-invalid The expire datetime is not a valid datetime
-                    input.btn.btn-success(type="submit", value="Create Rule", ng-disabled="createRuleForm.$invalid")
+                    div
+                        input.btn.btn-success(type="submit", value="Create Rule", ng-disabled="createRuleForm.$invalid")
     script(type="text/ng-template", id="createRuleEditModal")
         div.options
             div.modal-header
                 h3 Edit Rule "{{editedRule.name}}"
-            div.modal-body
+            div.modal-body(id="editRuleModal")
                 form(name="editRuleForm", ng-submit="saveRule()")
-                    div
+                    div.required(tooltip="{{tooltips.rules.name}}", tooltip-placement="right")
                         label(id="editRuleName") Name
                         input.form-control.edit(type="text", ng-model="editedRule.newName", ng-change="edited = true")
-                    div
-                        label(id="editRuleWeight") Weight
+                    div.required(tooltip="{{tooltips.rules.weight}}", tooltip-placement="right")
+                        label(id="editRuleWeight") Sort Order
                         input.form-control.edit(type="number", ng-model="editedRule.weight", ng-change="edited = true")
-                    div
+                    div.required(tooltip="{{tooltips.rules.active}}", tooltip-placement="right")
                         label(id="editRuleStatus") Status
                         input.form-control.edit(type="checkbox", ng-model="editedRule.active", ng-change="edited = true")
-                    div
+                    div.required(tooltip="{{tooltips.rules.tag}}", tooltip-placement="right")
                         label(id="editRuleTag") Tag
                         select.form-control.edit(name="editRuleTag", ng-model="editedRule.rule.tag", ng-change="edited = true")
                             option(ng-repeat="allowedTag in allowedTags | toArray | orderBy:['name', 'tag']" value="{{allowedTag.tag}}", ng-selected="allowedTag.tag == editedRule.rule.tag") {{tagObjName(allowedTag)}}
-                    div.required(ng-repeat="fieldName in datetime.fields", id="{{fieldName}}")
+                    div.required(ng-repeat="fieldName in datetime.fields", id="{{fieldName}}", tooltip="{{tooltipHelper('rules', fieldName)}}", tooltip-placement="right")
                         div
-                            label(id="editRule{{fieldName | capitalize}}") {{fieldName | capitalize}}
-                                span(ng-if="fieldName == 'activate' || fieldName == 'expire'")  datetime
-                                span(ng-if="fieldName == 'start' || fieldName == 'end'")  time
-                            input.form-control.datetime(type="time", name="editRule{{fieldName | capitalize}}", ng-model="editedRule.rule[fieldName]", ng-if="fieldName == 'start'", tooltip="{{tooltipHelper('rules', fieldName)}}", ng-required="true", time-lower-than="{{editedRule.rule.end | date : 'H:mm'}}")
-                            input.form-control.datetime(type="time", name="editRule{{fieldName | capitalize}}", ng-model="editedRule.rule[fieldName]", ng-if="fieldName == 'end'", tooltip="{{tooltipHelper('rules', fieldName)}}", ng-required="true")
+                            label(id="editRule{{fieldName | capitalize}}")
+                                span(ng-if="fieldName == 'start' || fieldName == 'end'") Daily
+                                span  {{fieldName | capitalize}}
+                                span(ng-if="fieldName == 'activate' || fieldName == 'expire'")  Datetime
+                                span(ng-if="fieldName == 'start' || fieldName == 'end'")  Time
+                            input.form-control.datetime(type="time", name="editRule{{fieldName | capitalize}}", ng-model="editedRule.rule[fieldName]", ng-if="fieldName == 'start'", ng-required="true", time-lower-than="{{editedRule.rule.end | date : 'H:mm'}}")
+                            input.form-control.datetime(type="time", name="editRule{{fieldName | capitalize}}", ng-model="editedRule.rule[fieldName]", ng-if="fieldName == 'end'", ng-required="true")
                             div.error-container(ng-if="fieldName == 'end'")
                                 small(ng-show="editRuleForm.editRuleStart.$error.timeLowerThan").error.ng-invalid The start time is not before the end time
-                            input.form-control.datetime(type="datetime-local", name="editRuleDatetime{{fieldName | capitalize}}", ng-model="editedRule.rule[fieldName]", ng-if="fieldName == 'activate'", tooltip="{{tooltipHelper('rules', fieldName)}}", ng-required="true", datetime-before="{{editedRule.rule.expire | date : 'yyyy-MM-ddTHH:mm'}}")
-                            input.form-control.datetime(type="datetime-local", name="editRuleDatetime{{fieldName | capitalize}}", ng-model="editedRule.rule[fieldName]", ng-if="fieldName == 'expire'", tooltip="{{tooltipHelper('rules', fieldName)}}", ng-required="true")
+                            input.form-control.datetime(type="datetime-local", name="editRuleDatetime{{fieldName | capitalize}}", ng-model="editedRule.rule[fieldName]", ng-if="fieldName == 'activate'", ng-required="true", datetime-before="{{editedRule.rule.expire | date : 'yyyy-MM-ddTHH:mm'}}")
+                            input.form-control.datetime(type="datetime-local", name="editRuleDatetime{{fieldName | capitalize}}", ng-model="editedRule.rule[fieldName]", ng-if="fieldName == 'expire'", ng-required="true")
                             div.error-container(ng-if="fieldName == 'expire'")
                                 small(ng-show="editRuleForm.editRuleDatetimeActivate.$error.datetimeBefore").error.ng-invalid The activate datetime is not before the expire datetime
                                 small(ng-show="editRuleForm.editRuleDatetimeActivate.$error.startInvalidDate && editRuleForm.editRuleDatetimeActivate.$dirty").error.ng-invalid The activate datetime is not a valid datetime
                                 small(ng-show="editRuleForm.editRuleDatetimeActivate.$error.endInvalidDate && editRuleForm.editRuleDatetimeExpire.$dirty").error.ng-invalid The expire datetime is not a valid datetime
-                    input.btn.btn-success(type="submit", value="Save Rule", ng-disabled="editRuleForm.$invalid")
-                    input.btn.btn-warning(type="button", value="Cancel", ng-click="cancel()")
+                    div.actions
+                        input.btn.btn-success(type="submit", value="Save Rule", ng-disabled="editRuleForm.$invalid")
+                        input.btn.btn-warning(type="button", value="Cancel", ng-click="cancel()")

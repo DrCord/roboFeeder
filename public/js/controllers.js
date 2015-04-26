@@ -31,26 +31,54 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
             }
         };
         $scope.ruleTableHeaders = [
-            'Name',
-            'Weight',
-            'Status',
-            'Tag',
-            'Start Time',
-            'End Time',
-            'Activate datetime',
-            'Expire datetime',
-            'Actions'
+            {
+                title: 'Name',
+                machine_name: 'name'
+            },
+            {
+                title: 'Sort Order',
+                machine_name: 'weight'
+            },
+            {
+                title: 'Status',
+                machine_name: 'active'
+            },
+            {
+                title: 'Tag',
+                machine_name: 'tag'
+            },
+            {
+                title: 'Daily Start Time',
+                machine_name: 'start'
+            },
+            {
+                title: 'Daily End Time',
+                machine_name: 'end'
+            },
+            {
+                title: 'Activate datetime',
+                machine_name: 'activate'
+            },
+            {
+                title: 'Expire datetime',
+                machine_name: 'expire'
+            },
+            {
+                title: 'Actions',
+                machine_name: 'actions'
+            },
         ];
         $scope.tooltips = {
             rules: {
-                name: '',
-                weight: 'Sorts the rules, larger values sink to the bottom',
+                name: 'Unique string to help the user identify a rule',
+                weight: 'Sorts the rules on this page, larger values sink to the bottom',
                 active: 'Enable/disable rule',
                 tag: 'Select a tag from the allowed tags list. To add tags to the allowed list go to the "tags" page',
-                start: 'Daily start time',
-                end: 'Daily end time',
-                activate: 'Active period starting datetime',
-                expire: 'Expire datetime'
+                start: 'Beginning time of daily allowed time period for this rule',
+                end: 'Ending time of daily allowed time period for this rule',
+                activate: 'Active period starting datetime, for example the first day of your vacation',
+                expire: 'Expire datetime, for example the last day of your vacation',
+                actions: 'Edit or delete a rule'
             }
         };
         $scope.datetime = {
