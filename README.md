@@ -15,18 +15,24 @@ Dependencies:
   * [moment-timezone](https://www.npmjs.com/package/moment-timezone)
   * [nedb](https://github.com/louischatriot/nedb)
   * [npmlog](https://github.com/npm/npmlog)
+  * [pi-blaster.js](https://github.com/sarfata/pi-blaster.js)
   * [rpi-gpio](https://www.npmjs.com/package/rpi-gpio)
   * [serialport](https://www.npmjs.com/package/serialport)
 * AngularJS
   * [angular-poller](https://github.com/emmaguo/angular-poller)
 * Other
   * [jstimezone](https://bitbucket.org/pellepim/jstimezonedetect/overview)
+  * [pi-blaster](https://github.com/sarfata/pi-blaster)
 
 TODO LIST
 * General
   * get hardware remaining specifications (wire lengths, wood sizes, etc.)
   * build instructable with pictures while building next physical device
   * rules page is slow to load - wondering if compiling complex jade template and then rendering it is too much for Raspi B+, test on RasPi 2
+  * add/update to instructions for servo setup and init on boot (pi-blaster) [https://github.com/sarfata/pi-blaster] [https://github.com/sarfata/pi-blaster.js]
+  * add servo & flag to parts list
+  * Servo code: make flag active when rule for pet is active allowed
+  * add pi-blaster auto-init to `/etc/rc.local file`
 * UI
   * logo
   * help page - add to this page as I get additional feedback from beta testers

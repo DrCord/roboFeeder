@@ -11,6 +11,7 @@ var api = require('./routes/api'),
     log = require('npmlog'),
     moment = require('moment-timezone'),
     path = require('path'),
+    piblaster = require('pi-blaster.js'),
     routes = require('./routes'),
     serialport = require('serialport'),
     url = require('url');
@@ -625,6 +626,46 @@ var Rules = {
         return false;
     }
 };
+var Servo = {
+    // TODO: make flag active when rule for pet is active allowed
+    //for status indicator flag
+    pin: 23,
+    position: {
+        start: 0.07,
+        end: 0.25
+    },
+    init: function(){
+        Servo.test();
+        Log.log.info('Servo', 'Servo init test run', false);
+    },
+    move: function(pwm_percent){
+        piblaster.setPwm(Servo.pin, pwm_percent, 'Servo.stop');
+    },
+    reset: function(){
+        // reset to start position
+        piblaster.setPwm(Servo.pin, Servo.position.start, 'Servo.stop');
+    },
+    lowerFlag: function(){
+        // set to start position
+        piblaster.setPwm(Servo.pin, Servo.position.start, 'Servo.stop');
+    },
+    raiseFlag: function(){
+        // set to end position
+        piblaster.setPwm(Servo.pin, Servo.position.end, 'Servo.stop');
+    },
+    stop: function(){
+        piblaster.setPwm(Servo.pin, 0);
+    },
+    test: function(){
+        Servo.reset();
+        setTimeout( function(){
+            Servo.raiseFlag();
+            setTimeout( function(){
+                Servo.lowerFlag();
+            }, 4000);
+        }, 4000);
+    }
+};
 var RoboFeeder = {
     //for higher level functions and variables
     settings: {
@@ -688,6 +729,10 @@ var RoboFeeder = {
             },
             toolbox_init: function(callback){
                 Toolbox.init();
+                callback(null, true);
+            },
+            servo_init: function(callback){
+                Servo.init();
                 callback(null, true);
             }
         }, function(err, results){
