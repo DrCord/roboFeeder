@@ -29,12 +29,11 @@ TODO LIST
   * get hardware remaining specifications (wire lengths, wood sizes, etc.)
   * build instructable with pictures while building next physical device
   * rules page is slow to load - wondering if compiling complex jade template and then rendering it is too much for Raspi B+, test on RasPi 2
-  * add/update to instructions for servo setup and init on boot (pi-blaster) [https://github.com/sarfata/pi-blaster] [https://github.com/sarfata/pi-blaster.js]
+  * add/update to instructions for servo setup, pi-blaster install/setup (pi-blaster) [https://github.com/sarfata/pi-blaster] [https://github.com/sarfata/pi-blaster.js]
   * add servo & flag to parts list
   * Servo code: make flag active when rule for pet is active allowed
-  * add pi-blaster auto-init to `/etc/rc.local file`
 * UI
-  * logo
+  * logo - use awesome logo my sister made on site and such, add pictures of flag with logo waving to site
   * help page - add to this page as I get additional feedback from beta testers
 
 Parts List:
@@ -70,6 +69,10 @@ Setup Instructions
 * connect to the pi via ssh, make sure you are in the pi user's home directory (/home/pi/) and run `git clone https://github.com/DrCord/roboFeeder.git`
 * `cd roboFeeder` then `sudo npm install`
 * add this code to the `/etc/rc.local` file before the `exit 0` line
+
+    `#autorun pi-blaster script to allow servo control'
+    
+    `su pi -c 'sudo /home/pi/pi-blaster/pi-blaster < /dev/null &'`
 
     `#autorun node.js server,js file on boot`
     

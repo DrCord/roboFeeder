@@ -632,7 +632,7 @@ var Servo = {
     pin: 23,
     position: {
         start: 0.07,
-        end: 0.25
+        end: 0.21
     },
     init: function(){
         Servo.test();
@@ -641,23 +641,19 @@ var Servo = {
     move: function(pwm_percent){
         piblaster.setPwm(Servo.pin, pwm_percent, 'Servo.stop');
     },
-    reset: function(){
-        // reset to start position
-        piblaster.setPwm(Servo.pin, Servo.position.start, 'Servo.stop');
-    },
     lowerFlag: function(){
         // set to start position
-        piblaster.setPwm(Servo.pin, Servo.position.start, 'Servo.stop');
+        piblaster.setPwm(Servo.pin, Servo.position.end, 'Servo.stop');
     },
     raiseFlag: function(){
         // set to end position
-        piblaster.setPwm(Servo.pin, Servo.position.end, 'Servo.stop');
+        piblaster.setPwm(Servo.pin, Servo.position.start, 'Servo.stop');
     },
     stop: function(){
         piblaster.setPwm(Servo.pin, 0);
     },
     test: function(){
-        Servo.reset();
+        Servo.stop();
         setTimeout( function(){
             Servo.raiseFlag();
             setTimeout( function(){
