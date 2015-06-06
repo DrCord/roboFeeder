@@ -1,18 +1,194 @@
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629220685,"_id":"0QFN9zOeqdGVcYVv"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433631316646,"_id":"0TUhy5C75a36fJku"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629228250,"_id":"0W5R1pu1iYSpjttZ"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629196751,"_id":"0is7VLX2FXHB0W09"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629213078,"_id":"0st9XSVI59BFFvWK"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629220702,"_id":"17UWvGDfaMxy43Ez"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629209830,"_id":"1AN5f1BI71Jyo920"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629226119,"_id":"1SmjXKQJlsy34F8U"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629220652,"_id":"2m9s8lJjrVROh9cs"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433610373412,"_id":"3MTH9RYuR9MRKcTZ"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629192375,"_id":"42cfGO1SbctwxziR"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433634250147,"_id":"4EL2j1nhEg8eXBBz"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629220669,"_id":"54vyQYrpfApTmahn"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433617731402,"_id":"5Ss8aZYFZRC3PaHW"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433629637082,"_id":"5Trs1UJdarjgzfiX"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433610728753,"_id":"66LnpoQ9cwxVWkvn"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629195634,"_id":"6Gz1Ss2kxnjm0T1e"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433617457871,"_id":"6q5KQQ0ez9sAtTgg"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629212027,"_id":"7Hyf67mStFtPED3p"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433633866264,"_id":"7O8F6djCA9iVuTwH"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629214209,"_id":"7Qf1Zpz9GXemZMTd"}
 {"type":"tag","allowed":true,"tag":"44557456","name":"test tag 2","_id":"815t6Z0lDMWgDuim"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629195667,"_id":"8VQSsuPakcvBtjiM"}
 {"type":"tag","allowed":true,"tag":"04233951","name":"ems tag","_id":"8bBuevDAUfch9QmJ"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629223952,"_id":"8kNNz7WdbPi4HM90"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629194542,"_id":"9494MyznL4mXwwLQ"}
 {"type":"tag","allowed":true,"tag":"77773922","name":"ems tag","_id":"9VcnyD9OOTPv3mca"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1430060673219,"_id":"KxnROLniFGXi8Y1i"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629222836,"_id":"9dwC1l7LuJ5asVgH"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629207698,"_id":"A4bgtT1lBpxbxkCS"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629192391,"_id":"AhJVrHnhIJpNuEN0"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433620158564,"_id":"AnjfM470088VlAJI"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433630832695,"_id":"ArqjnIrOqWOIPJP9"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629192359,"_id":"B192T7UcsqCSZhSM"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433610540647,"_id":"C4xW0DJMu6mhLYYR"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629192408,"_id":"CpMmfVeTu26OWZiu"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629208779,"_id":"D43qkkf9vPcmDRhl"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629226086,"_id":"DEOdVRoCmFeajxdN"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629206632,"_id":"DbVuHJvwFenV3mGx"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629189072,"_id":"DdYjS7AOMPXSS0Gj"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629189089,"_id":"DqGIITJnWpbcS0g7"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629212044,"_id":"E6eY7PNBOfonxjDy"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629206583,"_id":"EMe5si3ZCXXM2qME"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629193457,"_id":"ESAZFU5aV8LEGU0Q"}
+{"type":"log","level":"info","category":"Rfid","message":"The new allowed tag 98765432 was saved.","timestamp":1433629468610,"_id":"ETMM9FbvLEBq3cw5"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433633767757,"_id":"EhmZZBjW6Ed4lGlz"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629229334,"_id":"EjQ6ZO2Cq6YPyaW2"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433394548311,"_id":"EqTrNso8HqfDrsHT"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629223903,"_id":"FLEGDMCznv5YL85i"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433618172534,"_id":"FhAlfStuMzD2xili"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433632628099,"_id":"GtMnJtK5u5H6FVMw"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629210961,"_id":"HC537yFZLQ0Z9xjq"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629185677,"_id":"IXihIDw6nKPdjnRK"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629193491,"_id":"IoERb9rlaVguNPh8"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629186787,"_id":"J0tnmCeq4wwipYRe"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629190158,"_id":"J6EEqEJjG0zBFfAw"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629216324,"_id":"JwKpY8RPiCQhbcCd"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629212011,"_id":"JzqajwHTLYLFW95A"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629193441,"_id":"KrII3wOsGFBIT4Eb"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629186824,"_id":"LAu37Ho8MXEFM5fv"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629228267,"_id":"LG8ds0ACzbREH0qc"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629191292,"_id":"LK9kgtlK6OSEytxK"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629187910,"_id":"LMBUqntz0AmU8Dkr"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629226103,"_id":"LTVwu9INtVstMTDD"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629207681,"_id":"LVAGWttqkRsyw2hJ"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433610644162,"_id":"LuaXgWdqvFDMYriZ"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629205427,"_id":"M6IMRooEj6gwUfDr"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629218521,"_id":"MCHDFcUiatiAKxAx"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629190174,"_id":"MRWmFheWaSXEQU8W"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629197818,"_id":"MSKyZYJldGulIBwn"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629185701,"_id":"MbxOKyjkAUAIVvWu"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433620514753,"_id":"MkZJSI0ikzvqLSbr"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629194582,"_id":"NFoFu3QwDNNHUxpC"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629221752,"_id":"NIIe0SLYGFJBZbla"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629229367,"_id":"NQ8eDXFQjQqPmKge"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629217422,"_id":"NRwNEwKCGGLC7FxC"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629196735,"_id":"Nv3m04skmU5sLXqr"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629214192,"_id":"O2OHCikGAAfjH9Bg"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629214160,"_id":"OSkYl7LU2U6XdRSi"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629189041,"_id":"OiGKqEnpdwSxMhD8"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433633412826,"_id":"P01fX16bRJbJxnA5"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629208747,"_id":"P36xekx9zQzdxKSC"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629205409,"_id":"POS7KQNrhUX93cG5"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629209878,"_id":"PWGAOC1OYGETqytS"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629208763,"_id":"PleLXfFzefaucmz1"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433617564991,"_id":"Q61gd8caWnU96HKE"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629219619,"_id":"Qm5wqnTffVTHHdmp"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629216356,"_id":"Qux5EwedmjGxvUhS"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629209846,"_id":"R5zJvq6EEATtCGIP"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433393453134,"_id":"RNxiYhRVpBupidRZ"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629221769,"_id":"ROELIkCS2a73FKZD"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629213126,"_id":"RXtGok3QGK1k0x4R"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433609920158,"_id":"Rb6104uDj9DpLaGX"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433626546470,"_id":"SZun7Nq7yYgiFsyi"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629210929,"_id":"Sp45hiGJPs1O3R8D"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629226070,"_id":"SxIlDrsGQSrNjFwK"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629213094,"_id":"TFnTRa0rHJ3jXIzB"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629210911,"_id":"TrakkCtp2VYxP3NQ"}
 {"type":"rule","name":"test rule 2","weight":7,"active":true,"browserTZ":"America/Los_Angeles","rule":{"tag":"44557456","start":"1970-01-01T21:00:00.000Z","end":"1970-01-01T21:01:00.000Z","activate":"2015-01-01T10:01:00.000Z","expire":"2017-01-01T09:01:00.000Z"},"_id":"UImZx2nnl6hrDEN2"}
-{"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 8","timestamp":1430021343361,"_id":"WPKK0KWPPRBCaj3M"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1430060239554,"_id":"ctZwtTn0BB0iPELt"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629215258,"_id":"UejlDmqgpggSN9fg"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433631922291,"_id":"UqX1A3fBcRIdyjTj"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629222869,"_id":"UuGNcv1qrvy9i2hP"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629211995,"_id":"UuVD2brrolAJsbvf"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629186807,"_id":"V4uQW0m5WyWnZEhs"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629194526,"_id":"V8lvwkCpcvJrqhar"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629208796,"_id":"VmB61JGkthrsybwj"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629197785,"_id":"W4kCSfTcD0WkSeeQ"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629222852,"_id":"XUyNXR6nZgrbxNY1"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433629183057,"_id":"YC1fKhx4TPI06TTY"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433616663493,"_id":"YHi4BcsB4tjZ1siC"}
+{"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 4","timestamp":1430069412292,"_id":"YKAjAtBOX1p9UbD1"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629219603,"_id":"YXS9NXKvh3VULR4H"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629195618,"_id":"YrCvluOXAcRKKV7t"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629225037,"_id":"YwySG1fN29oMe8yW"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433615411408,"_id":"ZHPc90mrzf90GwAB"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629215291,"_id":"ZfWwj1blRN7qWXr6"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629191309,"_id":"a1ADU3BGLrAnN3O1"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629190125,"_id":"aTlFfSi7p1bMQSKf"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629229317,"_id":"b26lUUuG0opQLg2j"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433611949697,"_id":"bSw3Sp3uXh6a6w01"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433394388810,"_id":"bwvuPQJ0SKVf9Qe5"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629217454,"_id":"c7pLMEa8C90v2KEH"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629217438,"_id":"cGgsSdVADbxQDpVO"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629227184,"_id":"cHnm6hyQLEarzArO"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629196718,"_id":"cPnCm09U9ZmPhGaK"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433632380066,"_id":"ckRzdBTBPPp8k8lg"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629197842,"_id":"cmvfiR1lo52D5Sjq"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629197801,"_id":"dhKRR32PM4VL696n"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629205381,"_id":"dijIxvkBc4tJ8AH7"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629224988,"_id":"dvuAcem0cH9k9a1G"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629215242,"_id":"dwTrYoVTA4WnuEQl"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629209862,"_id":"e1B8xLbnqEqyVc5R"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433615076135,"_id":"e7snLc0uHoL4EsJz"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629195650,"_id":"eDqVnP1bnc8MbbnH"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629225021,"_id":"eiKVpyV8pAWKUybP"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629217406,"_id":"fQkS1yn5HqUSXl9z"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433616251491,"_id":"fTEwPEwjlZ6N8yYT"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629206599,"_id":"fhVYqK7pdTCNDQBo"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629194559,"_id":"fwYyAalWlE5yUPEk"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629216372,"_id":"g7jozl8sCMtms4NR"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433611791073,"_id":"gJ313zWXpWFWtUlG"}
+{"type":"tag","allowed":true,"tag":"98765432","name":"new test","_id":"hbQRkxH00XIHyLEg"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629228283,"_id":"hifEvgH8cKWv3fGW"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629187925,"_id":"iNNBRtRSSkrxj0nb"}
 {"type":"rule","name":"test rule 1 - renamed","weight":6,"active":true,"browserTZ":"America/Los_Angeles","rule":{"tag":"01234567","start":"1970-01-01T09:02:00.000Z","end":"1970-01-01T20:00:00.000Z","activate":"2015-01-01T09:00:00.000Z","expire":"2016-01-01T21:00:00.000Z"},"_id":"ixvxPk6Ma1GFoJ2V"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629193474,"_id":"j8XLdBmcmqr1Rk1r"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433632040693,"_id":"kBzzX2GkwjC4VraW"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629207665,"_id":"ktPR2XR81Ar0zEiS"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629227168,"_id":"kvJdigRo8L3SrxKO"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629196701,"_id":"lQHHR1z1Hjx2owGE"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433629420382,"_id":"lmbtcqh1KqPKn8bU"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629186841,"_id":"mEDO76tcfpENO2Uf"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629223920,"_id":"mIxmmAJ9CtKka8kx"}
 {"type":"setting","name":"rfidThreshold","value":"12000","_id":"n0IK3g0Lo8KXXPX0"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629185724,"_id":"nFbTxpju1HdYvKEz"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433610143284,"_id":"nKq3sz5AVW1snIbm"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433618628145,"_id":"nTfLZsq8UidHcbu3"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629219571,"_id":"o6sXCesxHek890c6"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629221785,"_id":"oAQFC6uSykH8q7Jo"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629185636,"_id":"oMNoab1TK4yhRZwx"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629228234,"_id":"oOazGMiHbr4Qd9om"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629187876,"_id":"obplkPEoGMZsN5fc"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629229350,"_id":"oryBKW56qIAbIpFe"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629218536,"_id":"pqf9lUEIWN7oGaLM"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629210946,"_id":"qqjw1DuQrHfk1gBn"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629227201,"_id":"qxAlMDDZCXzkdmCs"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629189056,"_id":"rbEXkLRUgfprtxku"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629207714,"_id":"ri2QV361TrhYMDGK"}
 {"type":"tag","allowed":true,"tag":"02150427","name":"white card","_id":"ryBImFbnvmcZNsBk"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629222818,"_id":"s95d5tKUKp2xgW1Q"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433611361397,"_id":"sT7rHCBTu0Oy193I"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629187893,"_id":"sUaANujM5OiOcObr"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433612200892,"_id":"sXkfm6cofwv0d58v"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629191209,"_id":"tYBEwtmOZq4foV05"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433620261981,"_id":"tZ6LWnOSs4oNJ14M"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629227152,"_id":"tek5nMyHFYZ6qWb2"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629206616,"_id":"u08ervsvdKU4QAsA"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629223936,"_id":"uAzFdjl1yS7X84bJ"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629215275,"_id":"uDElMAf66FqHgYzT"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629191326,"_id":"v7C2HagBTR2zuIYc"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629213110,"_id":"vXFwZw0B9yr7nhiY"}
 {"type":"rule","name":"test rule 1 - renamed again","weight":3,"active":true,"browserTZ":"America/Los_Angeles","rule":{"tag":"02150427","start":"1970-01-01T17:02:00.000Z","end":"1970-01-02T07:53:00.000Z","activate":"2015-02-28T08:59:00.000Z","expire":"2017-12-01T21:00:00.000Z"},"_id":"wsHVqBlOmyaYVgKY"}
 {"type":"setting","name":"pirThreshold","value":"10000","_id":"wuMDQthYhDwGNW46"}
-{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1430064542474,"_id":"hXx66M8k4nbS6ogl"}
-{"$$deleted":true,"_id":"KxnROLniFGXi8Y1i"}
-{"$$deleted":true,"_id":"WPKK0KWPPRBCaj3M"}
-{"$$deleted":true,"_id":"ctZwtTn0BB0iPELt"}
-{"$$deleted":true,"_id":"hXx66M8k4nbS6ogl"}
-{"type":"log","level":"info","category":"Log","message":"Log.reset - number of log items removed: 4","timestamp":1430069412292,"_id":"YKAjAtBOX1p9UbD1"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629218489,"_id":"xKqA4DdGar6avEdk"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433610820921,"_id":"xOPlxnPTfp731KOU"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629190141,"_id":"xT4vQvEO5qNIC2bp"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629216339,"_id":"xZCxDAmxi1eUHPON"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629221736,"_id":"yCr284ea6YPFuECp"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629218505,"_id":"yJNIzCNNzZYHwVkB"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629225005,"_id":"yVpUDa9GDAFU9D7H"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629219587,"_id":"yhwe0UgriZZ28H2a"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629205445,"_id":"yiWTS5g2OIHGgKNZ"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433610613488,"_id":"z6qsFQGP94egt9Yq"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"RFID tag not matched: [object Object]","timestamp":1433629214177,"_id":"zMVpExu0mwE4zQHy"}
+{"type":"log","level":"info","category":"RoboFeeder","message":"All startup processes initialized","timestamp":1433634590186,"_id":"Yne5rRviX6glikGc"}

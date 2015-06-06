@@ -7,9 +7,19 @@ include ../includes/menu.jade
         ul
             li.tray Tray
               span.open(ng-show="status.open")  open
-                button.btn.btn-sm.btn-danger(ng-click="close()") Close Tray
+                button.btn.btn-xs.btn-danger(ng-click="close()") Close Tray
               span.closed(ng-show="!status.open")  closed
-                button.btn.btn-sm.btn-success(ng-click="open()") Open Tray
+                button.btn.btn-xs.btn-success(ng-click="open()") Open Tray
+            li.tray Flag
+              span.open(ng-show="status.flag")  Raised
+              span.closed(ng-show="!status.flag")  Lowered
+              div
+                  span.manual-toggle(ng-show="status.flagManualMode") Manual Mode
+                    button.btn.btn-xs.btn-info(ng-click="flagModeAutomatic()") Enter Automatic Mode
+                  span.manual-toggle(ng-show="!status.flagManualMode") Automatic Mode
+                    button.btn.btn-xs.btn-info(ng-click="flagModeManual()") Enter Manual Mode
+                  button.btn.btn-xs.btn-danger(ng-click="lowerFlag()", ng-show="status.flag && status.flagManualMode") Lower Flag
+                  button.btn.btn-xs.btn-success(ng-click="raiseFlag()", ng-show="!status.flag && status.flagManualMode") Raise Flag
             li.pir PIR sensor
                 span.online(ng-show="status.pir")  online
                 span.offline(ng-show="!status.pir")  offline
@@ -22,3 +32,6 @@ include ../includes/menu.jade
             li.serial Serial communication
                 span.online(ng-show="status.serial")  online
                 span.offline.error(ng-show="!status.serial")  offline
+            li.servo Servo
+                span.online(ng-show="status.servo")  online
+                span.offline.error(ng-show="!status.servo")  offline

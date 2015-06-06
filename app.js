@@ -11,6 +11,7 @@ var api = require('./routes/api'),
     log = require('npmlog'),
     moment = require('moment-timezone'),
     path = require('path'),
+    piblaster = require('pi-blaster.js'),
     routes = require('./routes'),
     serialport = require('serialport'),
     url = require('url');
@@ -623,6 +624,97 @@ var Rules = {
             }
         }
         return false;
+    }/*,
+    isAnyRuleActive: function(){
+        for(var i=0; i<Rules.rules.length; i++){
+            if(Rules.isActive(Rules.rules[i])){
+                return true;
+            }
+        }
+        return false;
+    }*/
+};
+var Servo = {
+    // TODO: make flag active when rule for pet is active allowed
+    //for status indicator flag
+    pin: 23,
+    position: { // percent of pwm to enable, servos run on pwm pulse length to determine position
+        start: 0.07,
+        end: 0.20
+    },
+    stopTimeout: 0,
+    cycleTimeout: 0,
+    intervalTimer: 0,
+    checkFrequency: 5000,
+    init: function(){
+        Servo.test();
+        Servo.monitor();
+        RoboFeeder.status.flagManualMode = false;
+    },
+    move: function(pwm_percent){
+        piblaster.setPwm(Servo.pin, pwm_percent, Servo.stop);
+    },
+    lowerFlag: function(){
+        if(RoboFeeder.status.flag){
+            Log.log.info('Servo', 'Flag lowered.', false);
+            // set to start position
+            Servo.move(Servo.position.end);
+            RoboFeeder.status.flag = false;
+        }
+    },
+    raiseFlag: function(){
+        if(!RoboFeeder.status.flag){
+            Log.log.info('Servo', 'Flag raised.', false);
+            // set to end position
+            Servo.move(Servo.position.start);
+            RoboFeeder.status.flag = true;
+        }
+    },
+    stop: function(){
+        clearTimeout(Servo.stopTimeout);
+        // uses timeout to make sure servo is finished moving before stopping
+        Servo.stopTimeout = setTimeout(
+            function(){
+                piblaster.setPwm(Servo.pin, 0);
+            }, 1000);
+    },
+    cycle: function(timeout){
+        clearTimeout(Servo.cycleTimeout);
+        Servo.raiseFlag();
+        Servo.cycleTimeout = setTimeout( function(){
+            Servo.lowerFlag();
+        }, timeout);
+    },
+    test: function(){
+        Log.log.info('Servo', 'Servo initialization test running.', false);
+        if(!RoboFeeder.status.servo){
+            Servo.stop();
+            setTimeout( function(){
+                Servo.cycle(5000);
+                RoboFeeder.status.servo = true;
+                Log.log.info('Servo', 'Servo initialization test finished.', false);
+            }, 1200);
+        }
+    },
+    monitor: function(){
+        Servo.intervalTimer = setInterval(
+            function(){
+                if(!RoboFeeder.status.flagManualMode){
+                    if(RoboFeeder.isAnyCodeAllowed()){
+                        Servo.raiseFlag();
+                    }
+                    else{
+                        Servo.lowerFlag();
+                    }
+                }
+            }, Servo.checkFrequency
+        );
+    },
+    monitorEnd: function(){ // currently unused
+        clearInterval(Servo.intervalTimer);
+    },
+    setManualMode: function(manualMode){
+        RoboFeeder.status.flagManualMode = manualMode;
     }
 };
 var RoboFeeder = {
@@ -643,7 +735,10 @@ var RoboFeeder = {
         pir: false,
         rfid: false,
         motor: false,
-        serial: false
+        serial: false,
+        flag: false,
+        servo: false,
+        flagManualMode: false
     },
     intervalTimer: '',
     openTimer: '',
@@ -688,6 +783,10 @@ var RoboFeeder = {
             },
             toolbox_init: function(callback){
                 Toolbox.init();
+                callback(null, true);
+            },
+            servo_init: function(callback){
+                Servo.init();
                 callback(null, true);
             }
         }, function(err, results){
@@ -855,9 +954,10 @@ var RoboFeeder = {
                         // if matching rule is fully active
                         Log.log.info('RoboFeeder', 'RFID allowed tag rule "' + Rules.rules[ruleIndexes[j]].name + '" found and fully active: tag "' + Rfid.allowedTags[codeIndex].tag + '" authorized', true);
                         RoboFeeder.tagMatch(codeIndex);
+                        return true;
                     }
                     else{
-                        // matching rules is not fully active
+                        // matching rule(s) not fully active
                         Log.log.info('RoboFeeder', 'RFID allowed tag rule "' + Rules.rules[ruleIndexes[j]].name + '" found but NOT active: tag "' + Rfid.allowedTags[codeIndex].tag + '" NOT authorized', true);
                     }
                 }
@@ -866,11 +966,50 @@ var RoboFeeder = {
                 // if no matching rules - open with allowed code at any time
                 RoboFeeder.tagMatch(codeIndex);
                 Log.log.info('RoboFeeder', 'RFID allowed tag has no rules: tag "' + Rfid.allowedTags[codeIndex].tag + '" authorized.', true);
+                return true;
             }
         }
         else{
             Log.log.info('RoboFeeder', 'RFID tag not matched: ' + Toolbox.zeroFill(code, 8));
         }
+        return false;
+    },
+    codeAllowed: function(code){
+        var codeIndex = RoboFeeder.checkCode(code);
+        // has allowed code
+        if(codeIndex !== null){
+            // check if has rule(s) for allowed code
+            var ruleIndexes = Rules.codeRuleIndexes(codeIndex);
+            if(ruleIndexes.length > 0){
+                for(var j=0; j<ruleIndexes.length; j++){
+                    // check if rule is in valid period between activation and expiration
+                    if(Rules.isActive( Rules.rules[ruleIndexes[j]] )){
+                        // if matching rule is fully active
+                        return true;
+                    }
+                    else{
+                        // matching rule(s) not fully active
+                        return false;
+                    }
+                }
+            }
+            else{
+                // if no matching rules - open with allowed code at any time
+                return true;
+            }
+        }
+        else{
+            // no match
+            return false;
+        }
+    },
+    isAnyCodeAllowed: function(){
+        for(var i=0; i<Rfid.allowedTags.length; i++){
+            if(RoboFeeder.codeAllowed(Rfid.allowedTags[i])){
+                return true;
+            }
+        }
+        return false;
     },
     tagMatch: function(codeIndex){
         if(!RoboFeeder.status.open){
@@ -962,6 +1101,12 @@ var WebServer = {
         app.get('/api/status/load', function(req, res){
             return res.json({ statuses: RoboFeeder.status });
         });
+        app.get('/api/status/flag/position', function(req, res){
+            return res.json({ statuses: RoboFeeder.status.flag });
+        });
+        app.get('/api/status/flag/mode', function(req, res){
+            return res.json({ status: RoboFeeder.status.flagManualMode });
+        });
         // settings
         app.get('/api/settings/get', function(req, res){
             return res.json({ roboFeederSettings: RoboFeeder.settings });
@@ -1013,6 +1158,27 @@ var WebServer = {
         app.get('/api/rules/reset', function(req, res){
             Rules.reset();
             return res.json({ rules: Rules.rules });
+        });
+        // servo/flag
+        app.get('/api/flag/raise', function(req, res){
+            if(!RoboFeeder.status.flag){
+                Servo.raiseFlag();
+            }
+            return res.json({ status: RoboFeeder.status.flag });
+        });
+        app.get('/api/flag/lower', function(req, res){
+            if(RoboFeeder.status.flag){
+                Servo.lowerFlag();
+            }
+            return res.json({ status: RoboFeeder.status.flag });
+        });
+        app.get('/api/flag/mode/manual', function(req, res){
+            Servo.setManualMode(true);
+            return res.json({ status: RoboFeeder.status.flagManualMode });
+        });
+        app.get('/api/flag/mode/auto', function(req, res){
+            Servo.setManualMode(false);
+            return res.json({ status: RoboFeeder.status.flagManualMode });
         });
     },
     create: function(){

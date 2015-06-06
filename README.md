@@ -15,20 +15,24 @@ Dependencies:
   * [moment-timezone](https://www.npmjs.com/package/moment-timezone)
   * [nedb](https://github.com/louischatriot/nedb)
   * [npmlog](https://github.com/npm/npmlog)
+  * [pi-blaster.js](https://github.com/sarfata/pi-blaster.js)
   * [rpi-gpio](https://www.npmjs.com/package/rpi-gpio)
   * [serialport](https://www.npmjs.com/package/serialport)
 * AngularJS
   * [angular-poller](https://github.com/emmaguo/angular-poller)
 * Other
   * [jstimezone](https://bitbucket.org/pellepim/jstimezonedetect/overview)
+  * [pi-blaster](https://github.com/sarfata/pi-blaster)
 
 TODO LIST
 * General
   * get hardware remaining specifications (wire lengths, wood sizes, etc.)
   * build instructable with pictures while building next physical device
   * rules page is slow to load - wondering if compiling complex jade template and then rendering it is too much for Raspi B+, test on RasPi 2
+  * add/update to instructions for servo setup, pi-blaster install/setup (pi-blaster) [https://github.com/sarfata/pi-blaster] [https://github.com/sarfata/pi-blaster.js]
+  * add servo & flag to parts list
 * UI
-  * logo
+  * logo - use awesome logo my sister made on site and such, add pictures of flag with logo waving to site
   * help page - add to this page as I get additional feedback from beta testers
 
 Parts List:
@@ -64,6 +68,10 @@ Setup Instructions
 * connect to the pi via ssh, make sure you are in the pi user's home directory (/home/pi/) and run `git clone https://github.com/DrCord/roboFeeder.git`
 * `cd roboFeeder` then `sudo npm install`
 * add this code to the `/etc/rc.local` file before the `exit 0` line
+
+    `#autorun pi-blaster script to allow servo control'
+    
+    `su pi -c 'sudo /home/pi/pi-blaster/pi-blaster < /dev/null &'`
 
     `#autorun node.js server,js file on boot`
     
