@@ -157,6 +157,12 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
             $http.get('/api/status/serial').success(function( data ) {
                 $scope.status.serial = data.status;
             });
+            $http.get('/api/status/flag/position').success(function( data ) {
+                $scope.status.flag = data.status;
+            });
+            $http.get('/api/status/flag/mode').success(function( data ) {
+                $scope.status.flagManualMode = data.status;
+            });
         };
         $scope.statusPoller = function(){
             // Define your resource object.
@@ -193,6 +199,30 @@ angular.module('roboFeeder.controllers', ['ngAnimate']).
             $http.get('/api/close').success(function( data ) {
                 $scope.status.open = data.status;
             });
+        };
+        $scope.raiseFlag = function(){
+            $http.get('/api/flag/raise').
+                success(function(data, status, headers, config) {
+                    $scope.status.flag = data.status;
+                });
+        };
+        $scope.lowerFlag = function(){
+            $http.get('/api/flag/lower').
+                success(function(data, status, headers, config) {
+                    $scope.status.flag = data.status;
+                });
+        };
+        $scope.flagModeManual = function(){
+            $http.get('/api/flag/mode/manual').
+                success(function(data, status, headers, config) {
+                    $scope.status.flagManualMode = data.status;
+                });
+        };
+        $scope.flagModeAutomatic = function(){
+            $http.get('/api/flag/mode/auto').
+                success(function(data, status, headers, config) {
+                    $scope.status.flagManualMode = data.status;
+                });
         };
         $scope.authorizeTag = function(){
             if(typeof $scope.newTag != "undefined" && $scope.newTag.length == 8){
