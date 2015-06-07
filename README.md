@@ -32,6 +32,7 @@ TODO LIST
   * add/update to instructions for servo setup, pi-blaster install/setup (pi-blaster) [https://github.com/sarfata/pi-blaster] [https://github.com/sarfata/pi-blaster.js]
   * add servo and flag to parts list
   * add needed tools list
+  * update fritzing schematic to include servo/flag
 * UI
   * logo - use awesome logo my sister made on site and such, add pictures of flag with logo waving to site
   * help page - add to this page as I get additional feedback from beta testers

@@ -636,7 +636,7 @@ var Rules = {
 };
 var Servo = {
     // for status indicator flag
-    pin: 23,
+    pin: 22,
     position: { // percent of pwm to enable, servos run on pwm pulse length to determine position
         start: 0.07,
         end: 0.20
