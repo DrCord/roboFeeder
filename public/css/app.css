@@ -210,3 +210,6 @@ h3{
 #status ul li span.offline{
     color: red;
 }
+#status .flag div{
+    margin-left: 10px;
+}
