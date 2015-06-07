@@ -982,8 +982,6 @@ var RoboFeeder = {
     },
     codeAllowed: function(code){
         var codeIndex = RoboFeeder.checkCode(code);
-        Log.log.info('codeAllowed', 'RoboFeeder.checkCode code.tag == ' + code.tag + ' codeIndex == ' + codeIndex, false);
-
         // has allowed code
         if(codeIndex !== null){
             // check if has rule(s) for allowed code
