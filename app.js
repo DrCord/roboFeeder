@@ -700,9 +700,11 @@ var Servo = {
             function(){
                 if(!RoboFeeder.status.flagManualMode){
                     if(RoboFeeder.isAnyCodeAllowed()){
+                        Log.log.warn('Servo', 'RoboFeeder.isAnyCodeAllowed == true', false);
                         Servo.raiseFlag();
                     }
                     else{
+                        Log.log.warn('Servo', 'RoboFeeder.isAnyCodeAllowed == false', false);
                         Servo.lowerFlag();
                     }
                 }
@@ -930,7 +932,12 @@ var RoboFeeder = {
     checkCode: function(code){
         // returns null if not found instead of zero, since 0 could be an index
         // make sure to use codeIndex !== null when checking returned value to see if a code matched
-        var zerofilled_code = Toolbox.zeroFill(code, 8);
+        if(typeof code === 'object'){
+            var zerofilled_code = Toolbox.zeroFill(code.tag, 8);
+        }
+        else{
+            var zerofilled_code = Toolbox.zeroFill(code, 8);
+        }
         var codeIndex = null;
         for(var i=0; i < Rfid.allowedTags.length; i++){
             if(Rfid.allowedTags[i].tag == zerofilled_code){
@@ -975,6 +982,8 @@ var RoboFeeder = {
     },
     codeAllowed: function(code){
         var codeIndex = RoboFeeder.checkCode(code);
+        Log.log.info('codeAllowed', 'RoboFeeder.checkCode code.tag == ' + code.tag + ' codeIndex == ' + codeIndex, false);
+
         // has allowed code
         if(codeIndex !== null){
             // check if has rule(s) for allowed code

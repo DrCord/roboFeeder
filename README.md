@@ -30,7 +30,8 @@ TODO LIST
   * build instructable with pictures while building next physical device
   * rules page is slow to load - wondering if compiling complex jade template and then rendering it is too much for Raspi B+, test on RasPi 2
   * add/update to instructions for servo setup, pi-blaster install/setup (pi-blaster) [https://github.com/sarfata/pi-blaster] [https://github.com/sarfata/pi-blaster.js]
-  * add servo & flag to parts list
+  * add servo and flag to parts list
+  * add needed tools list
 * UI
   * logo - use awesome logo my sister made on site and such, add pictures of flag with logo waving to site
   * help page - add to this page as I get additional feedback from beta testers
