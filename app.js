@@ -635,8 +635,7 @@ var Rules = {
     }*/
 };
 var Servo = {
-    // TODO: make flag active when rule for pet is active allowed
-    //for status indicator flag
+    // for status indicator flag
     pin: 23,
     position: { // percent of pwm to enable, servos run on pwm pulse length to determine position
         start: 0.07,
