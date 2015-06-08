@@ -10,14 +10,17 @@ var api = require('./routes/api'),
     http = require('http'),
     log = require('npmlog'),
     moment = require('moment-timezone'),
+    os = require('os'),
     path = require('path'),
     piblaster = require('pi-blaster.js'),
     routes = require('./routes'),
     serialport = require('serialport'),
     url = require('url');
-// setup ip and port
-var applicationPath = '/home/pi/roboFeeder',
-    ip = process.argv[2] || '192.168.1.116', // has to be actual ip of device
+
+// get and setup ip and port
+var ifaces = os.networkInterfaces(),
+    applicationPath = '/home/pi/roboFeeder',
+    ip, // set later
     port = process.argv[3] || 8080;
 
 var app = module.exports = express();
@@ -321,8 +324,10 @@ var Toolbox = {
             return false;
         }
     },
+    ips: {},
     init: function(){
         Toolbox.datetime.newDT();
+        Toolbox.getIPs();
         Log.log.info('Toolbox', 'Toolbox initialized and datetime created', false);
     },
     zeroFill: function(number, width){
@@ -331,6 +336,29 @@ var Toolbox = {
             return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
         }
         return number + ""; // always return a string
+    },
+    getIPs: function(){ // from http://stackoverflow.com/questions/3653065/get-local-ip-address-in-node-js
+        Object.keys(ifaces).forEach(function (ifname) {
+            var alias = 0;
+            ifaces[ifname].forEach(function (iface) {
+                if ('IPv4' !== iface.family) {
+                    // skip over non-ipv4 addresses
+                    return;
+                }
+                if (alias >= 1) {
+                    // this single interface has multiple ipv4 addresses
+                    Toolbox.ips[ifname] = {
+                        alias: alias,
+                        address: iface.address
+                    };
+                } else {
+                    // this interface has only one ipv4 adress
+                    Toolbox.ips[ifname] = {
+                        address: iface.address
+                    };
+                }
+            });
+        });
     }
 };
 var Serial = {
@@ -700,11 +728,11 @@ var Servo = {
             function(){
                 if(!RoboFeeder.status.flagManualMode){
                     if(RoboFeeder.isAnyCodeAllowed()){
-                        Log.log.warn('Servo', 'RoboFeeder.isAnyCodeAllowed == true', false);
+                        Log.log.info('Servo', 'RoboFeeder.isAnyCodeAllowed == true', false);
                         Servo.raiseFlag();
                     }
                     else{
-                        Log.log.warn('Servo', 'RoboFeeder.isAnyCodeAllowed == false', false);
+                        Log.log.info('Servo', 'RoboFeeder.isAnyCodeAllowed == false', false);
                         Servo.lowerFlag();
                     }
                 }
@@ -1188,6 +1216,7 @@ var WebServer = {
         });
     },
     create: function(){
+        ip = process.argv[2] || Toolbox.ips['eth0']['address']; // has to be actual ip of device, this defaults to ethernet port, needs to be updated to default to wifi first
         var server = app.listen(port, ip, function () {
             var host = server.address().address;
             var port = server.address().port;
