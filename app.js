@@ -18,7 +18,7 @@ var api = require('./routes/api'),
     url = require('url');
 
 // get and setup ip and port
-var ifaces = os.networkInterfaces(),
+var ifaces, //set later in case ip is not yet setup
     applicationPath = '/home/pi/roboFeeder',
     ip, // set later
     port = process.argv[3] || 8080;
@@ -338,6 +338,7 @@ var Toolbox = {
         return number + ""; // always return a string
     },
     getIPs: function(){ // from http://stackoverflow.com/questions/3653065/get-local-ip-address-in-node-js
+        ifaces = os.networkInterfaces();
         Object.keys(ifaces).forEach(function (ifname) {
             var alias = 0;
             ifaces[ifname].forEach(function (iface) {
@@ -352,7 +353,7 @@ var Toolbox = {
                         address: iface.address
                     };
                 } else {
-                    // this interface has only one ipv4 adress
+                    // this interface has only one ipv4 address
                     Toolbox.ips[ifname] = {
                         address: iface.address
                     };
@@ -1216,12 +1217,23 @@ var WebServer = {
         });
     },
     create: function(){
-        ip = process.argv[2] || Toolbox.ips['eth0']['address']; // has to be actual ip of device, this defaults to ethernet port, needs to be updated to default to wifi first
-        var server = app.listen(port, ip, function () {
-            var host = server.address().address;
-            var port = server.address().port;
-            Log.log.info('WebServer', 'RoboFeeder app listening at http://' + host + ':' + port, false);
-        });
+        if(typeof Toolbox.ips['eth0'] !== 'undefined'){
+            ip = process.argv[2] || Toolbox.ips['eth0']['address']; // has to be actual ip of device, this defaults to ethernet port, needs to be updated to default to wifi first
+            var server = app.listen(port, ip, function () {
+                var host = server.address().address;
+                var port = server.address().port;
+                Log.log.info('WebServer', 'RoboFeeder app listening at http://' + host + ':' + port, false);
+            });
+        }
+        else{
+            setTimeout(
+                function(){
+                    Toolbox.getIPs();
+                    WebServer.create();
+                },
+                10000
+            )
+        }
     }
 };
 // -- DO STUFF --
