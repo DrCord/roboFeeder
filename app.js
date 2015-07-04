@@ -1061,6 +1061,8 @@ var RoboFeeder = {
     }
 };
 var WebServer = {
+    onEth: false,
+    onWifi: false,
     init: function(){
         app.set('views', applicationPath + '/views');
         app.set('view engine', 'jade');
@@ -1217,15 +1219,29 @@ var WebServer = {
         });
     },
     create: function(){
-        if(typeof Toolbox.ips['eth0'] !== 'undefined'){
-            ip = process.argv[2] || Toolbox.ips['eth0']['address']; // has to be actual ip of device, this defaults to ethernet port, needs to be updated to default to wifi first
-            var server = app.listen(port, ip, function () {
-                var host = server.address().address;
-                var port = server.address().port;
-                Log.log.info('WebServer', 'RoboFeeder app listening at http://' + host + ':' + port, false);
+        if(!WebServer.onEth && typeof Toolbox.ips['eth0'] !== 'undefined'){
+            ip = process.argv[2] || Toolbox.ips['eth0']['address'];
+            var ethServer = app.listen(port, ip, function() {
+                var host = ethServer.address().address;
+                var port = ethServer.address().port;
+                Log.log.info('WebServer', 'RoboFeeder app listening on ethernet at http://' + host + ':' + port, false);
+                WebServer.onEth = true;
+            }).on('error', function(err) {
+                Log.log.error('WebServer', 'RoboFeeder app failed at attempt to start web server on ethernet: error - ' + err, false);
             });
         }
-        else{
+        if(!WebServer.onWifi && typeof Toolbox.ips['wlan0'] !== 'undefined'){
+            ip = process.argv[2] || Toolbox.ips['wlan0']['address'];
+            var wifiServer = app.listen(port, ip, function() {
+                var host = wifiServer.address().address;
+                var port = wifiServer.address().port;
+                Log.log.info('WebServer', 'RoboFeeder app listening on wifi at http://' + host + ':' + port, false);
+                WebServer.onWifi = true;
+            }).on('error', function(err) {
+                Log.log.error('WebServer', 'RoboFeeder app failed at attempt to start web server on wifi: error - ' + err, false);
+            });
+        }
+        if (!WebServer.onEth || !WebServer.onWifi) {
             setTimeout(
                 function(){
                     Toolbox.getIPs();
